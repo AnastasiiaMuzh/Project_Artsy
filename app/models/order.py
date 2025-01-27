@@ -17,3 +17,5 @@ class Order(db.Model):
     updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
 
     # relationships below
+    order_items = db.relationship("OrderItem", back_populates="orders", cascade="all, delete-orphan")
+    users = db.relationship("User", back_populates="orders")

@@ -16,3 +16,4 @@ class ProductImage(db.Model):
     updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
 
     # relationship below
+    products = db.relationship("Product", back_populates="product_images")

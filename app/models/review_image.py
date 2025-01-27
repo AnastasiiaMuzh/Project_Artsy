@@ -15,3 +15,4 @@ class ReviewImage(db.Model):
     updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
 
     # relationship below
+    reviews = db.relationship("Review", back_populates="review_images")

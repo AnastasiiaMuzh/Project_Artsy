@@ -2,7 +2,7 @@ from .db import db, environment, SCHEMA, add_prefix_for_prod
 from datetime import datetime
 
 
-class Reviews(db.Model):
+class Review(db.Model):
     __tablename__ = 'reviews'
 
     if environment == "production":
@@ -17,3 +17,6 @@ class Reviews(db.Model):
     updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
 
     # relationships below
+    users = db.relationship("User", back_populates="reviews")
+    review_images = db.relationship("ReviewImage", back_populates="reviews")
+    products = db.relationship("Product", back_populates="reviews")

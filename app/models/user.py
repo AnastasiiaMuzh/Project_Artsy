@@ -20,7 +20,10 @@ class User(db.Model, UserMixin):
     updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
 
     # relationships below
-
+    reviews = db.relationship("Review", back_populates="users", cascade="all, delete-orphan")
+    shopping_cart_items = db.relationship("ShoppingCartItem", back_populates="users", cascade="all, delete-orphan")
+    orders = db.relationship("Order", back_populates="users", cascade="all, delete-orphan")
+    favorites = db.relationship("Favorite", back_populates="users", cascade="all, delete-orphan")
 
     @property
     def password(self):

@@ -17,3 +17,5 @@ class OrderItem(db.Model):
     updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
 
     # relationships below
+    orders = db.relationship("Order", back_populates="order_items")
+    products = db.relationship("Product", back_populates="order_items")

@@ -16,3 +16,5 @@ class ShoppingCartItem(db.Model):
     updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
 
     # relationships below
+    users = db.relationship("User", back_populates="shopping_cart_items")
+    products = db.relationship("Product", back_populates="shopping_cart_items")

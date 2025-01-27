@@ -20,5 +20,9 @@ class Product(db.Model):
     shopping_cart_items = db.relationship("ShoppingCartItem", back_populates="products", cascade="all, delete-orphan")
     reviews = db.relationship("Review", back_populates="products", cascade="all, delete-orphan")
     images = db.relationship("ProductImage", back_populates="products", cascade="all, delete-orphan")
-    favorites = db.relationship("Favorite", back_populates="products", cascade="all, delete-orphan")
+    favorites = db.relationship(
+        "User",
+        secondary="favorites",
+        back_populates="products"
+    )
     order_items = db.relationship("OrderItem", back_populates="products", cascade="all, delete-orphan")

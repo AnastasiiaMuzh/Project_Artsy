@@ -15,5 +15,5 @@ class Favorite(db.Model):
     updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
 
     # relationships below
-    users = db.relationship("User", back_populates="favorites")
-    products = db.relationship("Product", back_populates="favorites")
+    # users = db.relationship("User", back_populates="favorites")
+    # products = db.relationship("Product", back_populates="favorites")

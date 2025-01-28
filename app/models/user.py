@@ -25,9 +25,10 @@ class User(db.Model, UserMixin):
     orders = db.relationship("Order", back_populates="users", cascade="all, delete-orphan")
     favorites = db.relationship(
         "Product",
-        secondary='favorites',
-        back_populates="favorited_by"
+        secondary = add_prefix_for_prod("favorites"),
+        back_populates="favorites"
     )
+    products = db.relationship("Product", back_populates="sellers", cascade='all, delete-orphan')
 
     @property
     def password(self):

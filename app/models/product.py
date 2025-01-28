@@ -22,7 +22,8 @@ class Product(db.Model):
     images = db.relationship("ProductImage", back_populates="products", cascade="all, delete-orphan")
     favorites = db.relationship(
         "User",
-        secondary="favorites",
-        back_populates="products"
+        secondary = add_prefix_for_prod("favorites"), # FK that connects user and favorites
+        back_populates="favorites"
     )
     order_items = db.relationship("OrderItem", back_populates="products", cascade="all, delete-orphan")
+    sellers = db.relationship("User", back_populates='products')

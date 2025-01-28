@@ -1,5 +1,14 @@
 from flask.cli import AppGroup
 from .users import seed_users, undo_users
+from .products import seed_products, undo_products
+from .product_images import seed_product_images, undo_product_images
+from .favorites import seed_favorites, undo_favorites
+from .orders import seed_orders, undo_orders
+from .review_images import seed_review_images, undo_review_images
+from .order_items import seed_order_items, undo_order_items
+from .shopping_cart_items import seed_shopping_cart_items, undo_shopping_cart_items
+from .reviews import seed_reviews, undo_reviews
+
 
 from app.models.db import db, environment, SCHEMA
 
@@ -17,7 +26,23 @@ def seed():
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
         undo_users()
+        undo_products()
+        undo_product_images()
+        undo_favorites()
+        undo_orders()
+        undo_review_images()
+        undo_order_items()
+        undo_shopping_cart_items()
+        undo_reviews()
     seed_users()
+    seed_products()
+    seed_product_images()
+    seed_favorites()
+    seed_orders()
+    seed_review_images()
+    seed_order_items()
+    seed_shopping_cart_items()
+    seed_reviews()
     # Add other seed functions here
 
 
@@ -25,4 +50,12 @@ def seed():
 @seed_commands.command('undo')
 def undo():
     undo_users()
+    undo_products()
+    undo_product_images()
+    undo_favorites()
+    undo_orders()
+    undo_review_images()
+    undo_order_items()
+    undo_shopping_cart_items()
+    undo_reviews()
     # Add other undo functions here

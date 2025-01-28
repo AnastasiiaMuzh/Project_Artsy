@@ -13,8 +13,8 @@ class OrderItem(db.Model):
     productId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("products.id")), nullable=False)
     price = db.Column(db.Numeric(10,2), nullable=False)
     quantity = db.Column(db.Integer)
-    createdAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
 
     # relationships below
     orders = db.relationship("Order", back_populates="order_items")

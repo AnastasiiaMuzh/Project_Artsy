@@ -13,8 +13,8 @@ class Review(db.Model):
     buyerId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     review = db.Column(db.Text, nullable=False)
     stars = db.Column(db.Integer, nullable=False)
-    createdAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
 
     # relationships below
     users = db.relationship("User", back_populates="reviews")

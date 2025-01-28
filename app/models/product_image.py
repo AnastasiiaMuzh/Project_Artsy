@@ -12,8 +12,8 @@ class ProductImage(db.Model):
     productId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("products.id")), nullable=False)
     url = db.Column(db.Text, nullable=False)
     preview = db.Column(db.Boolean, nullable=False)
-    createdAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
 
     # relationship below
     products = db.relationship("Product", back_populates="images")

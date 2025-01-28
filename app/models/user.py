@@ -16,8 +16,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
-    createdAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
 
     # relationships below
     reviews = db.relationship("Review", back_populates="users", cascade="all, delete-orphan")

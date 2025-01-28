@@ -11,8 +11,8 @@ class ReviewImage(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     reviewId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("reviews.id")), nullable=False)
     url = db.Column(db.Text, nullable=False)
-    createdAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
 
     # relationship below
     reviews = db.relationship("Review", back_populates="review_images")

@@ -13,8 +13,8 @@ class Order(db.Model):
     totalPrice = db.Column(db.Numeric(10,2), nullable=False)
     status = db.Column(db.String(50), nullable=False)
     shippingAddress = db.Column(db.Text, nullable=False)
-    createdAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
 
     # relationships below
     order_items = db.relationship("OrderItem", back_populates="orders", cascade="all, delete-orphan")

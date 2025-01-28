@@ -13,8 +13,8 @@ class Product(db.Model):
     price = db.Column(db.Numeric(10,2), nullable=False)
     description = db.Column(db.Text, nullable=False)
     category = db.Column(db.String(100), nullable=False)
-    createdAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
 
     # relationships here
     shopping_cart_items = db.relationship("ShoppingCartItem", back_populates="products", cascade="all, delete-orphan")

@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, abort
+from flask import Blueprint, request, jsonify
 from app.models import User, db, Product, ProductImage, Review
 from flask_login import current_user
 
@@ -213,7 +213,7 @@ def update_product(id):
 
     # If the product doesn't exist, return a 404 error with a message
     if not product:
-        abort(404, description="Product not found")
+        return jsonify({"message": "Product couldn't be found"}), 404
 
     # If the logged-in user is not the seller of this product, return a 403 Forbidden error
     if product.seller_id != current_user_id:

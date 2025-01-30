@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.models import User, db, Product, ProductImage, Review
-from flask_login import current_user
+from flask_login import current_user, login_required
 
 
 product_routes = Blueprint('products', __name__)
@@ -46,7 +46,7 @@ def get_all_products():
         products_query = products_query.filter(Product.category.ilike(f'%{category}%'))
 
     # Paginate the results based on the provided page and size
-    products = products_query.paginate(page, size, False)
+    products = products_query.paginate(page=page, per_page=size, error_out=False)
 
     # list of information to return 
     product_list = [{
@@ -56,8 +56,8 @@ def get_all_products():
         'sellerId': product.sellerId,
         'category': product.category,
         'description': product.description,
-        'createdAt': product.created_at,
-        'updatedAt': product.updated_at,
+        'createdAt': product.createdAt,
+        'updatedAt': product.updatedAt,
         'avgRating': calculate_avg_rating(product.id),
         'previewImage': get_preview_image_url(product.id)  
     } for product in products.items]
@@ -74,7 +74,7 @@ def get_all_products():
 
 # GET /api/products/:id
 # Returns the details of a specific product by its id
-@product_routes.route('/:id', methods=['GET'])
+@product_routes.route('/<int:id>', methods=['GET'])
 def get_product(id):
 
     # Query the Product model to find the product by its ID
@@ -85,13 +85,13 @@ def get_product(id):
         return jsonify({"message": "Product couldn't be found"}), 404
     
     # Get the number of reviews for the product
-    num_reviews = Review.query.filter_by(product_id=id).count()
+    num_reviews = Review.query.filter_by(productId=id).count()
 
     # Calculate the average star rating using the helper function
     avg_rating = calculate_avg_rating(id)
 
     # Retrieve all product images for the product
-    product_images = ProductImage.query.filter_by(product_id=id).all()
+    product_images = ProductImage.query.filter_by(productId=id).all()
 
     # Build the product images list
     product_images_list = [{
@@ -108,8 +108,8 @@ def get_product(id):
         'description': product.description,
         'price': product.price,
         'category': product.category,
-        'createdAt': product.created_at,
-        'updatedAt': product.updated_at,
+        'createdAt': product.createdAt,
+        'updatedAt': product.updatedAt,
         'numReviews': num_reviews,
         'avgStarRating': avg_rating,
         'ProductImages': product_images_list
@@ -123,13 +123,14 @@ def get_product(id):
 # GET /api/products/current
 # Returns all products owned or sold by the currently logged-in user.
 @product_routes.route('/current', methods=['GET'])
+@login_required
 def get_current_user_products():
 
     # Get the ID of the logged-in user
     current_user_id = current_user.id 
 
     # Filter products by seller_id to match the current user's id
-    products = Product.query.filter_by(seller_id=current_user_id).all()
+    products = Product.query.filter_by(sellerId=current_user_id).all()
 
     # list of info to return 
     product_list = [{
@@ -139,8 +140,8 @@ def get_current_user_products():
         'price': product.price,
         'category': product.category,
         'description': product.description,
-        'createdAt': product.created_at,
-        'updatedAt': product.updated_at,
+        'createdAt': product.createdAt,
+        'updatedAt': product.updatedAt,
         'avgRating': calculate_avg_rating(product.id),
         'previewImage': get_preview_image_url(product.id)
     } for product in products]
@@ -152,6 +153,7 @@ def get_current_user_products():
 # POST /api/products
 # Creates a new product. Requires a JSON body with product details
 @product_routes.route('/', methods=['POST'])
+@login_required
 def create_product():
     
     # Get id of current user
@@ -180,7 +182,7 @@ def create_product():
         description=data['description'],
         price=data['price'],
         category=data['category'],
-        seller_id=current_user_id  # Set the current logged-in user as the seller
+        sellerId=current_user_id  # Set the current logged-in user as the seller
     )
 
     # Add the new product to the session and commit to save it to the database
@@ -190,19 +192,20 @@ def create_product():
     # Return the new product
     return jsonify({
         'id': new_product.id,
-        'sellerId': new_product.seller_id,
+        'sellerId': new_product.sellerId,
         'name': new_product.name,
         'description': new_product.description,
         'price': new_product.price,
         'category': new_product.category,
-        'createdAt': new_product.created_at,
-        'updatedAt': new_product.updated_at,
+        'createdAt': new_product.createdAt,
+        'updatedAt': new_product.updatedAt,
     }), 201
 
 
 # PUT /api/products/:id
 #Updates an existing product with the given id
-@product_routes.route('/:id', methods=['PUT'])
+@product_routes.route('/<int:id>', methods=['PUT'])
+@login_required
 def update_product(id):
 
     # Get id of current user
@@ -216,7 +219,7 @@ def update_product(id):
         return jsonify({"message": "Product couldn't be found"}), 404
 
     # If the logged-in user is not the seller of this product, return a 403 Forbidden error
-    if product.seller_id != current_user_id:
+    if product.sellerId != current_user_id:
         return jsonify({"message": "Forbidden"}), 403
 
     # Parse the incoming request body
@@ -230,7 +233,7 @@ def update_product(id):
     if not data.get('description'):
         return jsonify({"message": "Description is required"}), 400
         # Price must be a positive number
-    if not data.get('price') or data['price'] <= 0:
+    if not data.get('price') or float(data['price']) <= 0:
         return jsonify({"message": "Price must be a positive number"}), 400
         # Category is required
     if not data.get('category'):
@@ -239,7 +242,7 @@ def update_product(id):
     # Update the product's fields with the validated data
     product.name = data['name']
     product.description = data['description']
-    product.price = data['price']
+    product.price = float(data['price'])
     product.category = data['category']
 
     # Commit the changes to the database
@@ -248,23 +251,24 @@ def update_product(id):
     # Return the updated product
     return jsonify({
         'id': product.id,
-        'sellerId': product.seller_id,
+        'sellerId': product.sellerId,
         'name': product.name,
         'description': product.description,
-        'price': product.price,
+        'price': round(product.price, 2),
         'category': product.category,
-        'createdAt': product.created_at,
-        'updatedAt': product.updated_at
+        'createdAt': product.createdAt,
+        'updatedAt': product.updatedAt
     })
 
 
 # DELETE /api/products/:id
 # Deletes the product with the specified ID if it exists and the current logged-in user is the seller
 @product_routes.route('/<int:id>', methods=['DELETE'])
+@login_required
 def delete_product(id):
 
     # Get the id of the currently logged-in user
-    current_user_id = User.query.get(id)
+    current_user_id = current_user.id 
 
     # get the product from the database 
     product = Product.query.get(id)
@@ -274,7 +278,7 @@ def delete_product(id):
         return jsonify({"message": "Product couldn't be found"}), 404
 
     # If the logged-in user is not the seller of the product, return a 403 Forbidden error
-    if product.seller_id != current_user_id:
+    if product.sellerId != current_user_id:
         return jsonify({"message": "Forbidden"}), 403
 
     # If the current user is the seller, delete the product from the database
@@ -289,13 +293,76 @@ def delete_product(id):
 ## Product Images ## Add to new routes page named product_images_routes
 
 # add a product image 
-@product_routes.route('', methods=['POST'])
-def add_product_image():
-    pass
+@product_routes.route('<int:productId>/productImages', methods=['POST'])
+@login_required
+def add_product_image(productId):
+
+    current_user_id = current_user.id
+    product = Product.query.get(productId)
+    if not product:
+       return jsonify({"message": "Product couldn't be found"}), 404
+    
+    if product.sellerId != current_user_id:
+       return jsonify({"message": "Forbidden"}), 403
+
+    # Get the image URL and preview flag from the request
+    data = request.get_json()
+
+    image_url = data.get('url')
+    preview = data.get('preview', False)
+
+
+    if not image_url:
+        return jsonify({"message": "Image URL is required"}), 400
+
+
+    # Check if there are already 10 images attached to the product (limit)
+    if len(product.images) >= 10:
+        return jsonify({"message": "Maximum number of images for this product reached"}), 403
+
+
+    # Create and add the product image
+    new_image = ProductImage(url=image_url, preview=preview, productId=product.id)
+    db.session.add(new_image)
+    db.session.commit()
+
+
+    return jsonify({
+        'id': new_image.id,
+        'url': new_image.url,
+        'preview': new_image.preview
+    }), 201
+
 
 
 
 # Delete a product image 
-@product_routes.route('', methods=['DELETE'])
-def delete_product_image():
-    pass
+@product_routes.route('/<int:product_id>/<int:image_id>', methods=['DELETE'])
+@login_required
+def delete_product_image(product_id, image_id):
+    current_user_id = current_user.id  # Get the ID of the logged-in user
+
+
+    # Find the product by ID
+    product = Product.query.get(product_id)
+    if not product:
+        return jsonify({"message": "Product couldn't be found"}), 404
+
+
+    # Check if the current user is the seller of the product
+    if product.sellerId != current_user_id:
+        return jsonify({"message": "Forbidden"}), 403
+
+
+    # Find the product image by its id
+    product_image = ProductImage.query.filter_by(productId=product_id, id=image_id).first()
+    if not product_image:
+        return jsonify({"message": "Product Image couldn't be found"}), 404
+
+
+    # Delete the product image
+    db.session.delete(product_image)
+    db.session.commit()
+
+
+    return jsonify({"message": "Successfully deleted"}), 200

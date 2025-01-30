@@ -9,13 +9,11 @@ from .order_items import seed_order_items, undo_order_items
 from .shopping_cart_items import seed_shopping_cart_items, undo_shopping_cart_items
 from .reviews import seed_reviews, undo_reviews
 
-
 from app.models.db import db, environment, SCHEMA
 
 # Creates a seed group to hold our commands
 # So we can type `flask seed --help`
 seed_commands = AppGroup('seed')
-
 
 # Creates the `flask seed all` command
 @seed_commands.command('all')
@@ -44,7 +42,6 @@ def seed():
     seed_shopping_cart_items()
     seed_reviews()
     # Add other seed functions here
-
 
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')

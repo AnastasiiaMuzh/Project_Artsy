@@ -195,7 +195,7 @@ def create_product():
         'sellerId': new_product.sellerId,
         'name': new_product.name,
         'description': new_product.description,
-        'price': new_product.price,
+        'price': float(round(new_product.price, 2)),
         'category': new_product.category,
         'createdAt': new_product.createdAt,
         'updatedAt': new_product.updatedAt,
@@ -254,7 +254,7 @@ def update_product(id):
         'sellerId': product.sellerId,
         'name': product.name,
         'description': product.description,
-        'price': round(product.price, 2),
+        'price': float(round(product.price, 2)),
         'category': product.category,
         'createdAt': product.createdAt,
         'updatedAt': product.updatedAt

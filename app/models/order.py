@@ -1,5 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class Order(db.Model):
@@ -13,9 +13,12 @@ class Order(db.Model):
     totalPrice = db.Column(db.Numeric(10,2), nullable=False)
     status = db.Column(db.String(50), nullable=False)
     shippingAddress = db.Column(db.Text, nullable=False)
-    createdAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
 
     # relationships below
     order_items = db.relationship("OrderItem", back_populates="orders", cascade="all, delete-orphan")
     users = db.relationship("User", back_populates="orders")
+
+    def __repr__(self):
+        return f"<Order id={self.id}, buyerId={self.buyerId}, totalPrice={self.totalPrice}, status='{self.status}', shippingAddress='{self.shippingAddress}', createdAt={self.createdAt}, updatedAt={self.updatedAt}>"

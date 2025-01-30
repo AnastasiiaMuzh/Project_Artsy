@@ -1,7 +1,7 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class User(db.Model, UserMixin):
@@ -16,8 +16,8 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(40), nullable=False, unique=True)
     hashed_password = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(255), nullable=False, unique=True)
-    createdAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
 
     # relationships below
     reviews = db.relationship("Review", back_populates="users", cascade="all, delete-orphan")
@@ -47,3 +47,6 @@ class User(db.Model, UserMixin):
             'username': self.username,
             'email': self.email
         }
+
+    def __repr__(self):
+        return f"<User id={self.id}, username='{self.username}', email='{self.email}', createdAt={self.createdAt}, updatedAt={self.updatedAt}>"

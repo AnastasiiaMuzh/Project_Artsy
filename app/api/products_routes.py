@@ -290,7 +290,7 @@ def delete_product(id):
 
 
 
-## Product Images ## Add to new routes page named product_images_routes
+## Product Images ## 
 
 # add a product image 
 @product_routes.route('<int:productId>/productImages', methods=['POST'])

@@ -28,19 +28,20 @@ def seed():
         undo_product_images()
         undo_favorites()
         undo_orders()
+        undo_reviews()
         undo_review_images()
         undo_order_items()
         undo_shopping_cart_items()
-        undo_reviews()
     seed_users()
     seed_products()
     seed_product_images()
     seed_favorites()
     seed_orders()
+    seed_reviews()
     seed_review_images()
     seed_order_items()
     seed_shopping_cart_items()
-    seed_reviews()
+    
     # Add other seed functions here
 
 # Creates the `flask seed undo` command
@@ -51,8 +52,9 @@ def undo():
     undo_product_images()
     undo_favorites()
     undo_orders()
+    undo_reviews()
     undo_review_images()
     undo_order_items()
     undo_shopping_cart_items()
-    undo_reviews()
+    
     # Add other undo functions here

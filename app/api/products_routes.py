@@ -1,6 +1,7 @@
 from flask import Blueprint, request, jsonify
 from app.models import User, db, Product, ProductImage, Review
 from flask_login import current_user, login_required
+from datetime import datetime
 
 
 product_routes = Blueprint('products', __name__)
@@ -25,6 +26,11 @@ def get_preview_image_url(product_id):
         return preview_image.url  # Return the URL of the preview image
     return None  # If no preview image is found, return None
 
+# helper function to format dates
+def format_datetime(date):
+    if date:
+        return date.strftime("%Y-%m-%d %H:%M:%S")
+    return None
 
 # GET /api/products
 # returns all the products
@@ -52,12 +58,12 @@ def get_all_products():
     product_list = [{
         'id': product.id,
         'name': product.name,
-        'price': product.price,
+        'price': float(round(product.price, 2)),
         'sellerId': product.sellerId,
         'category': product.category,
         'description': product.description,
-        'createdAt': product.createdAt,
-        'updatedAt': product.updatedAt,
+        'createdAt': format_datetime(product.createdAt),
+        'updatedAt': format_datetime(product.updatedAt),
         'avgRating': calculate_avg_rating(product.id),
         'previewImage': get_preview_image_url(product.id)  
     } for product in products.items]
@@ -67,7 +73,6 @@ def get_all_products():
         'Products': product_list,
         'page': page,
         'size': size,
-        'totalPages': products.pages
     })
 
 
@@ -106,10 +111,10 @@ def get_product(id):
         'name': product.name,
         'sellerId': product.sellerId,
         'description': product.description,
-        'price': product.price,
+        'price': float(round(product.price, 2)),
         'category': product.category,
-        'createdAt': product.createdAt,
-        'updatedAt': product.updatedAt,
+        'createdAt': format_datetime(product.createdAt),
+        'updatedAt': format_datetime(product.updatedAt),
         'numReviews': num_reviews,
         'avgStarRating': avg_rating,
         'ProductImages': product_images_list
@@ -137,11 +142,11 @@ def get_current_user_products():
         'id': product.id,
         'name': product.name,
         'sellerId': product.sellerId,
-        'price': product.price,
+        'price': float(product.price),
         'category': product.category,
         'description': product.description,
-        'createdAt': product.createdAt,
-        'updatedAt': product.updatedAt,
+        'createdAt': format_datetime(product.createdAt),
+        'updatedAt': format_datetime(product.updatedAt),
         'avgRating': calculate_avg_rating(product.id),
         'previewImage': get_preview_image_url(product.id)
     } for product in products]
@@ -165,7 +170,7 @@ def create_product():
     # Validate the incoming data
         # Check that the product name is not empty and is not longer than 50 characters
     if not data.get('name') or len(data['name']) > 50:
-        return jsonify({"message": "Name must be less than 50 characters"}), 400
+        return jsonify({"message": "Name is required and must be less than 50 characters"}), 400
         # Description is required
     if not data.get('description'):
         return jsonify({"message": "Description is required"}), 400
@@ -197,8 +202,8 @@ def create_product():
         'description': new_product.description,
         'price': float(round(new_product.price, 2)),
         'category': new_product.category,
-        'createdAt': new_product.createdAt,
-        'updatedAt': new_product.updatedAt,
+        'createdAt': format_datetime(new_product.createdAt),
+        'updatedAt': format_datetime(new_product.updatedAt),
     }), 201
 
 
@@ -233,7 +238,8 @@ def update_product(id):
     if not data.get('description'):
         return jsonify({"message": "Description is required"}), 400
         # Price must be a positive number
-    if not data.get('price') or float(data['price']) <= 0:
+    price = data.get('price')
+    if not price or not isinstance(price, int) or price <= 0:
         return jsonify({"message": "Price must be a positive number"}), 400
         # Category is required
     if not data.get('category'):
@@ -256,8 +262,8 @@ def update_product(id):
         'description': product.description,
         'price': float(round(product.price, 2)),
         'category': product.category,
-        'createdAt': product.createdAt,
-        'updatedAt': product.updatedAt
+        'createdAt': format_datetime(product.createdAt),
+        'updatedAt': format_datetime(product.updatedAt)
     })
 
 
@@ -340,7 +346,8 @@ def add_product_image(productId):
 @product_routes.route('/<int:product_id>/<int:image_id>', methods=['DELETE'])
 @login_required
 def delete_product_image(product_id, image_id):
-    current_user_id = current_user.id  # Get the ID of the logged-in user
+    # Get the ID of the logged-in user
+    current_user_id = current_user.id 
 
 
     # Find the product by ID

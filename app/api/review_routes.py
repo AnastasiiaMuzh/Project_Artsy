@@ -11,15 +11,14 @@ review_routes = Blueprint('reviews', __name__)
 @review_routes.route('/current')
 @login_required
 def get_current_user_reviews():
-
+    # Retrieves all reviews where the current user if the buyer
     reviews = Review.query.filter_by(buyerId=current_user.id).all()
-    # print('LOOK HERE!!', reviews)
 
+    # Return Error Message if the current user does not have any reviews
     if not reviews:
         return {"message": "No reviews found"}, 404
 
-    # invalid productId, such as product is not found??
-
+    # Needs to fixed n+1 problem due to querying in loop
     review_data = []
     for review in reviews:
         product = Product.query.get(review.productId)
@@ -116,6 +115,8 @@ def get_product_reviews(id):
 @login_required
 def create_review(id):
     buyerId = current_user.id
+    reviews = Review.query.all()
+
     product = Product.query.get(id)
     if not product:
         return { "message": "Product couldn't be found"}, 404
@@ -139,6 +140,7 @@ def create_review(id):
 
 
     new_review = Review(
+        id=len(reviews) + 1,
         productId=id,
         buyerId=buyerId,
         review=review_text,
@@ -151,6 +153,7 @@ def create_review(id):
     return jsonify({
         "message": "Review created",
         "review": {
+            "id": new_review.id,
            "productId": new_review.productId,
             "buyerId": new_review.buyerId,
             "review": new_review.review,

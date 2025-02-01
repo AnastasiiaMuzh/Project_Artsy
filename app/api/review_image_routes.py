@@ -4,7 +4,7 @@ from app.models import Review, ReviewImage
 from app.models.db import db
 
 
-review_image_routes = Blueprint('reviews', __name__)
+review_image_routes = Blueprint('reviews_images', __name__)
 
 
 # ***********************CREATE Review Image***********************

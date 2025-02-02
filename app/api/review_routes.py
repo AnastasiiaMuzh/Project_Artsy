@@ -247,7 +247,7 @@ def add_review_image(id):
 # ***********************DELETE Review Image***********************
 @review_routes.route('/images/<string:url>', methods=['DELETE'])
 @login_required
-def delete_review(url):
+def delete_review_image(url):
     review_image = ReviewImage.query.filter_by(url=url).first()
     if not review_image:
         return {"message": "Review Image couldn't be found"}, 404

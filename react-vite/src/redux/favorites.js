@@ -20,6 +20,7 @@ const removeFavorite = (productId) => ({
 });
 
 // Thunk Action Creators
+// Fetch all favorites for current user
 export const fetchUserFavorites = () => async (dispatch) => {
   const response = await fetch('/api/favorites');
   
@@ -46,6 +47,7 @@ export const addToFavorites = (productId) => async (dispatch) => {
   }
 };
 
+// Remove a favorite from the user's favorites
 export const removeFromFavorites = (productId) => async (dispatch) => {
   const response = await fetch(`/api/favorites/${productId}`, {
     method: 'DELETE'

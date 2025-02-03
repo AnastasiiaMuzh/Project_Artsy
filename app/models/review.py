@@ -1,5 +1,5 @@
 from .db import db, environment, SCHEMA, add_prefix_for_prod
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 class Review(db.Model):
@@ -13,10 +13,13 @@ class Review(db.Model):
     buyerId = db.Column(db.Integer, db.ForeignKey(add_prefix_for_prod("users.id")), nullable=False)
     review = db.Column(db.Text, nullable=False)
     stars = db.Column(db.Integer, nullable=False)
-    createdAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
-    updatedAt = db.Column(db.DateTime, default=datetime.now(), nullable=False)
+    createdAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
+    updatedAt = db.Column(db.DateTime, default=datetime.now(timezone.utc), nullable=False)
 
     # relationships below
     users = db.relationship("User", back_populates="reviews")
-    review_images = db.relationship("ReviewImage", back_populates="reviews")
+    review_images = db.relationship("ReviewImage", back_populates="reviews", cascade="all, delete-orphan")
     products = db.relationship("Product", back_populates="reviews")
+
+    def __repr__(self):
+        return f"<Review id={self.id}, productId={self.productId}, buyerId={self.buyerId}, stars={self.stars}, createdAt={self.createdAt}, updatedAt={self.updatedAt}>"

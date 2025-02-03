@@ -22,4 +22,9 @@ def user(id):
     Query for a user by id and returns that user in a dictionary
     """
     user = User.query.get(id)
+
+    # When there is no logged user
+    if not user:
+        return jsonify({"user": None})
+
     return user.to_dict()

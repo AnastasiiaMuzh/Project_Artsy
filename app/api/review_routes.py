@@ -1,8 +1,9 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
-from app.models import Review, User, ReviewImage, Product, ProductImage
-from sqlalchemy import and_
+from app.models import Review, User, ReviewImage, Product, ProductImage, Order
+from sqlalchemy.orm import joinedload
 from app.models.db import db
+from app.api.auth_routes import unauthorized
 
 
 review_routes = Blueprint('reviews', __name__)
@@ -11,23 +12,29 @@ review_routes = Blueprint('reviews', __name__)
 @review_routes.route('/current')
 @login_required
 def get_current_user_reviews():
-    # Retrieves all reviews where the current user if the buyer
-    reviews = Review.query.filter_by(buyerId=current_user.id).all()
+    reviews = Review.query.options(
+        joinedload(Review.products),  # ensures the Product is loaded with the Review
+        joinedload(Review.review_images)  # ensures the related ReviewImages are loaded
+    ).filter(Review.buyerId == current_user.id).all()
 
-    # Return Error Message if the current user does not have any reviews
     if not reviews:
         return {"message": "No reviews found"}, 404
 
-    # Needs to fixed n+1 problem due to querying in loop
+    preview_images_obj = {}
+    product_ids = [review.productId for review in reviews]
+    product_images = ProductImage.query.filter(
+        ProductImage.productId.in_(product_ids),
+        ProductImage.preview == True
+    ).all()
+
+    for preview_images in product_images:
+        preview_images_obj[preview_images.productId] = preview_images.url
+
+    # print('loooooooooooooooooooook', preview_images_obj)
+
     review_data = []
     for review in reviews:
-        product = Product.query.get(review.productId)
-        review_images = ReviewImage.query.filter_by(reviewId=review.id).all()
-
-        preview_image = ProductImage.query.filter(
-            and_(ProductImage.productId == product.id, ProductImage.preview == True)
-        ).first()
-        preview_image_url = preview_image.url if preview_image else None
+        preview_image_url = preview_images_obj.get(review.productId)
 
         review_data.append({
             "id": review.id,
@@ -43,12 +50,12 @@ def get_current_user_reviews():
                 "lastName": current_user.lastName
             },
             "Products": {
-                "id": product.id,
-                "name": product.name,
-                "sellerId": product.sellerId,
-                "price": product.price,
-                "description": product.description,
-                "category": product.category,
+                "id": review.products.id,
+                "name": review.products.name,
+                "sellerId": review.products.sellerId,
+                "price": review.products.price,
+                "description": review.products.description,
+                "category": review.products.category,
                 "previewImage": preview_image_url
             },
             "ReviewImages": [
@@ -56,7 +63,7 @@ def get_current_user_reviews():
                     "id": review_image.id,
                     "url": review_image.url
                 }
-                for review_image in review_images if review_image
+                for review_image in review.review_images if review_image
             ]
 
         })
@@ -71,18 +78,16 @@ def get_product_reviews(id):
     if not product:
         return { "message": "Product couldn't be found"}, 404
 
-    reviews = Review.query.filter_by(productId=id).all()
-    print('look here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-    print(reviews)
+    reviews = Review.query.filter_by(productId=id).options(
+        joinedload(Review.users),
+        joinedload(Review.review_images)
+    )
 
     if not reviews:
         return {"message": "No reviews found for this product"}, 404
 
     review_data = []
     for review in reviews:
-        user = User.query.get(review.buyerId)
-        review_images = ReviewImage.query.filter_by(reviewId=review.id).all()
-        # print('erika look right here', user)
 
         review_data.append({
             "id": review.id,
@@ -93,9 +98,9 @@ def get_product_reviews(id):
             "createdAt": review.createdAt,
             "updatedAt": review.updatedAt,
             "User": {
-                "id": user.id,
-                "firstName": user.firstName,
-                "lastName": user.lastName
+                "id": review.users.id,
+                "firstName": review.users.firstName,
+                "lastName": review.users.lastName
             },
             "ReviewImages": [
                 {
@@ -103,7 +108,7 @@ def get_product_reviews(id):
                     "reviewId": review_image.reviewId,
                     "url": review_image.url
                 }
-                for review_image in review_images if review_image
+                for review_image in review.review_images if review_image
             ]
         })
 
@@ -115,11 +120,15 @@ def get_product_reviews(id):
 @login_required
 def create_review(id):
     buyerId = current_user.id
+    product = Product.query.get(id)
     reviews = Review.query.all()
 
-    product = Product.query.get(id)
     if not product:
         return { "message": "Product couldn't be found"}, 404
+
+    order = Order.query.filter_by(buyerId=current_user.id, productId=id, status='delivered').first()
+    if not order:
+        return unauthorized()
 
     review_existing = Review.query.filter_by(productId=product.id, buyerId=buyerId).first()
     if review_existing:
@@ -128,6 +137,7 @@ def create_review(id):
     data = request.get_json()
     review_text = data.get('review')
     stars = data.get('stars')
+
 
     errors = {}
     if not review_text:
@@ -140,7 +150,6 @@ def create_review(id):
 
 
     new_review = Review(
-        id=len(reviews) + 1,
         productId=id,
         buyerId=buyerId,
         review=review_text,

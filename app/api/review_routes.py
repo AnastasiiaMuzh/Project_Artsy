@@ -1,6 +1,6 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user
-from app.models import Review, User, ReviewImage, Product, ProductImage, Order
+from app.models import Review, ReviewImage, Product, ProductImage, Order, OrderItem
 from sqlalchemy.orm import joinedload
 from app.models.db import db
 from app.api.auth_routes import unauthorized
@@ -78,12 +78,12 @@ def get_product_reviews(id):
     if not product:
         return { "message": "Product couldn't be found"}, 404
 
-    reviews = Review.query.filter_by(productId=id).options(
+    reviews = Review.query.filter(Review.productId == id).options(
         joinedload(Review.users),
         joinedload(Review.review_images)
-    )
+    ).all()
 
-    if not reviews:
+    if len(reviews) == 0:
         return {"message": "No reviews found for this product"}, 404
 
     review_data = []
@@ -121,18 +121,21 @@ def get_product_reviews(id):
 def create_review(id):
     buyerId = current_user.id
     product = Product.query.get(id)
-    reviews = Review.query.all()
 
     if not product:
         return { "message": "Product couldn't be found"}, 404
 
-    order = Order.query.filter_by(buyerId=current_user.id, productId=id, status='delivered').first()
-    if not order:
+    order_item = OrderItem.query.join(Order).filter(
+        Order.buyerId == buyerId,
+        Order.status == 'delivered',
+        OrderItem.productId == id,
+    ).first()
+    if not order_item:
         return unauthorized()
 
     review_existing = Review.query.filter_by(productId=product.id, buyerId=buyerId).first()
     if review_existing:
-        return { "message": "User already has a review for this product" }, 500
+        return { "message": "User already has a review for this product" }, 400
 
     data = request.get_json()
     review_text = data.get('review')
@@ -180,7 +183,7 @@ def edit_review(id):
         return {"message": "Review couldn't be found"}, 404
 
     if review.buyerId != current_user.id:
-        return jsonify({"message": "Unauthorized"})
+        return jsonify({"message": "Unauthorized"}), 403
 
     data = request.get_json()
     review_text = data.get('review')
@@ -231,7 +234,7 @@ def add_review_image(id):
         return {"message": "Review couldn't be found"}, 404
 
     if review.buyerId != current_user.id:
-        return jsonify({"message": "Unauthorized"})
+        return jsonify({"message": "Unauthorized"}), 403
 
     review_images = ReviewImage.query.filter_by(reviewId=id).all()
     if len(review_images) == 10:
@@ -265,7 +268,7 @@ def delete_review_image(url):
     if not review:
         return {"message": "Review couldn't be found"}, 404
     if review.buyerId != current_user.id:
-        return jsonify({"message": "Unauthorized"})
+        return jsonify({"message": "Unauthorized"}), 403
 
     db.session.delete(review_image)
     db.session.commit()

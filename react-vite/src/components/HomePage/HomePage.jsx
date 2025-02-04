@@ -6,31 +6,31 @@ import { getProducts } from '../../redux/products'
 import "./HomePage.css";
 
 const HomePage = () => {
-    const dispatch = useDispatch();
+//     const dispatch = useDispatch();
 
-  // Get products from Redux store
-  const products = useSelector((state) => state.products.allProducts);
+//   // Get products from Redux store
+//   const products = useSelector((state) => state.products.allProducts);
 
-  const [loading, setLoading] = useState(true);
+//   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    dispatch(getProducts())
-    .then(() => setLoading(false));
-  }, [dispatch]);
+//   useEffect(() => {
+//     dispatch(getProducts())
+//     .then(() => setLoading(false));
+//   }, [dispatch]);
 
-  if (loading) {
-    return <div>Loading products...</div>;
-  }
+//   if (loading) {
+//     return <div>Loading products...</div>;
+//   }
 
-  if (!products || products.length === 0) {
-    return <div>No products available</div>;
-  }
+//   if (!products || products.length === 0) {
+//     return <div>No products available</div>;
+//   }
 
   return (
     <div>
-      <h1>Products! Insert Ana`&apos;`s idea for a banner here?</h1>
+      <h1>Products! Insert Ana&apos;s idea for a banner here?</h1>
 
-      <div className="product-container">
+      {/* <div className="product-container">
         {products.map((product) => (
           <Link to={`/products/${product.id}`} key={product.id} className="product-tile-link">
             <div className="product-tile">
@@ -47,9 +47,10 @@ const HomePage = () => {
             {/* <Tooltip id={`tooltip-${product.id}`} place="top" effect="solid" className="tooltip-name">
               {product.name}
             </Tooltip> */}
-          </Link>
-        ))}
-      </div>
+          {/* </Link> */}
+        {/* ))} */}
+      {/* </div> */}
+
     </div>
   );
 };

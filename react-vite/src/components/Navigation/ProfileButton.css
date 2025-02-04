@@ -5,7 +5,7 @@
   cursor: pointer;
   display: flex;
   align-items: center;
-  font-size: 1.5rem;
+  font-size: 24px;
   color: pink;
   transition: all 0.2s ease;
 }
@@ -22,16 +22,16 @@
   background-color: white;
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-  padding: 0.5rem 0;
+  padding: 8px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   min-width: 200px;
   z-index: 1000;
 }
 
 .profile-dropdown li {
-  padding: 0.4rem 1rem;
+  padding: 6px 16px;
   list-style: none;
-  font-size: 0.8rem;
+  font-size: 13px;
 }
 
 /* .profile-dropdown li:hover {
@@ -43,8 +43,8 @@
   text-align: left;
   background: none;
   border: none;
-  padding: 0.4rem 1rem;
-  font-size: 0.8rem;
+  padding: 6px 16px;
+  font-size: 13px;
   color: #333;
   cursor: pointer;
 }
@@ -55,21 +55,21 @@
 
 .profile-dropdown .user-info {
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding-bottom: 0.5rem;
-  margin-bottom: 0.5rem;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
 }
 
 .profile-dropdown .user-info li {
-  font-size: 0.9rem;
-  padding: 0.5rem 1rem;
+  font-size: 14px;
+  padding: 8px 16px;
 }
 
 .profile-dropdown .nav-link {
   text-decoration: none;
   color: #333;
   display: block;
-  padding: 0.4rem 1rem;
-  font-size: 0.8rem;
+  padding: 6px 16px;
+  font-size: 13px;
 }
 
 /* .profile-dropdown .nav-link:hover {

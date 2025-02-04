@@ -1,25 +1,20 @@
-.signup-modal-container h1 {
-    text-align: center;
-    margin: 10px 50px 50px;
-    font-size: 30px;
+.signup-form-modal{
+    padding: 10px;
 }
 
-.signup-modal-container {
-    padding: 20px;
-    max-width: 120%; 
-    margin: auto;
-    background-color: white;
-    border-radius: 15px; 
+.signup-form-modal h1{
+    text-align: center;
 }
 
 .signup-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  width: 90%;
+  gap: 10px;
 }
 
 .signup-form h1 {
-  color: var(--text-color);
+  color: black;
   text-align: center;
   margin-bottom: 1.5rem;
 }
@@ -27,38 +22,47 @@
 .signup-form label {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px; /* 0.5rem */
 }
 
 .signup-form input {
-  padding: 0.75rem;
-  border: 1px solid var(--gray-medium);
+  padding: 12px; /* 0.75rem */
+  border: 2px solid lightgray;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 16px; /* 1rem */
+  width: 100%;
+  /* box-shadow: 1px 2px 2px 2px lightgray; */
+  margin-top: 4px;
 }
 
 .signup-form input:focus {
-  border-color: pink;
-  box-shadow: 0 0 0 2px lightgray;
   outline: none;
+  box-shadow: 1px 2px 2px 2px pink;
 }
 
 .signup-form button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 111%;
   background-color: pink;
-  padding: 0.75rem;
   border: none;
   border-radius: 4px;
   font-weight: 500;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  padding: 10px;
+  /* width: 50%; */
+  /* margin: 0 25% 0 30%; */
 }
 
 .signup-form button:hover {
   background-color: pink;
+  transform: scale(1.05);
 }
 
 .signup-form p {
   color: lightskyblue;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+  font-size: 14px; 
+  margin-top: 4px; /* 0.25rem */
 }

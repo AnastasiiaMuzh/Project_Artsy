@@ -1,7 +1,8 @@
 .login-modal-container h1 {
     text-align: center;
-    margin: 10px 50px 50px;
+    margin: 10px 50px 30px;
     font-size: 30px;
+    padding: 10px;
 }
 
 .login-modal-container {
@@ -9,43 +10,49 @@
     max-width: 90%; 
     margin: auto;
     background-color: white;
-    border-radius: 15px; 
+    border-radius: 15px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .login-form {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  width: 90%;
+  gap: 10px;
 }
 
 .login-form h1 {
-  color: var(--text-color);
+  color: black;
   text-align: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 10px;
 }
 
 .login-form label {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
 }
 
 .login-form input {
-  padding: 0.75rem;
-  border: 1px solid var(--gray-medium);
+  padding: 12px;
+  border: 2px solid lightgray;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 16px;
+  width: 100%;
+  margin-top: 4px;
 }
 
 .login-form input:focus {
-  border-color: pink;
-  box-shadow: 0 0 0 2px lightgray;
   outline: none;
+  box-shadow: 1px 2px 2px 2px pink;
 }
 
 .login-form button {
+  display: flex;
+  justify-content: center;
+  width: 112%;
   background-color: pink;
-  padding: 0.75rem;
+  padding: 12px;
   border: none;
   border-radius: 4px;
   font-weight: 500;
@@ -59,6 +66,6 @@
 
 .login-form p {
   color: lightskyblue;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
+  font-size: 14px;
+  margin-top: 4px;
 }

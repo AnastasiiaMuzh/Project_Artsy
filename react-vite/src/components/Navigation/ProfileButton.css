@@ -1,0 +1,91 @@
+.profile-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-size: 1.5rem;
+  color: pink;
+  transition: all 0.2s ease;
+}
+
+.profile-button:hover {
+  transform: scale(1.1);
+  color: #ff69b4;
+}
+
+.profile-dropdown {
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  padding: 0.5rem 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.profile-dropdown li {
+  padding: 0.4rem 1rem;
+  list-style: none;
+  font-size: 0.8rem;
+}
+
+/* .profile-dropdown li:hover {
+  background-color: #fce4ec;
+} */
+
+.profile-dropdown button {
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  color: #333;
+  cursor: pointer;
+}
+
+.profile-dropdown button:hover {
+    transform: scale(1.1);
+}
+
+.profile-dropdown .user-info {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.profile-dropdown .user-info li {
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+}
+
+.profile-dropdown .nav-link {
+  text-decoration: none;
+  color: #333;
+  display: block;
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+}
+
+/* .profile-dropdown .nav-link:hover {
+  background-color: #fce4ec;
+} */
+
+.profile-button-container {
+  position: relative;
+}
+
+.logout-button {
+    padding: 2px 8px 2px 8px;
+    font-size: 8px;
+    color: #fff;
+    background: #696969;
+    border: 1px solid #202020;
+    box-shadow: 1px 2px 2px 2px #202020;
+    cursor: pointer;
+}

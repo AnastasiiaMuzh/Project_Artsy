@@ -1,8 +1,8 @@
-// import { csrfFetch } from "./csrf";
+import { csrfFetch } from "./csrf";
 
 // actions
 const GET_PRODUCTS = "products/GET_PRODUCTS";
-const GET_PRODUCTS_DETAILS = "spots/GET_Products_DETAILS";
+const GET_PRODUCT_DETAILS = "products/GET_PRODUCT_DETAILS";
 
 // action creators
 const getProductsAction = (products) => {
@@ -14,8 +14,8 @@ const getProductsAction = (products) => {
 
 const getProductDetails = (product) => {
     return {
-        type: GET_PRODUCTS_DETAILS,
-        payload: product
+        type: GET_PRODUCT_DETAILS,
+        payload: product,
     };
 };
 
@@ -40,26 +40,28 @@ export const getDetails = (productId) => async (dispatch) => {
     return dispatch(getProductDetails(data));
 }
 
-// spots initial state
+// products initial state
 const initialState = {
     allProducts: {},
     productDetails: {},
 };
 
 
-// spots reducer
+// products reducer
 const productsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_PRODUCTS:
             return { ...state, allProducts: { ...action.payload } };
-        case GET_PRODUCTS_DETAILS: {
+
+        case GET_PRODUCT_DETAILS: {
             const newAllProducts = { ...state.allProducts, [action.payload.id]: action.payload };
             return {
                 ...state,
-                ProductDetails: action.payload,
+                productDetails: action.payload,
                 allProduct: newAllProducts,
                 };
-            }
+        }
+
     default:
         return state;
     }

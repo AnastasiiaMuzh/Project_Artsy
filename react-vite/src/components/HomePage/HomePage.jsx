@@ -31,7 +31,8 @@ const HomePage = () => {
 
   return (
     <div>
-      <h1>Products! Insert Ana&apos;s idea for a banner here?</h1>
+      <h1>Products!</h1>
+      <h2>Insert Ana&apos;s idea for a banner here?</h2>
 
       <div className="product-container">
         {Object.values(products).map((product) => (
@@ -41,9 +42,9 @@ const HomePage = () => {
                 <img src={product.previewImage} alt={product.name} className="product-img" />
               </div>
               <div className="product-info">
-                <h3>{product.name}</h3>
-                <p>{product.avgRating}</p>
-                <p>${product.price}</p>
+                    <div className='product-tile-name'>{product.name}</div>
+                    <div className='product-tile-price'>${product.price}</div>
+                    <div className='product-tile-rating'>{product.avgRating}</div>
               </div>
             </div>
 

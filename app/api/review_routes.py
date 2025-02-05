@@ -274,3 +274,24 @@ def delete_review_image(url):
     db.session.commit()
 
     return jsonify({ "message": "Successfully deleted" }), 200
+
+
+
+# ***********************GET REVIEWABLE PRODUCTS***********************
+# @review_routes.route('/products')
+# @login_required
+# def get_reviewable_products():
+#     buyerId = current_user.id
+#     order_items = OrderItem.query.join(Order).filter(
+#         Order.buyerId == buyerId
+#         Order.status == 'delivered'
+#     ).all()
+
+#     reviewable_products = [
+#         {
+#             "productId": item.productId,
+#             "productName": item.
+#         }
+#         for item in order_items
+
+#     ]

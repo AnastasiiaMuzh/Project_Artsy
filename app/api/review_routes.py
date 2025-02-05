@@ -288,10 +288,6 @@ def delete_review_image(url):
 #     ).all()
 
 #     reviewable_products = [
-#         {
-#             "productId": item.productId,
-#             "productName": item.
-#         }
-#         for item in order_items
+
 
 #     ]

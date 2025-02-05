@@ -11,6 +11,7 @@ import './ProductDetails.css'
 function ProductDetails() {
 
   const { productId } = useParams();
+  // console.log("Product ID from URL: ", productId);
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
@@ -31,14 +32,14 @@ function ProductDetails() {
   }
 
   console.log("product: ", product)
-
+  console.log("product.ProductImages[1].url", product.ProductImages[0].url)
 
   return (
     <div>
       <h1>Product Page</h1>
       
       <div className='img-container'>
-        <img src={product.previewImage} alt={product.name} />
+        <img src={product.ProductImages[0].url} alt={product.name} />
       </div>
 
       <div className='product-info-container'>
@@ -52,7 +53,9 @@ function ProductDetails() {
         <div className='product-description'>{product.description}</div>
       </div>
 
-      <div className='reviews-container'></div>
+      <div className='reviews-container'>
+        <h1>Reviews!</h1>
+      </div>
 
     </div>
   )

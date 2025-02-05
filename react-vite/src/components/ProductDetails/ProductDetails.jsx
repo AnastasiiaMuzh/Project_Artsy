@@ -16,7 +16,6 @@ function ProductDetails() {
 
  
   const [selectedImage, setSelectedImage] = useState(""); // To track the selected image
-  const [isMainImageLarge, setIsMainImageLarge] = useState(true); // Track if the main image is large or not
 
   const product = useSelector((state) => state.products.productDetails);
 
@@ -26,8 +25,8 @@ function ProductDetails() {
 
 
 
-  console.log("product: ", product)
-  console.log("product.ProductImages[1].url", product.ProductImages[0].url)
+  // console.log("product: ", product)
+  // console.log("product.ProductImages[1].url", product.ProductImages[0].url)
 
   useEffect(() => {
     if (product.ProductImages && product.ProductImages.length > 0) {
@@ -45,9 +44,9 @@ function ProductDetails() {
     setSelectedImage(imgUrl);
   };
 
-  const toggleMainImageSize = () => {
-    setIsMainImageLarge(!isMainImageLarge);
-  };
+  if (!product || !product.ProductImages || product.ProductImages.length === 0) {
+    return <div>Product not found or no images available</div>;
+  }
 
   return (
     <div>
@@ -77,13 +76,10 @@ function ProductDetails() {
           ))}
         </div>
 
-      {/* Main Image (with toggleable size) */}
-      <div
-        className={`main-image-container ${isMainImageLarge ? 'large' : 'small'}`}
-        onClick={toggleMainImageSize}
-      >
-        <img src={selectedImage} alt={product.name} className="main-image" />
-      </div>
+      {/* Main Image */}
+      <div className="main-image-container">
+          <img src={selectedImage} alt={product.name} className="main-image" />
+        </div>
       </div>
 
       <div className='product-info-container'>

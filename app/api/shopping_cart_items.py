@@ -35,7 +35,6 @@ def get_cart():
                 "product": {
                     "name": item.products.name,
                     "price": float(item.products.price),
-                    # Get the URL of the preview image from the related table
                     "imageUrl": next((img.url for img in item.products.images if img.preview), None)
                 }
             } for item in cart_items],
@@ -43,9 +42,8 @@ def get_cart():
             "itemCount": len(cart_items)
         }), 200 
 
-    except Exception as e:
-        # Log the error here in production
-        return jsonify({"error": "Failed to fetch cart"}), 500
+    except Exception:
+        return jsonify({"error": "Failed to fetch cart. Please try again later."}), 500
 
 
 # ------------------------Task 2 -> Add product to cart POST /api/cart/item ------------------------
@@ -69,7 +67,7 @@ def add_to_cart():
 
         # Validate productId type
         if not isinstance(product_id, int) or product_id <= 0:
-            return jsonify({"error": "IInvalid product ID format"}), 400
+            return jsonify({"error": "Invalid product ID format"}), 400
 
         # Validate quantity
         if not isinstance(quantity, int) or quantity < 1:
@@ -110,13 +108,71 @@ def add_to_cart():
             "productId": product_id
         }), 201
 
-    except Exception as e:
+    except Exception:
+        # Rollback the session in case of an error to avoid partial commits
         db.session.rollback()
-        print(f"Error: {str(e)}")
-        return jsonify({"error": "Internal server error"}), 500
+        return jsonify({"error": "Internal server error. Please try again later."}), 500
+    
 
+# --------------------- Decrease quantity of cart item PATCH /api/cart/item/:id ------------------------
 
-# ------------------------ Task 3 -> DELETE /api/cart/remove ------------------------
+@cart_routes.route('/item/<int:item_id>', methods=['PATCH'])
+@login_required
+def decrease_cart_item(item_id):
+    """
+    Decrease item quantity in cart
+    Expects JSON: { "quantity": int }
+    - 'quantity' indicates how many units to subtract from the current quantity.
+    - If the resulting quantity is zero or less, the item is removed from the cart.
+    """
+    try:
+        data = request.get_json()
+
+        # Validate if 'quantity' is present and is an integer
+        if 'quantity' not in data or not isinstance(data['quantity'], int):
+            return jsonify({"error": "Missing or invalid quantity"}), 400
+
+        decrease_quantity = data['quantity']
+
+        # Ensure that the quantity to be decreased is at least 1
+        if decrease_quantity < 1:
+            return jsonify({"error": "Quantity must be at least 1"}), 400
+
+        # Fetch the cart item by its ID
+        cart_item = ShoppingCartItem.query.get(item_id)
+
+        # If the cart item doesn't exist, return a 404 Not Found error
+        if not cart_item:
+            return jsonify({"error": "Cart item not found"}), 404
+
+        # Ensure that the cart item belongs to the currently logged-in user
+        if cart_item.buyerId != current_user.id:
+            return jsonify({"error": "Not authorized to modify this cart"}), 403
+
+        # Reduce the quantity of the item in the cart
+        cart_item.quantity -= decrease_quantity
+
+        # If the quantity is now zero or less, remove the item from the cart
+        if cart_item.quantity <= 0:
+            db.session.delete(cart_item)
+            message = "Cart item removed from cart"
+        else:
+            message = "Cart item quantity updated"
+
+        db.session.commit()
+
+        return jsonify({
+            "message": message,
+            "itemId": item_id,
+            "newQuantity": cart_item.quantity if cart_item.quantity > 0 else 0
+        }), 200
+
+    except Exception:
+        # Rollback the session in case of an error to avoid partial commits
+        db.session.rollback()
+        return jsonify({"error": "Internal server error. Please try again later."}), 500
+
+# ------------------------ Task 4 -> DELETE /api/cart/remove ------------------------
 
 @cart_routes.route('/items/<int:item_id>', methods=['DELETE'])
 @login_required
@@ -145,12 +201,13 @@ def remove_item(item_id):
         }), 200
         #or return jsonify({"message": 'Item removed', 'itemId': item_id}), 200
     
-    except Exception as e:
+    except Exception:
+        # Rollback the session in case of an error to avoid partial commits
         db.session.rollback()
-        return jsonify({"error": "Internal server error"}), 500
+        return jsonify({"error": "Internal server error. Please try again later."}), 500
 
 
-# ------------------------ Task 4 -> Implement /api/cart/checkout POST for transaction processing  ------------------------
+# ------------------------ Task 5 -> Implement /api/cart/checkout POST for transaction processing  ------------------------
 
 @cart_routes.route('/checkout', methods=['POST'])
 @login_required
@@ -167,7 +224,7 @@ def checkout():
         data = request.get_json()
 
         # Validate shipping address
-        if not data or 'shippingAddress' not in data:
+        if not data or 'shippingAddress' not in data or not data['shippingAddress'].strip():
             return jsonify({"error": "Shipping address is required"}), 400
         shipping_address = data['shippingAddress']  
 
@@ -191,7 +248,7 @@ def checkout():
             shippingAddress=shipping_address  
         )
         db.session.add(new_order)
-        db.session.flush()
+        db.session.flush()  # to get new_order.id before creating order items
 
         # Create order items and clear cart
         for item in cart_items:
@@ -214,16 +271,17 @@ def checkout():
             "email": user.email                                
         }), 201
 
-    except Exception as e:
+    except Exception:
+        # Rollback the session in case of an error to avoid partial commits
         db.session.rollback()
-        print(f"Checkout error: {str(e)}")
-        return jsonify({"error": "Checkout failed"}), 500
+        return jsonify({"error": "Checkout failed. Please try again later."}), 500
     
     
 
 
 #  Task 1 -> View Cart Items (GET /api/cart). Return products in the current user’s cart. Auth required.
 #  Task 2 -> Develop /api/cart/add POST for adding products
-#  Task 3 -> Create /api/cart/remove DELETE for removing items
-#  Task 4 -> Implement /api/cart/checkout POST for transaction processing
+#  Task 3 -> PATCH /api/cart/item/:id
+#  Task 4 -> Create /api/cart/remove DELETE for removing items
+#  Task 5 -> Implement /api/cart/checkout POST for transaction processing
 # .first() нужен, чтобы не получать список, а сразу объект или None.

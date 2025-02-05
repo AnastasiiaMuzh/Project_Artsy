@@ -16,6 +16,9 @@ from .api.shopping_cart_items import cart_routes
 
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
+# enables CSRF protection before routes/middlewaree
+csrf = CSRFProtect(app)
+
 # Setup login manager
 login = LoginManager(app)
 login.login_view = 'auth.unauthorized'
@@ -30,12 +33,15 @@ def load_user(id):
 app.cli.add_command(seed_commands)
 
 app.config.from_object(Config)
+
 app.register_blueprint(user_routes, url_prefix='/api/users')
 app.register_blueprint(auth_routes, url_prefix='/api/auth')
 app.register_blueprint(cart_routes, url_prefix='/api/cart')
 app.register_blueprint(product_routes, url_prefix='/api/products')
 app.register_blueprint(favorite_routes, url_prefix='/api/favorites')
 app.register_blueprint(review_routes, url_prefix='/api/reviews')
+
+# initializes db and migrations
 db.init_app(app)
 Migrate(app, db)
 

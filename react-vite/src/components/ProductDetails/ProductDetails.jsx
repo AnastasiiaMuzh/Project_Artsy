@@ -1,6 +1,12 @@
 import React from 'react'
 
 function ProductDetails() {
+
+  const { productId } = useParams();
+  const dispatch = useDispatch();
+
+  const product = useSelector((state) => state.products.productDetails);
+
   return (
     <div>
       <h1>Product Details</h1>

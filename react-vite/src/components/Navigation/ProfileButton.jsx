@@ -12,7 +12,7 @@ function ProfileButton() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const user = useSelector((store) => store.session.user);
+  const user = useSelector((store) => store.session.session);
   const ulRef = useRef();
   const buttonRef = useRef();
 

@@ -22,7 +22,7 @@ const removeFavorite = (productId) => ({
 // Thunk Action Creators
 // Fetch all favorites for current user
 export const fetchUserFavorites = () => async (dispatch) => {
-  const response = await fetch('/api/favorites');
+  const response = await csrfFetch('/api/favorites');
   
   if (response.ok) {
     const data = await response.json();
@@ -32,7 +32,7 @@ export const fetchUserFavorites = () => async (dispatch) => {
 };
 
 export const addToFavorites = (productId) => async (dispatch) => {
-  const response = await fetch('/api/favorites', {
+  const response = await csrfFetch('/api/favorites', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -49,7 +49,7 @@ export const addToFavorites = (productId) => async (dispatch) => {
 
 // Remove a favorite from the user's favorites
 export const removeFromFavorites = (productId) => async (dispatch) => {
-  const response = await fetch(`/api/favorites/${productId}`, {
+  const response = await csrfFetch(`/api/favorites/${productId}`, {
     method: 'DELETE'
   });
 

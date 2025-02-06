@@ -30,11 +30,11 @@ const HomePage = () => {
 //   console.log("products[1]: ", products[1])
 
   return (
-    <div>
-      <h1>Products!</h1>
-      <h2>Insert Ana&apos;s idea for a banner here?</h2>
+    <div className='home-page'>
+      {/* <h1>Products!</h1>
+      <h2>Insert Ana&apos;s idea for a banner here?</h2> */}
 
-      <div className="product-container">
+      <div className="products-container">
         {Object.values(products).map((product) => (
           <Link to={`/products/${product.id}`} key={product.id} className="product-tile-link">
             <div className="product-tile">

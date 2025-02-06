@@ -5,6 +5,9 @@ import FavoritesPage from '../components/FavoritesPage';
 import Layout from './Layout';
 import HomePage from '../components/HomePage';
 import ProductDetails from '../components/ProductDetails/ProductDetails';
+import ManageProducts from '../components/ManageProducts';
+import CreateProductForm from '../components/CreateProductForm/CreateProductForm';
+
 
 
 export const router = createBrowserRouter([
@@ -19,6 +22,18 @@ export const router = createBrowserRouter([
       {
         path: "/products/:productId",
         element: <ProductDetails />,
+      },
+      {
+        path: "/products/new",
+        element: <CreateProductForm />
+      },
+      {
+        path: "/products/current",
+        elements: <ManageProducts />
+      },
+      {
+        path: "/products/:productId/edit",
+        elements: <CreateProductForm />
       },
       {
         path: "login",

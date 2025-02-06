@@ -43,14 +43,16 @@ const HomePage = () => {
               </div>
               <div className="product-info">
                     <div className='product-tile-name'>{product.name}</div>
-                    <div className='product-tile-price'>${product.price}</div>
-                    <div className='product-tile-rating'>{product.avgRating}</div>
+                    <div className='price-and-rating'>
+                        <div className='product-tile-price'>${product.price}</div>
+                        <div className='product-tile-rating'>{product.avgRating}</div>
+                    </div>
               </div>
             </div>
 
             {/* <Tooltip id={`tooltip-${product.id}`} place="top" effect="solid" className="tooltip-name">
               {product.name}
-            </Tooltip> */}
+            </Tooltip>  */}
 
           </Link>
         ))} 

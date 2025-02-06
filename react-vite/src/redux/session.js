@@ -1,3 +1,5 @@
+import {csrfFetch} from "./csrf"
+
 const SET_USER = 'session/setUser';
 const REMOVE_USER = 'session/removeUser';
 
@@ -11,7 +13,14 @@ const removeUser = () => ({
 });
 
 export const thunkAuthenticate = () => async (dispatch) => {
-	const response = await fetch("/api/auth/");
+  // Do not use csrfFetch for this one, as the landing page does not require user to log in
+  // This is related to the Layout.jsx that has thunkAuthenticate() in the useEffect
+  // Therefore there are 2 options:
+  // Option 1: 
+  // use fetch for /api/auth & having the thunkAuthenticate in Layout.jsx
+  // Option 2:
+  // remove the thunkAuthenticate from Layout.jsx and use csrfFetch here
+	const response = await csrfFetch("/api/auth/");
 	if (response.ok) {
 		const data = await response.json();
 		if (data.errors) {
@@ -23,7 +32,7 @@ export const thunkAuthenticate = () => async (dispatch) => {
 };
 
 export const thunkLogin = (credentials) => async dispatch => {
-  const response = await fetch("/api/auth/login", {
+  const response = await csrfFetch("/api/auth/login", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(credentials)
@@ -41,7 +50,7 @@ export const thunkLogin = (credentials) => async dispatch => {
 };
 
 export const thunkSignup = (user) => async (dispatch) => {
-  const response = await fetch("/api/auth/signup", {
+  const response = await csrfFetch("/api/auth/signup", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(user)
@@ -59,7 +68,7 @@ export const thunkSignup = (user) => async (dispatch) => {
 };
 
 export const thunkLogout = () => async (dispatch) => {
-  await fetch("/api/auth/logout");
+  await csrfFetch("/api/auth/logout");
   dispatch(removeUser());
 };
 

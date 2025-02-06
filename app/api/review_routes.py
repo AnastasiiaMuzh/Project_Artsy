@@ -294,6 +294,8 @@ def get_reviewable_products():
     ).all()
 
     # print('TESSSSSSSSSSSSSSSSSSSTING!!!!!!!!!!!!', reviewable_products)
+    if not reviewable_products:
+        return {'message': 'You have left reviews on all your orders'}
 
     reviewable_data = []
     for item in reviewable_products:

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { thunkLogin } from "../../redux/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import { fetchUserFavorites } from "../../redux/favorites";
 import "./LoginForm.css";
 
 function LoginFormModal() {
@@ -24,6 +25,7 @@ function LoginFormModal() {
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
+      await dispatch(fetchUserFavorites());
       closeModal();
     }
   };

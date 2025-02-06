@@ -1,0 +1,60 @@
+.product-images-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px; 
+    flex-wrap: nowrap;
+}
+  
+  /* Thumbnails container (in a column) */
+.thumbnails-container {
+    display: flex;
+    flex-direction: column; 
+    gap: 10px;
+    max-width: 120px;
+    overflow-y: auto; /* If there are many thumbnails, allow scrolling */
+}
+  
+  /* Individual thumbnail styling */
+.thumbnail {
+    cursor: pointer;
+    width: 100%;
+    
+}
+  
+.thumbnail-img {
+    width: 80px; 
+    height: 80px; 
+    object-fit: cover;
+
+    border-radius: 5px;
+    transition: transform 0.2s ease; /* Smooth hover effect */
+}
+  
+.thumbnail-img:hover {
+    transform: scale(1.1); /* Slight zoom effect when hovering */
+}
+  
+  /* Main image container */
+.main-image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    cursor: pointer;
+}
+  
+.main-image {
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+    border-radius: 5px;
+}
+  
+
+.product-info-container {
+    border: 1px solid black
+}
+
+.reviews-container {
+    border: 1px solid black
+}

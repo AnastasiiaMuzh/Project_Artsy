@@ -4,6 +4,8 @@ import SignupFormPage from '../components/SignupFormPage';
 import FavoritesPage from '../components/FavoritesPage';
 import Layout from './Layout';
 import ShoppingCartPage from '../components/ShoppingCartPage';
+import HomePage from '../components/HomePage';
+import ProductDetails from '../components/ProductDetails/ProductDetails';
 
 
 export const router = createBrowserRouter([
@@ -13,7 +15,11 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <h1>Welcome!</h1>,
+        element: <HomePage />,
+      },
+      {
+        path: "/products/:productId",
+        element: <ProductDetails />,
       },
       {
         path: "login",

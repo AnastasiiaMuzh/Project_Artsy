@@ -17,7 +17,9 @@ from .api.shopping_cart_items import cart_routes
 app = Flask(__name__, static_folder='../react-vite/dist', static_url_path='/')
 
 # enables CSRF protection before routes/middlewaree
-csrf = CSRFProtect(app)
+# had to comment out below for the log-in to work
+# why?
+# csrf = CSRFProtect(app)
 
 # Setup login manager
 login = LoginManager(app)

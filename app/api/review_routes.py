@@ -243,6 +243,9 @@ def add_review_image(id):
     data = request.get_json()
     review_url = data.get('url')
 
+    if not review_url:
+        return jsonify({ "message": "Please provide a valid image URL to add a review image."}), 400
+
     new_review_image = ReviewImage(
         reviewId=review.id,
         url=review_url
@@ -278,20 +281,28 @@ def delete_review_image(url):
 
 
 # ***********************GET REVIEWABLE PRODUCTS***********************
-# @review_routes.route('/products')
-# @login_required
-# def get_reviewable_products():
-#     buyerId = current_user.id
-#     order_items = OrderItem.query.join(Order).filter(
-#         Order.buyerId == buyerId
-#         Order.status == 'delivered'
-#     ).all()
+@review_routes.route('/products')
+@login_required
+def get_reviewable_products():
+    buyerId = current_user.id
+    reviewable_products = OrderItem.query.join(Order).join(Product).outerjoin(
+        Review, (Review.productId == Product.id) & (Review.buyerId == buyerId)  # ensures the reviews are user-specific
+    ).filter(
+        Order.buyerId == buyerId, #ensures the buyer for the order is the same as the logged in user
+        Order.status == 'delivered', #ensures that the order is delievered
+        Review.id == None  # because of the outerjoin, all OrderItems (from user) are included BUT if it's not reviewed it will have a value of None
+    ).all()
 
-#     reviewable_products = [
-#         {
-#             "productId": item.productId,
-#             "productName": item.
-#         }
-#         for item in order_items
+    # print('TESSSSSSSSSSSSSSSSSSSTING!!!!!!!!!!!!', reviewable_products)
+    if not reviewable_products:
+        return {'message': 'You have left reviews on all your orders'}
 
-#     ]
+    reviewable_data = []
+    for item in reviewable_products:
+        reviewable_data.append({
+            "id": item.id,
+            "productName": item.products.name,
+            # "productImage": item.
+        })
+
+    return jsonify({"message": reviewable_data})

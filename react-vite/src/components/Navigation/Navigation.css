@@ -61,9 +61,23 @@
   width: 100%;
 }
 
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.search-icon {
+  position: absolute;
+  left: 12px;
+  color: pink;
+  font-size: 1rem;
+}
+
 .search-input {
   width: 100%;
-  padding: 12px 20px;
+  padding: 12px 20px 12px 40px;
   border: 2px solid pink;
   border-radius: 25px;
   font-size: 16px;
@@ -71,8 +85,11 @@
 
 .search-input:focus {
   outline: none;
-  /* border-color: pink; */
   box-shadow: 0 2px 8px lightgray;
+}
+
+.search-input:focus + .search-icon {
+  color: hotpink;
 }
 
 .search-input::placeholder {

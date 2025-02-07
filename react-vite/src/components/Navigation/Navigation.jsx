@@ -2,7 +2,7 @@ import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
-import { FaHeart, FaPlus } from 'react-icons/fa';
+import { FaHeart, FaPlus, FaSearch } from 'react-icons/fa';
 import "./Navigation.css";
 
 function Navigation() {
@@ -24,13 +24,16 @@ function Navigation() {
         
         <div className="search-container">
           <form onSubmit={handleSearch}>
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Search function coming soon..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+            <div className="search-input-wrapper">
+              <FaSearch className="search-icon" />
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Search function coming soon..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </form>
         </div>
 

@@ -10,8 +10,8 @@ export const loadReviews = allReviews => ({
     allReviews
 })
 
-export const getAllReviews = () => async dispatch => {
-    const response = await csrfFetch("/api/reviews")
+export const getAllReviews = (productId) => async dispatch => {
+    const response = await csrfFetch(`/api/reviews/${productId}`)
 
     if (response.ok) {
         const data = await response.json();
@@ -41,7 +41,7 @@ const reviewReducer = (state = initialState, action) => {
             action.allReviews.forEach(review => {
                 const {productId} = review
                 if (!reviewInfo[productId]) {
-                    reviewInfo = []
+                    reviewInfo[productId] = []
                 }
                 reviewInfo[productId].push(review)
             });

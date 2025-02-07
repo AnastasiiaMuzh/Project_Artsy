@@ -6,6 +6,9 @@ import Layout from './Layout';
 import ShoppingCartPage from '../components/ShoppingCartPage/ShoppingCart';
 import HomePage from '../components/HomePage';
 import ProductDetails from '../components/ProductDetails/ProductDetails';
+import ManageProducts from '../components/ManageProducts';
+import CreateProductForm from '../components/CreateProductForm/CreateProductForm';
+
 
 
 export const router = createBrowserRouter([
@@ -18,8 +21,20 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
+        path: "/products/new",
+        element: <CreateProductForm />
+      },
+      {
         path: "/products/:productId",
         element: <ProductDetails />,
+      },
+      {
+        path: "/products/current",
+        elements: <ManageProducts />
+      },
+      {
+        path: "/products/:productId/edit",
+        elements: <CreateProductForm />
       },
       {
         path: "login",

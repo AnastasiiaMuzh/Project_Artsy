@@ -13,6 +13,7 @@ function CreateProductForm() {
     const existingProduct = useSelector((state) => state.products.productDetails);
 
     const [errors, setErrors] = useState({});
+    const [loading, setLoading] = useState(true);
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
@@ -23,97 +24,107 @@ function CreateProductForm() {
 
     const isUpdate = !!productId;
 
-    useEffect(() => {
-        if (isUpdate && productId) {
-        dispatch(getDetails(productId))
-        }
-        if (!user) {
-        return navigate("/", {
-            state: { error: "Please login to create a product" },
-            replace: true
-        });
-        }
-    }, [dispatch, productId, isUpdate, user, navigate]);
+    // useEffect(() => {
+    //     setLoading(true);
+    //     if (!user) {
+    //         return navigate("/", {
+    //             state: { error: "Please login to create a product" },
+    //             replace: true
+    //         });
+    //     }
 
-    useEffect(() => {
-        if (isUpdate && existingProduct) {
-        setName(existingProduct.name || '');
-        setDescription(existingProduct.description || '');
-        setPrice(existingProduct.price || '');
-        setCategory(existingProduct.category || '');
-        const preview = existingProduct.ProductImages[0]?.url || '';
-        const others = existingProduct.ProductImages.slice(1).map((img) => img.url) || ['', '', '', ''];
-        setPreviewImage(preview);
-        setOtherImages(others);
-        }
-    }, [existingProduct, isUpdate]);
+    //     if (isUpdate && productId) {
+    //         dispatch(getDetails(productId)).finally(()=> {
+    //             setLoading(false)
+    //         });
+    //     } else {
+    //         setLoading(false);
+    //     }
+    // }, [dispatch, productId, isUpdate, user, navigate]);
 
-    const handleOtherImages = (index, value) => {
-        const updatedImages = [...otherImages];
-        updatedImages[index] = value;
-        setOtherImages(updatedImages);
-    };
+    // useEffect(() => {
+    //     if (isUpdate && existingProduct) {
+    //     setName(existingProduct.name || '');
+    //     setDescription(existingProduct.description || '');
+    //     setPrice(existingProduct.price || '');
+    //     setCategory(existingProduct.category || '');
+    //     const preview = existingProduct.ProductImages[0]?.url || '';
+    //     const others = existingProduct.ProductImages.slice(1).map((img) => img.url) || ['', '', '', ''];
+    //     setPreviewImage(preview);
+    //     setOtherImages(others);
+    //     }
+    // }, [existingProduct, isUpdate]);
 
-    const validateFields = () => {
-        const errors = {};
-        const urlRegex = /(png|jpg|jpeg)/i; 
-        if (!name) errors.name = "Name is required";
-        if (!description || description.length < 30) errors.description = "Description needs a minimum of 30 characters";
-        if (!price || price <= 0) errors.price = "Price is required";
-        if (!category) errors.category = "Category is required";
-        if (!previewImage) {
-        errors.previewImage = "Preview image is required";
-        } else if (!urlRegex.test(previewImage)) {
-        errors.previewImage = "Preview image URL must contain .png, .jpg, or .jpeg";
-        }
+    // const handleOtherImages = (index, value) => {
+    //     const updatedImages = [...otherImages];
+    //     updatedImages[index] = value;
+    //     setOtherImages(updatedImages);
+    // };
 
-        otherImages.forEach((url) => {
-        if (url.trim() && !urlRegex.test(url)) {  
-            errors.otherImages = "Image URL must contain .png, .jpg, or .jpeg";
-        }
-        });
+    // const validateFields = () => {
+    //     const errors = {};
+    //     const urlRegex = /(png|jpg|jpeg)/i; 
+    //     if (!name) errors.name = "Name is required";
+    //     if (!description || description.length < 30) errors.description = "Description needs a minimum of 30 characters";
+    //     if (!price || price <= 0) errors.price = "Price is required and cannot be used by an existing product";
+    //     if (!category) errors.category = "Category is required";
+    //     if (!previewImage) {
+    //     errors.previewImage = "Preview image is required";
+    //     } else if (!urlRegex.test(previewImage)) {
+    //     errors.previewImage = "Preview image URL must contain .png, .jpg, or .jpeg";
+    //     }
 
-        return errors;
-    };
+    //     otherImages.forEach((url) => {
+    //     if (url.trim() && !urlRegex.test(url)) {  
+    //         errors.otherImages = "Image URL must contain .png, .jpg, or .jpeg";
+    //     }
+    //     });
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const validationErrors = validateFields();
-        if (Object.keys(validationErrors).length > 0) {
-        setErrors(validationErrors);
-        return;
-        }
+    //     return errors;
+    // };
 
-        const productData = {
-        name,
-        description,
-        price: parseFloat(price),
-        category,
-        };
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     const validationErrors = validateFields();
+    //     if (Object.keys(validationErrors).length > 0) {
+    //     setErrors(validationErrors);
+    //     return;
+    //     }
 
-        const imageUrls = [previewImage, ...otherImages.filter((url) => url.trim() !== "")];
+    //     const productData = {
+    //     name,
+    //     description,
+    //     price: parseFloat(price),
+    //     category,
+    //     };
 
-        try {
-        if (isUpdate) {
-            const updatedProduct = await dispatch(updateProduct(productId, productData, imageUrls));
-            navigate(`/api/products/${productId}`);
-        } else {
-            const createdProduct = await dispatch(createProduct(productData, imageUrls));
-            navigate(`/api/products/${createdProduct.id}`); // Redirect to the new product page
-        }
-        } catch (error) {
-        console.error("Error creating product:", error);
-        }
-    };
+    //     const imageUrls = [previewImage, ...otherImages.filter((url) => url.trim() !== "")];
 
-    const renderError = (field) => {
-        return errors[field] ?  <div className="error">{errors[field]}</div> : null;
-    };
+    //     try {
+    //     if (isUpdate) {
+    //         const updatedProduct = await dispatch(updateProduct(productId, productData, imageUrls));
+    //         navigate(`/api/products/${productId}`);
+    //     } else {
+    //         const createdProduct = await dispatch(createProduct(productData, imageUrls));
+    //         navigate(`/api/products/${createdProduct.id}`); // Redirect to the new product page
+    //     }
+    //     } catch (error) {
+    //     console.error("Error creating product:", error);
+    //     }
+    // };
+
+    // const renderError = (field) => {
+    //     return errors[field] ?  <div className="error">{errors[field]}</div> : null;
+    // };
+
+    // if (loading) {
+    //     return <p>Loading form...</p>;
+    // }
 
   return (
     <div>
       <h1>Create Product</h1>
-      <div className="create-product-container">
+        <div className="create-product-container">
       <div className="header">
         <h1>{isUpdate ? "Update your Product" : "Create a new Product"}</h1>
       </div>
@@ -200,7 +211,7 @@ function CreateProductForm() {
         </div>
       </form>
     </div>
-      
+    
     </div>
   )
 }

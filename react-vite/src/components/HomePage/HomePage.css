@@ -3,24 +3,83 @@
     margin-right: 50px;
 }
 
+.banner-category{
+    display: flex;
+    flex-direction: row;
+    gap:30px;
+}
+
 .home-banner {
     background-color: #e99cb2;
     color: white;
-    text-align: center; /* Centers the text */
-    padding: 20px; /* Adds some padding around the text */
-    font-size: 18px; /* Adjust the font size if needed */
-    font-weight: bold; /* Makes the text bold */
-    margin-bottom: 20px; /* Adds some space below the banner */   
+    text-align: center; 
+    padding: 20px; 
+    font-size: 18px; 
+    font-weight: bold; 
+    margin-bottom: 20px;  
     margin-top: 20px;
+    width: 50%;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-self: center;
 }
 
 .home-banner p {
     margin: 0;
+    display: flex;
+    justify-content: center;
+    align-self: center;
+}
+
+.categories {
+    color: #e99cb2;
+    text-align: center; 
+    padding: 5px; 
+    font-size: 18px; 
+    font-weight: bold; 
+    margin-bottom: 5px;  
+    margin-top: 5px;
+    width: 50%;
+    border-radius: 8px;
+    border: #e99cb2 3px solid;
+}
+
+.categories p {
+    margin: 5px;
+}
+
+.categories ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 5px; 
+    list-style-type: none; 
+    padding: 0;
+    margin: 0;
+}
+
+.categories li {
+    width: 100px;
+    text-align: center;
+   
+}
+
+.category-link {
+    /* background-color: #e99cb2; */
+    font-size: 15px;
+    color: white;
+    /* padding: 7px;
+    /* margin: 5px; */
+    text-decoration: none; 
+    color: #333; 
+    /* border: 1px solid #ccc; */
+    text-align: center;
+    
 }
 
 .products-container {
     display: grid;
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 16px;
     margin-top: 10px;
     margin-bottom: 10px;

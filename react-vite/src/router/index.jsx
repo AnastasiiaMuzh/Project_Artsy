@@ -20,12 +20,12 @@ export const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: "/products/:productId",
-        element: <ProductDetails />,
-      },
-      {
         path: "/products/new",
         element: <CreateProductForm />
+      },
+      {
+        path: "/products/:productId",
+        element: <ProductDetails />,
       },
       {
         path: "/products/current",

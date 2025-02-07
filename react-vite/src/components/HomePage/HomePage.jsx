@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { IoMdStar } from "react-icons/io";
 // import { Tooltip } from 'react-tooltip'
 import { getProducts } from '../../redux/products'
 import "./HomePage.css";
@@ -86,7 +87,10 @@ const HomePage = () => {
                     <div className='product-tile-name'>{product.name}</div>
                     <div className='price-and-rating'>
                         <div className='product-tile-price'>${product.price}</div>
-                        <div className='product-tile-rating'>{product.avgRating}</div>
+                        <div className='product-tile-rating'>
+                            <div className='star'><IoMdStar /> </div>
+                            <div className='rating'>{product.avgRating}</div>
+                            </div>
                     </div>
               </div>
             </div>

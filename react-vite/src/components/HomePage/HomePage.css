@@ -136,6 +136,11 @@
 
 .product-tile-rating {
     font-size: 16px;
+    display: flex;
+}
+
+.star {
+    color: #ffc107;
 }
 
 .price-and-rating {

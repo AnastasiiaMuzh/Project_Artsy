@@ -4,26 +4,30 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getDetails } from '../../redux/products';
 // import { getProducts } from '../../redux/products';
 import './ProductDetails.css'
+import { getAllReviews } from '../../redux/reviews';
 // import { IoMdStar } from "react-icons/io";
 // import { GoDotFill } from "react-icons/go";
 
 
 function ProductDetails() {
-
   const { productId } = useParams();
   // console.log("Product ID from URL: ", productId);
   const dispatch = useDispatch();
 
- 
+  const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(""); // To track the selected image
 
+  const currentUser = useSelector((state) => state.session.user)
   const product = useSelector((state) => state.products.productDetails);
+  const reviews = useSelector((state) => state.reviews.reviewsByProduct[productId])
 
   useEffect(() => {
-    dispatch(getDetails(productId));
+    setLoading(true);
+    Promise.all([
+      dispatch(getDetails(productId)),
+      dispatch(getAllReviews(productId))
+    ]).finally(() => setLoading(false));
   }, [dispatch, productId])
-
-
 
   // console.log("product: ", product)
   // console.log("product.ProductImages[1].url", product.ProductImages[0].url)
@@ -44,14 +48,35 @@ function ProductDetails() {
     setSelectedImage(imgUrl);
   };
 
+  const reviewCount = (avgStarRating, numReviews) => {
+    if (avgStarRating && numReviews == 1) {
+        return `${numReviews} review  ${avgStarRating}`
+    } else if (avgStarRating && numReviews > 1) {
+        return `${numReviews} reviews  ${avgStarRating}`
+    } else {
+        return <p className="new">No reviews yet!</p>
+    }
+  }
+
+  function getStarRating(avgRating) {
+    const maxStars = 5;
+    const filledStars = Math.round(avgRating);
+    const emptyStars = maxStars - filledStars;
+
+    return '★'.repeat(filledStars) + '☆'.repeat(emptyStars);
+  }
+
+  if (loading) return <p>Loading product details...</p>
+
   if (!product || !product.ProductImages || product.ProductImages.length === 0) {
     return <div>Product not found or no images available</div>;
   }
 
+
   return (
     <div>
       <h1>Product Page</h1>
-      
+
       <div className="product-images-container">
         {/* Thumbnails Column */}
         <div className="thumbnails-container">
@@ -84,7 +109,7 @@ function ProductDetails() {
 
       <div className='product-info-container'>
         <div className='product-name'>{product.name}</div>
-        <div className='product-price'>{product.price}</div>
+        <div className='product-price'>${product.price}</div>
         {/* <div className='product-category'>{product.category}</div> */}
         <div className='product-sellername'>{product.sellerName}</div>
         <div className='add-to-cart'>
@@ -94,7 +119,25 @@ function ProductDetails() {
       </div>
 
       <div className='reviews-container'>
-        <h1>Reviews!</h1>
+        <h1>{reviewCount(getStarRating(product.avgStarRating), product.numReviews)}</h1>
+
+        {reviews?.map((review, index) => {
+          const createdAt = new Date(review.createdAt).toLocaleDateString("en-US", {
+            month: 'short',
+            day: 'numeric',
+            year: 'numeric',
+          })
+
+          return (
+            <div key={index} >
+              <div>{getStarRating(review.stars)}</div>
+              <div>{review.review}</div>
+              <div>{review.User.firstName} {review.User.lastName}</div>
+              <div>{createdAt}</div>
+
+            </div>
+          )
+        })}
       </div>
 
     </div>

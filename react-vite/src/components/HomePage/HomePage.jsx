@@ -33,6 +33,9 @@ const HomePage = () => {
     <div className='home-page'>
       {/* <h1>Products!</h1>
       <h2>Insert Ana&apos;s idea for a banner here?</h2> */}
+        <div className='home-banner'>
+            <h3>Click to view Valentine's Day products now!</h3>
+        </div>
 
       <div className="products-container">
         {Object.values(products).map((product) => (

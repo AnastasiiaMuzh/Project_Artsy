@@ -3,6 +3,21 @@
     margin-right: 50px;
 }
 
+.home-banner {
+    background-color: #e99cb2;
+    color: white;
+    text-align: center; /* Centers the text */
+    padding: 20px; /* Adds some padding around the text */
+    font-size: 18px; /* Adjust the font size if needed */
+    font-weight: bold; /* Makes the text bold */
+    margin-bottom: 20px; /* Adds some space below the banner */   
+    margin-top: 20px;
+}
+
+.home-banner p {
+    margin: 0;
+}
+
 .products-container {
     display: grid;
     grid-template-columns: repeat(5, 1fr);

@@ -305,4 +305,4 @@ def get_reviewable_products():
             # "productImage": item.
         })
 
-    return jsonify({"message": reviewable_data})
+    return jsonify({"reviewlessProducts": reviewable_data})

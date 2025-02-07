@@ -157,6 +157,7 @@ const productsReducer = (state = initialState, action) => {
                     ...state.allProducts,
                     [action.payload.id]: action.payload,
                 },
+                productDetails: action.payload,
             };
         }
         

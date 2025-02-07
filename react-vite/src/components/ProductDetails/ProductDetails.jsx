@@ -20,11 +20,12 @@ function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(""); // To track the selected image
 
+  const currentUser = useSelector((state) => state.session.user)
   const product = useSelector((state) => state.products.productDetails);
   const reviews = useSelector((state) => state.reviews.reviewsByProduct[productId])
   const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
 
-  const isReviewable = reviewableProducts?.reviewlessProducts.some(item => item.id === Number(productId))
+  const isReviewable = reviewableProducts?.reviewlessProducts?.some(item => item.id === Number(productId))
   const handlePostReviewButton = async (e) => {
     e.preventDefault()
     if (isReviewable) setModalContent(<ReviewsModal productId={productId}/>)
@@ -147,7 +148,7 @@ function ProductDetails() {
               <div>{review.review}</div>
               <div>{review.User.firstName} {review.User.lastName}</div>
               <div>{createdAt}</div>
-
+              {review.User?.id === currentUser?.id ? <button>Delete</button> : null}
             </div>
           )
         })}

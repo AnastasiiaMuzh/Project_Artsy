@@ -62,6 +62,7 @@
 
 .login-form button:hover {
   background-color: pink;
+  transform: scale(1.02);
 }
 
 .login-form p {
@@ -77,4 +78,5 @@
 
 .demo-login:hover {
   background-color: #81c784 !important;  /* Slightly darker green on hover */
+  transform: scale(1.02);
 }

@@ -1,19 +1,19 @@
 .create-product-container {
     width: 450px;
     margin: auto;
-    border: solid 1px red;
+    /* border: solid 1px red; */
 }
 
-h1 {
+.create-product-container h1 {
     font-weight: 600;
     text-align: center;
-    border: solid 1px red;
+    /* border: solid 1px red; */
 }
 
-h3 {
+.create-product-container h3 {
     font-weight: 500;
     margin-bottom: 10px;
-    border: solid 1px red;
+    /* border: solid 1px red; */
     text-align: center;
 }
 
@@ -23,7 +23,7 @@ h3 {
     color: red;
     font-size: small;
     margin: 0;
-    border: solid 1px red;
+    /* border: solid 1px red; */
 }
 
 label {
@@ -39,23 +39,34 @@ input {
 
 .product-details {
     gap: 10px;
-    border: solid 1px red;
+    /* border: solid 1px red; */
+    margin-top: 30px;
 
 }
 
 .add-photos {
-    border: solid 1px red;
-    margin-top: 10px;
+    /* border: solid 1px red; */
+    margin-top: 30px;
     margin-bottom: 10px;
     text-align: center;
 }
 
 .create-button-div {
-    border: solid 1px red;
+    /* border: solid 1px red; */
     display: flex;
     justify-content: center;
 }
 
 .create-button-div button {
-    border: solid 1px red;
+    /* border: solid 1px red; */
+    background-color: #e99cb2;
+    color: white;
+    padding: 7px 15px;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.create-button-div button:hover {
+    background-color: #354A26;
 }

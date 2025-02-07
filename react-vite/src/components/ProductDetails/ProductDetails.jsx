@@ -4,28 +4,38 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getDetails } from '../../redux/products';
 // import { getProducts } from '../../redux/products';
 import './ProductDetails.css'
-import { getAllReviews } from '../../redux/reviews';
+import { fetchReviewableProducts, getAllReviews } from '../../redux/reviews';
+import { useModal } from '../../context/Modal';
+import ReviewsModal from '../Reviews/ReviewsModal'
 // import { IoMdStar } from "react-icons/io";
 // import { GoDotFill } from "react-icons/go";
 
 
 function ProductDetails() {
   const { productId } = useParams();
+  const { setModalContent } = useModal()
   // console.log("Product ID from URL: ", productId);
   const dispatch = useDispatch();
 
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(""); // To track the selected image
 
-  const currentUser = useSelector((state) => state.session.user)
   const product = useSelector((state) => state.products.productDetails);
   const reviews = useSelector((state) => state.reviews.reviewsByProduct[productId])
+  const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
+
+  const isReviewable = reviewableProducts?.reviewlessProducts.some(item => item.id === Number(productId))
+  const handlePostReviewButton = async (e) => {
+    e.preventDefault()
+    if (isReviewable) setModalContent(<ReviewsModal productId={productId}/>)
+  }
 
   useEffect(() => {
     setLoading(true);
     Promise.all([
       dispatch(getDetails(productId)),
-      dispatch(getAllReviews(productId))
+      dispatch(getAllReviews(productId)),
+      dispatch(fetchReviewableProducts())
     ]).finally(() => setLoading(false));
   }, [dispatch, productId])
 
@@ -58,7 +68,7 @@ function ProductDetails() {
     }
   }
 
-  function getStarRating(avgRating) {
+  const getStarRating = (avgRating) => {
     const maxStars = 5;
     const filledStars = Math.round(avgRating);
     const emptyStars = maxStars - filledStars;
@@ -121,6 +131,9 @@ function ProductDetails() {
       <div className='reviews-container'>
         <h1>{reviewCount(getStarRating(product.avgStarRating), product.numReviews)}</h1>
 
+        {isReviewable && (
+          <button onClick={handlePostReviewButton}>Post Your Review!</button>
+        )}
         {reviews?.map((review, index) => {
           const createdAt = new Date(review.createdAt).toLocaleDateString("en-US", {
             month: 'short',

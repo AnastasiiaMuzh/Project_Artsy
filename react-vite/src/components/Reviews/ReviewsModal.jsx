@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux"
 import { useModal } from "../../context/Modal";
+import { getDetails } from "../../redux/products";
+import './ReviewsModal.css'
 
 const ReviewsModal = ({productId}) => {
     const dispatch = useDispatch();
@@ -28,8 +30,7 @@ const ReviewsModal = ({productId}) => {
         try {
             // need postAReview redux store
             await dispatch(postAReview({productId, review: textArea, stars: starRating}));
-            // need getProductDetails redux store
-            await dispatch(getProductDetails(productId));
+            await dispatch(getDetails(productId));
             closeModal();
         } catch (error) {
             console.error('Error submitting review:', error);
@@ -40,11 +41,14 @@ const ReviewsModal = ({productId}) => {
         }
     }
 
-    const disableButton = textArea.length < 10 || starRating === 0;
+    const disableButton = () => textArea.length < 10 || !starRating;
+    const handleStarClick = (rating) => setStarRating(rating)
+    const handleStarHover = (rating) => setHoverRating(rating)
+    const handleStarMouseOut = () => setHoverRating(0)
 
     return (
         <div>
-            <div>Review your purchases</div>
+            <div>Leave a Review!</div>
             <form onSubmit={handleSubmit}>
                 {errors.textArea && <p>{errors.textArea}</p>}
                 <textarea
@@ -59,16 +63,16 @@ const ReviewsModal = ({productId}) => {
                                     className={`star ${
                                         (hoverRating || starRating) >= star ? 'highlighted' : ''
                                     }`}
-                                    onClick={() => setStarRating(star)}
-                                    onMouseOver={() => setHoverRating(star)}
-                                    onMouseOut={() => setHoverRating(0)}
+                                    onClick={() =>  handleStarClick(star)}
+                                    onMouseOver={() => handleStarHover(star)}
+                                    onMouseOut={() => handleStarMouseOut}
                                 >
                                     ★
                                 </span>
                             ))}
                             <span>Stars</span>
                 </div>
-                <button type='submit' disabled={disableButton}>Submit Your Review</button>
+                <button type='submit' disabled={disableButton()}>Submit Your Review</button>
             </form>
         </div>
     )

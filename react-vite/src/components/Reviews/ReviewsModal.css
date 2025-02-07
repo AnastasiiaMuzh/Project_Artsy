@@ -1,0 +1,11 @@
+.star.highlighted, .star:hover {
+    color: gold;
+    transform: scale(1.1);
+}
+
+.star {
+    font-size: 2rem;
+    cursor: pointer;
+    color: lightgray;
+    transition: color 0.2s ease, transform 0.2s ease;
+}

@@ -1,14 +1,14 @@
 import { csrfFetch } from "./csrf";
 
-// ---------- ACTION TYPES ---------- 
-const GET_CART = 'cart/GET_CART';
-const ADD_ITEM = 'cart/ADD_ITEM';
-const UPDATE_ITEM = 'cart/UPDATE_ITEM';
-const REMOVE_ITEM = 'cart/REMOVE_ITEM';
+/** ---------- ACTION TYPES ---------- **/
+const GET_CART      = 'cart/GET_CART';
+const ADD_ITEM      = 'cart/ADD_ITEM';
+const UPDATE_ITEM   = 'cart/UPDATE_ITEM';
+const REMOVE_ITEM   = 'cart/REMOVE_ITEM';
 const CHECKOUT_CART = 'cart/CHECKOUT_CART';
 
 
-// ---------- ACTION CREATORS ---------- 
+/** ---------- ACTION CREATORS ---------- **/ 
 const getCartAction = (cartData) => ({
     type: GET_CART,
     cart: cartData,
@@ -34,7 +34,7 @@ const checkoutCartAction = () => ({
   });
   
 
-// ---------- THANKS ---------- 
+/** ---------- THUNKS ---------- **/ 
     // Get cart
 export const fetchCart = () => async (dispatch) => {
     const res = await csrfFetch('/api/cart');
@@ -42,12 +42,13 @@ export const fetchCart = () => async (dispatch) => {
       const data = await res.json();
       const newCart = data.cart.map(item => ({
         ...item,
-        itemId: item.id,
+        itemId: item.id, // rename id -> itemId
       }))
       data.cart = newCart
+      // console.log('Fetched Cart Data:', data);  // Проверка данных
       dispatch(getCartAction(data));
     }
-  };
+  }
 
     // Add to cart items
 export const addToCart = (productId, quantity = 1) => async (dispatch) => {
@@ -97,45 +98,110 @@ export const checkout = (shippingAddress) => async (dispatch) => {
     }
 }
 
-// Initial State
+/** ---------- INITIAL STATE ---------- **/
 const initialState = { cart: [], totalPrice: 0, itemCount: 0 };
 
 // ---------- REDUCER ---------- 
 const cartReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case GET_CART: {
-            return { ...state, ...action.cart }
-        }
+  switch (action.type) {
 
-        case ADD_ITEM: {
-            return {
-                ...state,
-                cart: [...state.cart, action.item],
-                itemCount: state.itemCount + 1,
-            };
-        }
-
-        case UPDATE_ITEM:
-            return {
-                ...state,
-                cart: state.cart.map((item) =>
-                item.itemId === action.item.itemId ? { ...item, quantity: action.item.newQuantity } : item
-            ),
-        };
-
-        case REMOVE_ITEM:
-            return {
-                ...state,
-                cart: state.cart.filter((item) => item.itemId !== action.itemId),
-                itemCount: state.itemCount - 1,
-        };
-
-        case CHECKOUT_CART:
-            return initialState;
-        
-        default:
-            return state;
+    /** Получили всю корзину (cart + totalPrice) */
+    case GET_CART: {
+      const { cart, totalPrice } = action.payload;
+      return {
+        ...state,
+        cart,
+        totalPrice,
+      };
     }
+
+    /**
+     * Добавили/обновили одну позицию "item".
+     * Если на бэкенде логика уже объединяет, 
+     * всё равно проверим, нет ли дубля по productId (на всякий случай).
+     */
+    case ADD_ITEM: {
+      const newItem = action.payload;
+      // Проверим, есть ли уже такой productId
+      const existingIndex = state.cart.findIndex(
+        (item) => item.productId === newItem.productId
+      );
+
+      // Копия корзины
+      const newCart = [...state.cart];
+
+      if (existingIndex !== -1) {
+        // Товар есть. Объединяем (увеличиваем quantity).
+        // ВАЖНО: берем "quantity" из бэкенда (newItem.quantity),
+        // или складываем? Зависит от того, что присылает сервер.
+        // Предположим, бэкенд уже вернул итоговое quantity.
+        // Тогда просто перезапишем старый товар новым:
+        newCart[existingIndex] = {
+          ...newCart[existingIndex],
+          quantity: newItem.quantity
+        };
+      } else {
+        // Товара нет, добавляем
+        newCart.push(newItem);
+      }
+
+      // totalPrice. У вас бэкенд может присылать общую сумму отдельно,
+      // но в данном ответе "POST /api/cart/item" может не быть поля total_price.
+      // Если нужно, после добавления можно сделать fetchCart, чтобы обновить сумму.
+      // Или, если бэкенд возвращает новую сумму, вы бы вставили её сюда.
+      // Для простоты пока не трогаем totalPrice.
+
+      return {
+        ...state,
+        cart: newCart,
+      };
+    }
+
+    /**
+     * Обновили одну позицию (после PATCH)
+     */
+    case UPDATE_ITEM: {
+      const updatedItem = action.payload;
+      const newCart = state.cart.map((item) => {
+        if (item.itemId === updatedItem.itemId) {
+          return {
+            ...item,
+            quantity: updatedItem.quantity,
+            // Если есть изменения цены и т.п., тоже применяем
+          };
+        }
+        return item;
+      });
+
+      return {
+        ...state,
+        cart: newCart,
+      };
+    }
+
+    /**
+     * Удалили позицию
+     */
+    case REMOVE_ITEM: {
+      const itemId = action.payload;
+      const newCart = state.cart.filter((item) => item.itemId !== itemId);
+
+      return {
+        ...state,
+        cart: newCart,
+      };
+    }
+
+    /**
+     * Оформление заказа: чистим локальную корзину
+     */
+    case CHECKOUT_CART: {
+      return initialState;
+    }
+
+    default:
+      return state;
+  }
 };
 
 

@@ -19,7 +19,6 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   products: productsReducer,
 
-
 });
 
 let enhancer;

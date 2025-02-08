@@ -18,7 +18,7 @@ function CreateProductForm() {
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [price, setPrice] = useState('');
+    const [price, setPrice] = useState(0);
     const [category, setCategory] = useState('');
     const [previewImage, setPreviewImage] = useState('');
     const [otherImages, setOtherImages] = useState(['', '', '', '']);
@@ -51,10 +51,17 @@ function CreateProductForm() {
         console.log("Existing Product: ", existingProduct);
         setName(existingProduct.name || '');
         setDescription(existingProduct.description || '');
-        setPrice(existingProduct.price || '');
+        setPrice(existingProduct.price || 0);
         setCategory(existingProduct.category || '');
-        const preview = existingProduct.ProductImages[0]?.url || '';
-        const others = existingProduct.ProductImages.slice(1).map((img) => img.url) || ['', '', '', ''];
+        
+        // Make sure ProductImages array is defined and has at least one image
+        const preview = existingProduct.ProductImages && existingProduct.ProductImages.length > 0 
+            ? existingProduct.ProductImages[0]?.url 
+            : ''; // Set previewImage as empty string if no images
+        const others = existingProduct.ProductImages && existingProduct.ProductImages.length > 1 
+            ? existingProduct.ProductImages.slice(1).map((img) => img.url) 
+            : ['', '', '', '']; // Set remaining images to empty strings if less than 4 images
+
         setPreviewImage(preview);
         setOtherImages(others);
         }
@@ -85,7 +92,7 @@ function CreateProductForm() {
     
 
         if (!description || description.length < 30) errors.description = "Description needs a minimum of 30 characters";
-        if (!price || price <= 0) errors.price = "Price is required and cannot be used by an existing product";
+        if (!price || isNaN(price) || price <= 0) errors.price = "Price is required and must be a positive number";
         if (!category) errors.category = "Category is required";
         if (!previewImage) {
         errors.previewImage = "Preview image is required";

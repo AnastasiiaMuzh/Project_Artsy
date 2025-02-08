@@ -1,8 +1,21 @@
+.product-page {
+    margin-left: 50px;
+    margin-right: 50px;
+}
+
+.product-section {
+    display: flex;
+    flex-direction: row;
+    margin-top: 30px;
+}
+
 .product-images-container {
     display: flex;
-    justify-content: space-between;
+    /* justify-content: space-between; */
     gap: 20px; 
     flex-wrap: nowrap;
+    align-items: flex-start;
+    width: 60%;
 }
   
   /* Thumbnails container (in a column) */
@@ -11,6 +24,7 @@
     flex-direction: column; 
     gap: 10px;
     max-width: 120px;
+    max-height: 300px;
     overflow-y: auto; /* If there are many thumbnails, allow scrolling */
 }
   
@@ -40,24 +54,67 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60%;
+    width: 400px;
+    height: 400px;
     cursor: pointer;
 }
   
 .main-image {
     width: 100%;
-    height: auto;
-    object-fit: contain;
+    height: 100%;
+    object-fit: cover;
     border-radius: 5px;
 }
   
 
 .product-info-container {
-    border: 1px solid black
+    border: 2px solid #e99cb2;
+    border-radius: 5px;
+    padding: 20px;
+    /* flex-grow: 1; */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-left: 20px;
+    align-items: center; 
+    text-align: center;
+    max-height: 400px;  /* Set a max-height to enable scrolling */
+    overflow-y: auto;   /* Enable vertical scrolling if the content exceeds the max-height */
+}
+
+.product-name {
+    font-size: large;
+}
+
+.price-and-add-button {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.add-to-cart-button {
+    background-color: #e99cb2;
+    color: white;
+    padding: 7px 15px;
+    border: none;
+    border-radius: 5px;
+   
+}
+
+.add-to-cart-button:hover {
+    background-color: hotpink;
+}
+
+.product-description {
+    text-align: center;
+    margin-top: 30px;
 }
 
 .reviews-container {
-    border: 1px solid black
+    border: 1px solid black;
+    margin-top: 20px;
 }
 
 /* Style favorite button/heart icon */

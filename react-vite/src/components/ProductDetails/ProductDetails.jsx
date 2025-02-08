@@ -27,7 +27,10 @@ function ProductDetails() {
   const reviews = useSelector((state) => state.reviews.reviewsByProduct[productId])
   const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
   const favorites = useSelector((state) => state.favorites.items);
-
+  
+  const sellerId = product.sellerId
+  // product.sellerName.split(' ')[0] + ' ' + product.sellerName.split(' ')[1]?.charAt(0) + '.'
+  // console.log("seller name: ", product.User.firstName)
 
   const isReviewable = reviewableProducts?.reviewlessProducts?.some(item => item.id === Number(productId))
   const handlePostReviewButton = async (e) => {
@@ -106,9 +109,9 @@ function ProductDetails() {
 
 
   return (
-    <div>
-      <h1>Product Page</h1>
-
+    <div className='product-page'>
+      {/* <h1>Product Page</h1> */}
+    <div className='product-section'>
       <div className="product-images-container">
         {/* Thumbnails Column */}
         <div className="thumbnails-container">
@@ -152,14 +155,23 @@ function ProductDetails() {
 
       <div className='product-info-container'>
         <div className='product-name'>{product.name}</div>
-        <div className='product-price'>${product.price}</div>
-        {/* <div className='product-category'>{product.category}</div> */}
-        <div className='product-sellername'>{product.sellerName}</div>
-        <div className='add-to-cart'>
-          <button className='add-to-cart-button' onClick={() => alert("Fix this so it adds to shopping cart")}>Add to cart</button>
+
+        <div className='price-and-add-button'>
+          <div className='product-price'>${product.price}</div>
+          <div className='add-to-cart'>
+            <button className='add-to-cart-button' onClick={() => alert("Fix this so it adds to shopping cart")}>Add to cart</button>
+          </div>
         </div>
+
+        {/* <div className='product-category'>Found in {product.category.charAt(0).toUpperCase() + product.category.slice(1)}</div> */}
+
+        {/* <div className='product-sellername'>Sold by {}</div> */}
         <div className='product-description'>{product.description}</div>
       </div>
+
+    </div>
+
+
 
       <div className='reviews-container'>
         <h1>{reviewCount(getStarRating(product.avgStarRating), product.numReviews)}</h1>

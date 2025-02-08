@@ -128,7 +128,7 @@ function CreateProductForm() {
 
         try {
             if (isUpdate) {
-                const updatedProduct = await dispatch(updateProduct(productId, productData, imageUrls));
+                const updatedProduct = await dispatch(updateProduct(productId, productData));
                 console.log("updatedProduct: ", updatedProduct)
                 navigate(`/products/${productId}`);
             } else {

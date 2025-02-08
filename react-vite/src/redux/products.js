@@ -73,8 +73,11 @@ export const createProduct = (newProductData, imageUrl) => async (dispatch) => {
         body: JSON.stringify(newProductData),
     });
 
+    console.log("response: ", response)
+
     if (response.ok) {
         const newProduct = await response.json();
+        console.log("newPorduct before dispatch", newProduct)
         dispatch(createProductAction(newProduct));
 
         // Handle images associated with the product
@@ -90,7 +93,7 @@ export const createProduct = (newProductData, imageUrl) => async (dispatch) => {
                 body: JSON.stringify(imgDetails),
             });
         }
-
+        console.log("newPorduct after dispatch: ", newProduct)
         return newProduct; // Return the newly created product
     } else {
         const errorData = await response.json();

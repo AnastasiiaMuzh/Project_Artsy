@@ -85,7 +85,13 @@
 .product-name {
     font-size: 20px;
     font-weight: bold;
-    margin-bottom: 8px;
+  
+}
+
+.product-price {
+    font-size: 16px;
+    font-weight: bold;
+
 }
 
 .price-and-add-button {

@@ -96,13 +96,7 @@ function ReviewableProductModal() {
                         onChange={(e) => setReviewText(e.target.value)}
                     />
                     <button onClick={() => setShowReviewModal(false)}>Cancel</button>
-                    <button
-                        onClick={() => {
-                            setShowReviewModal(false);
-                        }}
-                    >
-                        Submit
-                    </button>
+                    <button onClick={() => setShowReviewModal(false)}>Submit</button>
                 </div>
             )}
         </div>

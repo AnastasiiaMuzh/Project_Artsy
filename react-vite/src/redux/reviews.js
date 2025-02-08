@@ -4,10 +4,16 @@ export const GET_ALL_REVIEWS = 'reviews/getAllReviews'
 export const ADD_REVIEW = 'reviews/addReview'
 export const DELETE_REVIEW = 'reviews/deleteReview'
 export const EDIT_REVIEW = 'reviews/editReview'
+export const LOAD_REVIEWABLE_PRODUCTS = 'reviews/getReviewableProducts'
 
 export const loadReviews = allReviews => ({
     type: GET_ALL_REVIEWS,
     allReviews
+})
+
+export const loadReviewableProducts = (reviewableProducts) => ({
+    type: LOAD_REVIEWABLE_PRODUCTS,
+    reviewableProducts
 })
 
 export const getAllReviews = (productId) => async dispatch => {
@@ -20,18 +26,19 @@ export const getAllReviews = (productId) => async dispatch => {
     }
 }
 
-// export const getAllReviews = (spotId) => async (dispatch) => {
-//     const response = await csrfFetch(`/api/reviews/${spotId}`);
+export const fetchReviewableProducts = () => async dispatch => {
+    const response = await csrfFetch('/api/reviews/products')
 
-//     if (response.ok) {
-//         const data = await response.json();
-//         dispatch(loadReviews(data.Reviews));
-//         return data;
-//     }
-// };
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(loadReviewableProducts(data))
+        return data;
+    }
+}
 
 const initialState = {
     reviewsByProduct: {},
+    reviewableProduct: []
 }
 
 const reviewReducer = (state = initialState, action) => {
@@ -51,6 +58,11 @@ const reviewReducer = (state = initialState, action) => {
                     ...state.reviewsByProduct,
                     ...reviewInfo
                 }
+            }
+        case LOAD_REVIEWABLE_PRODUCTS:
+            return {
+                ...state,
+                reviewableProducts: action.reviewableProducts
             }
         default:
             return state;

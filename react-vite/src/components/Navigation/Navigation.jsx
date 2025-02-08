@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 import ProfileButton from "./ProfileButton";
+import { FaHeart, FaPlus, FaSearch } from 'react-icons/fa';
 import "./Navigation.css";
 
 function Navigation() {
   const [searchQuery, setSearchQuery] = useState("");
+  const sessionUser = useSelector((state) => state.session.session);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -21,15 +24,34 @@ function Navigation() {
         
         <div className="search-container">
           <form onSubmit={handleSearch}>
-            <input
-              type="text"
-              className="search-input"
-              placeholder="Search function coming soon..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
+            <div className="search-input-wrapper">
+              <FaSearch className="search-icon" />
+              <input
+                type="text"
+                className="search-input"
+                placeholder="Search function coming soon..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
           </form>
         </div>
+
+        {sessionUser && (
+          <>
+            <li className="nav-item">
+              <NavLink to="/favorites" className="favorites-link">
+                <FaHeart className="heart-icon" />
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/products/new" className="create-product-link">
+                <FaPlus className="plus-icon" />
+                <span>Create Product</span>
+              </NavLink>
+            </li>
+          </>
+        )}
 
         <div className="nav-right">
           <li className="nav-item">

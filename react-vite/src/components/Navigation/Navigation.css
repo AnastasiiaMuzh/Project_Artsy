@@ -8,7 +8,7 @@
 }
 
 .nav-container {
-  background-color: #8b575c;
+  background-color: #abc798;  /* Sage green background */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -30,7 +30,7 @@
 
 .nav-link {
   text-decoration: none;
-  color: #f4f4f4;
+  color: #f1dedc;  
   padding: 8px 16px;
   border-radius: 4px;
   /* transition: all 0.2s ease; */
@@ -41,12 +41,14 @@
 .nav-link:hover {
   transform: scale(1.02);
   background-color: transparent;
+  color:#ffc4eb;
 }
 .nav-right {
   display: flex;
   align-items: center;
   gap: 16px;
   white-space: nowrap;
+  color: #ffc4eb;
 }
 
 .search-container {
@@ -71,30 +73,30 @@
 .search-icon {
   position: absolute;
   left: 12px;
-  color: #f6bdd1;
+  color: #abc798; 
   font-size: 1rem;
 }
 
 .search-input {
   width: 100%;
   padding: 12px 20px 12px 40px;
-  border: 2px solid #f6bdd1;
+  border: 2px solid #f1dedc;  
   border-radius: 25px;
   font-size: 16px;
-  background-color: #f4f4f4;
+  background-color: #f1dedc;  
 }
 
 .search-input:focus {
   outline: none;
-  box-shadow: 0 2px 8px #f6e4f6;
+  box-shadow: 0 2px 8px #ffe4fa;  
 }
 
 .search-input:focus + .search-icon {
-  color: #c98986;
+  color: #abc798;  
 }
 
 .search-input::placeholder {
-  color: #8b575c;
+  color: #abc798;  
   font-style: italic;
 }
 
@@ -110,28 +112,28 @@
 /* Update these styles to be more specific */
 .favorites-link .heart-icon {
   font-size: 24px;
-  color: #f6bdd1;
+  color: #ffc4eb;  /* Change to soft peach */
 }
 
 .favorites-link:hover .heart-icon {
-  color: #c98986;
+  color: #ffc4eb;  /* Light pink on hover */
 }
 
 .create-product-link {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #8b575c;
+  color: #abc798;  /* Keep sage green text */
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 20px;
-  background-color: #f6bdd1;
+  background-color: #f1dedc;  /* Soft peach background */
   transition: all 0.2s ease;
 }
 
 .create-product-link:hover {
-  background-color: #c98986;
-  color: #f4f4f4;
+  background-color: #ffe4fa;
+  color: #abc798;
   transform: translateY(-1px);
 }
 

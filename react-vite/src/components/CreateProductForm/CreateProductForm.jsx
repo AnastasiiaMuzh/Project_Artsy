@@ -18,7 +18,7 @@ function CreateProductForm() {
 
     const [name, setName] = useState('');
     const [description, setDescription] = useState('');
-    const [price, setPrice] = useState(0);
+    const [price, setPrice] = useState('');
     const [category, setCategory] = useState('');
     const [previewImage, setPreviewImage] = useState('');
     const [otherImages, setOtherImages] = useState(['', '', '', '']);

@@ -30,7 +30,7 @@
 
 .nav-link {
   text-decoration: none;
-  color: #f4f4f4;
+  color: #f6bdd1;
   padding: 8px 16px;
   border-radius: 4px;
   /* transition: all 0.2s ease; */
@@ -41,6 +41,7 @@
 .nav-link:hover {
   transform: scale(1.02);
   background-color: transparent;
+  color: #f6bdd1;
 }
 .nav-right {
   display: flex;

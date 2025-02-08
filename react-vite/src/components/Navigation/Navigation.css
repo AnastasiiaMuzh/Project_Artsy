@@ -168,3 +168,18 @@
     max-width: none;
   }
 }
+
+/******* For cart icon *******/
+.cart-link {
+  position: relative;
+  color: pink;
+  text-decoration: none;
+  margin-left: 30px;
+}
+
+.cart-link:hover,
+.cart-link.active {
+  /* color: palevioletred; */
+  color: deeppink;
+  transition: color 0.2s ease;
+}

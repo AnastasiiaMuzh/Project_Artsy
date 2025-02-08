@@ -8,7 +8,7 @@
 }
 
 .nav-container {
-  background-color: white;
+  background-color: #8b575c;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -30,7 +30,7 @@
 
 .nav-link {
   text-decoration: none;
-  color: palevioletred;
+  color: #f4f4f4;
   padding: 8px 16px;
   border-radius: 4px;
   /* transition: all 0.2s ease; */
@@ -71,63 +71,67 @@
 .search-icon {
   position: absolute;
   left: 12px;
-  color: pink;
+  color: #f6bdd1;
   font-size: 1rem;
 }
 
 .search-input {
   width: 100%;
   padding: 12px 20px 12px 40px;
-  border: 2px solid pink;
+  border: 2px solid #f6bdd1;
   border-radius: 25px;
   font-size: 16px;
+  background-color: #f4f4f4;
 }
 
 .search-input:focus {
   outline: none;
-  box-shadow: 0 2px 8px lightgray;
+  box-shadow: 0 2px 8px #f6e4f6;
 }
 
 .search-input:focus + .search-icon {
-  color: hotpink;
+  color: #c98986;
 }
 
 .search-input::placeholder {
-  color: #999;
+  color: #8b575c;
   font-style: italic;
 }
 
-.favorites-link {
+/* .favorites-link {
   display: flex;
   align-items: center;
   color: pink;
   text-decoration: none;
   transition: color 0.2s ease;
+} */
+
+
+/* Update these styles to be more specific */
+.favorites-link .heart-icon {
+  font-size: 24px;
+  color: #f6bdd1;
 }
 
-.favorites-link:hover {
-  color: hotpink;
-}
-
-.heart-icon {
-  font-size: 1.5rem;
+.favorites-link:hover .heart-icon {
+  color: #c98986;
 }
 
 .create-product-link {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #333;
+  color: #8b575c;
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 20px;
-  background-color: pink;
+  background-color: #f6bdd1;
   transition: all 0.2s ease;
 }
 
 .create-product-link:hover {
-  background-color: hotpink;
-  color: white;
+  background-color: #c98986;
+  color: #f4f4f4;
   transform: translateY(-1px);
 }
 

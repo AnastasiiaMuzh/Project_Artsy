@@ -10,13 +10,12 @@ function ReviewableProductModal() {
     // const [loading, setLoading] = useState(true);
     const [starRating, setStarRating] = useState(0);
     const [hoverRating, setHoverRating] = useState(0);
+    const [reviewText, setReviewText] = useState('');
     const [selectedProduct, setSelectedProduct] = useState(null);
     const [showReviewModal, setShowReviewModal] = useState(false);
-    const [reviewText, setReviewText] = useState('');
 
     const product = useSelector((state) => state.products.allProducts);
     const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
-    console.log('look here', product)
 
     useEffect(() => {
         dispatch(fetchReviewableProducts())
@@ -30,9 +29,6 @@ function ReviewableProductModal() {
             setShowReviewModal(true)
         }
     }
-    // const handleStarClick = (rating) => setStarRating(rating)
-    // const handleStarHover = (rating) => setHoverRating(rating)
-    // const handleStarMouseOut = () => setHoverRating(0)
 
     return (
         <div>
@@ -102,8 +98,7 @@ function ReviewableProductModal() {
                     <button onClick={() => setShowReviewModal(false)}>Cancel</button>
                     <button
                         onClick={() => {
-                            console.log("Submit Review", { starRating, reviewText });
-                            setShowReviewModal(false); // Closes modal after submission
+                            setShowReviewModal(false);
                         }}
                     >
                         Submit

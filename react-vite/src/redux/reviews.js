@@ -7,6 +7,7 @@ const EDIT_REVIEW = 'reviews/editReview'
 const LOAD_REVIEWABLE_PRODUCTS = 'reviews/getReviewableProducts'
 const LOAD_USER_REVIEWS = 'reviews/getUserReviews'
 
+// action creators
 const loadReviews = allReviews => ({
     type: GET_ALL_REVIEWS,
     allReviews
@@ -22,6 +23,12 @@ const loadUserReviews = userReviews => ({
     userReviews
 })
 
+const addOneReview = (review) => ({
+    type: ADD_REVIEW,
+    review
+})
+
+//thunk
 export const getAllReviews = (productId) => async dispatch => {
     const response = await csrfFetch(`/api/reviews/${productId}`)
 
@@ -52,9 +59,31 @@ export const getCurrUserReviews = () => async dispatch => {
     }
 }
 
+export const addReview = (newReview) => async dispatch => {
+    const { productId, buyerId, review, stars} = newReview
+    const response = await csrfFetch(`/api/reviews/products/${productId}`, {
+        method: 'POST',
+        body: JSON.stringify({review, stars})
+    })
+
+    if (response.ok) {
+        const data = await response.json();
+        dispatch(addOneReview(data))
+        dispatch(getAllReviews(productId))
+        return data;
+    }
+}
+
 const initialState = {
     reviewsByProduct: {},
-    reviewableProduct: []
+    reviewableProducts: [],
+    singleProduct: null
+}
+
+const calculateNewAverage = (currAverage, totalReviews, newStarRating) => {
+    const newTotal = totalReviews + 1;
+    const updatedStarRating = currAverage * totalReviews + newStarRating;
+    return updatedStarRating / newTotal;
 }
 
 const reviewReducer = (state = initialState, action) => {
@@ -85,7 +114,22 @@ const reviewReducer = (state = initialState, action) => {
                 ...state,
                 currentUserReviews: action.userReviews
             }
-
+        case ADD_REVIEW:
+            if (!state.singleProduct) return state;
+            const {productId} = action.review
+            const updatedProduct = {
+                ...state.singleProduct,
+                numReviews: state.singleProduct.numReviews + 1,
+                avgStarRating: calculateNewAverage(state.singleProduct.avgStarRating, state.singleProduct.numReviews, action.review.stars)
+            }
+            return {
+                ...state,
+                reviewsByProduct: {
+                    ...state.reviewsByProduct,
+                    [productId]: [...(state.reviewsByProduct[productId] || []), action.review]
+                },
+                singleProduct: updatedProduct
+            }
         default:
             return state;
     }

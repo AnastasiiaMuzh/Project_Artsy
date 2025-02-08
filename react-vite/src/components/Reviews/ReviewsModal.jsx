@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux"
 import { useModal } from "../../context/Modal";
 import { getDetails } from "../../redux/products";
 import './ReviewsModal.css'
+import { addReview } from "../../redux/reviews";
 
 const ReviewsModal = ({productId}) => {
     const dispatch = useDispatch();
@@ -28,8 +29,7 @@ const ReviewsModal = ({productId}) => {
         }
 
         try {
-            // need postAReview redux store
-            // await dispatch(postAReview({productId, review: textArea, stars: starRating}));
+            await dispatch(addReview({productId, review: textArea, stars: starRating}))
             await dispatch(getDetails(productId));
             closeModal();
         } catch (error) {

@@ -31,6 +31,7 @@ const ManageReviews = () => {
     return (
         <div>
             <h1>Manage Reviews</h1>
+            {reviewableProducts?.message ? <h2>You have left reviews on all your orders! </h2> : null }
             {!reviewableProducts?.message && reviewableProducts?.reviewlessProducts?.length > 0 && (
                 <button onClick={handleReviewableProductButton}>Leave a review for recent purchases!</button>
             )}

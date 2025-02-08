@@ -300,7 +300,8 @@ def get_reviewable_products():
     reviewable_data = []
     for item in reviewable_products:
         reviewable_data.append({
-            "id": item.id,
+            # "id": item.id,
+            "id": item.products.id,
             "productName": item.products.name,
             "createdAt": item.orders.createdAt
             # "previewImage": item.products.previewImage

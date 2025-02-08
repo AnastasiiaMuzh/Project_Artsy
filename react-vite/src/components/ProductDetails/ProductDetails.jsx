@@ -87,13 +87,13 @@ const handleAddToCart = async () => {
 
   try {
     const response = await dispatch(addToCart(product.id));
-    
+
     if (response?.error && response.error === "Product already in cart") {
       setPopupMessage("This product is already in your cart.");
     } else {
       setPopupMessage("Product successfully added to cart!");
     }
-    
+
     setShowPopup(true);
     setTimeout(() => setShowPopup(false), 3000);
 
@@ -130,7 +130,7 @@ const handleAddToCart = async () => {
     if (!currentUser) return;
 
     const isFavorited = favorites.some(fav => fav.productId === Number(productId));
-    
+
     if (isFavorited) {
       await dispatch(removeFromFavorites(productId));
       await dispatch(fetchUserFavorites());

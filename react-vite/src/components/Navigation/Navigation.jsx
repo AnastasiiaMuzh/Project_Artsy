@@ -41,6 +41,23 @@ function Navigation() {
           </form>
         </div>
 
+        {sessionUser && (
+          <>
+            <li className="nav-item">
+              <NavLink to="/favorites" className="favorites-link">
+                <FaHeart className="heart-icon" />
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <NavLink to="/products/new" className="create-product-link">
+                <FaPlus className="plus-icon" />
+                <span>Create Product</span>
+              </NavLink>
+            </li>
+          </>
+        )}
+
+
         <li className="nav-cart">
             <Link to="/cart" className="cart-link">
               <FaShoppingCart size={23} />

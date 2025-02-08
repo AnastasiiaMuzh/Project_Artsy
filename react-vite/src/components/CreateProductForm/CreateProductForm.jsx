@@ -9,7 +9,7 @@ function CreateProductForm() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { productId } = useParams();
-    const user = useSelector((state) => state.session.user);
+    const user = useSelector((state) => state.session.session);
     const existingProduct = useSelector((state) => state.products.productDetails);
     const allProducts = useSelector((state) => state.products.allProducts);
 

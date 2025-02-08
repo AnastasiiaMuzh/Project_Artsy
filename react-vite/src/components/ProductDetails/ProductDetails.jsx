@@ -11,6 +11,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { addToFavorites, removeFromFavorites, fetchUserFavorites } from '../../redux/favorites';
 // import { IoMdStar } from "react-icons/io";
 // import { GoDotFill } from "react-icons/go";
+import { addToCart } from "../../redux/shopping_carts";
 
 
 function ProductDetails() {
@@ -21,6 +22,9 @@ function ProductDetails() {
 
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(""); // To track the selected image
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");  // Добавляем состояние для текста уведомлений
+
 
   const currentUser = useSelector((state) => state.session.session)
   const product = useSelector((state) => state.products.productDetails);
@@ -67,6 +71,44 @@ function ProductDetails() {
     setSelectedImage(imgUrl);
   };
 
+  // Основная функция для добавления товара в корзину
+  // Функция добавления в корзину
+const handleAddToCart = async () => {
+  if (!currentUser) {
+    setPopupMessage("Please log in to add items to your cart.");
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 3000);
+    return;
+  }
+
+  if (product.sellerId === currentUser.id) {
+    setPopupMessage("You cannot add your own product to the cart.");
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 3000);
+    return;
+  }
+
+  try {
+    const response = await dispatch(addToCart(product.id));
+    
+    if (response?.error && response.error === "Product already in cart") {
+      setPopupMessage("This product is already in your cart.");
+    } else {
+      setPopupMessage("Product successfully added to cart!");
+    }
+    
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 3000);
+
+  } catch (error) {
+    console.error("Failed to add to cart:", error);
+    setPopupMessage("Something went wrong. Please try again.");
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 3000);
+  }
+};
+
+
   const reviewCount = (avgStarRating, numReviews) => {
     if (avgStarRating && numReviews == 1) {
         return `${numReviews} review  ${avgStarRating}`
@@ -111,7 +153,14 @@ function ProductDetails() {
   return (
     <div className='product-page'>
       {/* <h1>Product Page</h1> */}
-    <div className='product-section'>
+      <div className='product-section'>
+    
+        {showPopup && (
+          <div className="popup-notification">
+            {popupMessage}
+          </div>
+        )}
+
       <div className="product-images-container">
         {/* Thumbnails Column */}
         <div className="thumbnails-container">
@@ -156,11 +205,13 @@ function ProductDetails() {
       <div className='product-info-container'>
         <div className='product-name'>{product.name}</div>
 
+
         <div className='price-and-add-button'>
           <div className='product-price'>${product.price}</div>
           <div className='add-to-cart'>
-            <button className='add-to-cart-button' onClick={() => alert("Fix this so it adds to shopping cart")}>Add to cart</button>
+            <button className='add-to-cart-button' onClick={handleAddToCart}>Add to cart</button>
           </div>
+
         </div>
 
         {/* <div className='product-category'>Found in {product.category.charAt(0).toUpperCase() + product.category.slice(1)}</div> */}

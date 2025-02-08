@@ -1,10 +1,10 @@
 import { csrfFetch } from "./csrf";
 
 // ---------- ACTION TYPES ---------- 
-const GET_CART = 'cart/GET_CART';
-const ADD_ITEM = 'cart/ADD_ITEM';
-const UPDATE_ITEM = 'cart/UPDATE_ITEM';
-const REMOVE_ITEM = 'cart/REMOVE_ITEM';
+const GET_CART      = 'cart/GET_CART';
+const ADD_ITEM      = 'cart/ADD_ITEM';
+const UPDATE_ITEM   = 'cart/UPDATE_ITEM';
+const REMOVE_ITEM   = 'cart/REMOVE_ITEM';
 const CHECKOUT_CART = 'cart/CHECKOUT_CART';
 
 
@@ -36,19 +36,22 @@ const checkoutCartAction = () => ({
 
 // ---------- THANKS ---------- 
     // Get cart
-export const fetchCart = () => async (dispatch) => {
-    const res = await csrfFetch('/api/cart');
-    if (res.ok) {
-      const data = await res.json();
-      const newCart = data.cart.map(item => ({
-        ...item,
-        itemId: item.id,
-      }))
-      data.cart = newCart
-      console.log('Fetched Cart Data:', data);  // Проверка данных
-      dispatch(getCartAction(data));
-    }
-  }
+    export const fetchCart = () => async (dispatch) => {
+      const res = await csrfFetch('/api/cart/');
+      if (res.ok) {
+          const data = await res.json();
+          console.log('Fetched cart data:', data);  // Лог данных, пришедших от API
+  
+          const newCart = data.cart.map(item => ({
+              ...item,
+              itemId: item.id,
+          }));
+  
+          data.cart = newCart;
+          dispatch(getCartAction(data));
+      }
+  };
+  
 
     // Add to cart items
 export const addToCart = (productId, quantity = 1) => async (dispatch) => {
@@ -98,46 +101,50 @@ export const checkout = (shippingAddress) => async (dispatch) => {
     }
 }
 
-// Initial State
+// ---------- REDUCER ---------- 
 const initialState = { cart: [], totalPrice: 0, itemCount: 0 };
 
-// ---------- REDUCER ---------- 
 const cartReducer = (state = initialState, action) => {
-    switch (action.type) {
-        case GET_CART: {
-            return { ...state, ...action.cart }
-        }
+  switch (action.type) {
+    case GET_CART:
+      console.log('Reducer received cart:', action.cart);  // Лог данных, поступивших в редьюсер
+      return {
+        ...state,
+        cart: action.cart.cart,  // Убедись, что данные правильно сохраняются
+        totalPrice: action.cart.totalPrice,
+        itemCount: action.cart.itemCount
+      };
 
-        case ADD_ITEM: {
-            return {
-                ...state,
-                cart: [...state.cart, action.item],
-                itemCount: state.itemCount + 1,
-            };
-        }
+    case ADD_ITEM:
+      return {
+        ...state,
+        cart: [...state.cart, action.item],
+        itemCount: state.itemCount + 1,
+      };
 
-        case UPDATE_ITEM:
-            return {
-                ...state,
-                cart: state.cart.map((item) =>
-                item.itemId === action.item.itemId ? { ...item, quantity: action.item.newQuantity } : item
-            ),
-        };
+    case REMOVE_ITEM:
+      return {
+        ...state,
+        cart: state.cart.filter(item => item.itemId !== action.itemId),
+        itemCount: state.itemCount - 1,
+      };
 
-        case REMOVE_ITEM:
-            return {
-                ...state,
-                cart: state.cart.filter((item) => item.itemId !== action.itemId),
-                itemCount: state.itemCount - 1,
-        };
+    case UPDATE_ITEM:
+      return {
+        ...state,
+        cart: state.cart.map(item =>
+          item.itemId === action.item.itemId ? { ...item, quantity: action.item.quantity } : item
+        ),
+      };
 
-        case CHECKOUT_CART:
-            return initialState;
-        
-        default:
-            return state;
-    }
+    case CHECKOUT_CART:
+      return initialState;
+
+    default:
+      return state;
+  }
 };
+
 
 
 export default cartReducer;

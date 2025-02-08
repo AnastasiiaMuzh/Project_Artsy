@@ -9,6 +9,7 @@ import { useModal } from '../../context/Modal';
 import ReviewsModal from '../Reviews/ReviewsModal'
 // import { IoMdStar } from "react-icons/io";
 // import { GoDotFill } from "react-icons/go";
+import { addToCart } from "../../redux/shopping_carts";
 
 
 function ProductDetails() {
@@ -19,8 +20,11 @@ function ProductDetails() {
 
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(""); // To track the selected image
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState("");  // Добавляем состояние для текста уведомлений
 
-  const currentUser = useSelector((state) => state.session.user)
+
+  const currentUser = useSelector((state) => state.session.session)
   const product = useSelector((state) => state.products.productDetails);
   const reviews = useSelector((state) => state.reviews.reviewsByProduct[productId])
   const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
@@ -59,6 +63,44 @@ function ProductDetails() {
     setSelectedImage(imgUrl);
   };
 
+  // Основная функция для добавления товара в корзину
+  // Функция добавления в корзину
+const handleAddToCart = async () => {
+  if (!currentUser) {
+    setPopupMessage("Please log in to add items to your cart.");
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 3000);
+    return;
+  }
+
+  if (product.sellerId === currentUser.id) {
+    setPopupMessage("You cannot add your own product to the cart.");
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 3000);
+    return;
+  }
+
+  try {
+    const response = await dispatch(addToCart(product.id));
+    
+    if (response?.error && response.error === "Product already in cart") {
+      setPopupMessage("This product is already in your cart.");
+    } else {
+      setPopupMessage("Product successfully added to cart!");
+    }
+    
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 3000);
+
+  } catch (error) {
+    console.error("Failed to add to cart:", error);
+    setPopupMessage("Something went wrong. Please try again.");
+    setShowPopup(true);
+    setTimeout(() => setShowPopup(false), 3000);
+  }
+};
+
+
   const reviewCount = (avgStarRating, numReviews) => {
     if (avgStarRating && numReviews == 1) {
         return `${numReviews} review  ${avgStarRating}`
@@ -87,6 +129,12 @@ function ProductDetails() {
   return (
     <div>
       <h1>Product Page</h1>
+
+      {showPopup && (
+        <div className="popup-notification">
+          {popupMessage}
+        </div>
+      )}
 
       <div className="product-images-container">
         {/* Thumbnails Column */}
@@ -124,7 +172,7 @@ function ProductDetails() {
         {/* <div className='product-category'>{product.category}</div> */}
         <div className='product-sellername'>{product.sellerName}</div>
         <div className='add-to-cart'>
-          <button className='add-to-cart-button' onClick={() => alert("Fix this so it adds to shopping cart")}>Add to cart</button>
+          <button className='add-to-cart-button' onClick={handleAddToCart}>Add to cart</button>
         </div>
         <div className='product-description'>{product.description}</div>
       </div>

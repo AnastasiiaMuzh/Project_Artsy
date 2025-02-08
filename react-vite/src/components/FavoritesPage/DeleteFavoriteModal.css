@@ -1,0 +1,52 @@
+.delete-favorite-modal {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  width: 400px;
+  text-align: center;
+}
+
+.delete-favorite-modal h2 {
+  color: #2f2f2f;
+  margin-bottom: 16px;
+  font-size: 20px;
+}
+
+.delete-favorite-modal p {
+  color: #666;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.delete-favorite-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.delete-favorite-buttons button {
+  padding: 8px 24px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.cancel-button {
+  background-color: #f4f4f4;
+  color: #2f2f2f;
+}
+
+.cancel-button:hover {
+  background-color: #e0e0e0;
+}
+
+.confirm-button {
+  background-color: #c98986;
+  color: white;
+}
+
+.confirm-button:hover {
+  background-color: #8b575c;
+} 

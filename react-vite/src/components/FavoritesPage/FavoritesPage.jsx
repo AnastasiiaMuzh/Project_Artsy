@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchUserFavorites, removeFromFavorites } from '../../redux/favorites';
+import { useModal } from '../../context/Modal';
+import DeleteFavoriteModal from './DeleteFavoriteModal';
 import './FavoritesPage.css';
 
 // Create FavoritesPage function
 function FavoritesPage() {
   const dispatch = useDispatch();
+  const { setModalContent } = useModal();
   const favorites = useSelector(state => state.favorites.items);
   const [isLoading, setIsLoading] = useState(true);
   const error = useSelector(state => state.favorites.error);
@@ -39,9 +42,16 @@ function FavoritesPage() {
     return <div>No favorites yet!</div>;
   }
 
-  // Handle remove from favorites
-  const handleRemove = (productId) => {
-    dispatch(removeFromFavorites(productId));
+  const handleRemoveFavorite = (productId) => {
+    setModalContent(
+      <DeleteFavoriteModal 
+        onConfirm={async () => {
+          await dispatch(removeFromFavorites(productId));
+          await dispatch(fetchUserFavorites());
+        }}
+        onCancel={() => {}}
+      />
+    );
   };
 
   // Render error message
@@ -70,7 +80,7 @@ function FavoritesPage() {
                 </div>
               </Link>
               <button 
-                onClick={() => handleRemove(favorite.productId)}
+                onClick={() => handleRemoveFavorite(favorite.productId)}
                 className="remove-button"
               >
                 Remove from Favorites

@@ -19,7 +19,7 @@
   position: absolute;
   right: 0;
   top: 100%;
-  background-color: #7c606b;
+  background-color: white;
   border: 1px solid #eda4bd;
   border-radius: 8px;
   padding: 8px 0;
@@ -32,7 +32,7 @@
   padding: 6px 16px;
   list-style: none;
   font-size: 13px;
-  color: #eb7bc0;
+  color: #2f2f2f;
 }
 
 /* .profile-dropdown li:hover {
@@ -46,7 +46,7 @@
   border: none;
   padding: 6px 16px;
   font-size: 13px;
-  color: #333;
+  color: #2f2f2f;
   cursor: pointer;
 }
 
@@ -56,7 +56,7 @@
 }
 
 .profile-dropdown .user-info {
-  border-bottom: 1px solid #eda4bd;
+  border-bottom: 1px solid #e0e0e0;
   padding-bottom: 8px;
   margin-bottom: 8px;
 }
@@ -68,22 +68,16 @@
 
 .profile-dropdown .nav-link {
   text-decoration: none;
-  color: #eb7bc0;
+  color: #2f2f2f;
   padding: 8px 12px;
+  font-size: 14px;
   display: block;
   transition: background-color 0.2s ease;
 }
 
-.nav-link:hover {
-  color: #eda4bd;
-  background-color: rgba(237, 164, 189, 0.1);
-}
-
-.profile-dropdown .nav-link {
-  color: #eb7bc0;
-  font-size: 14px;
-  padding: 8px 12px;
-  margin: 4px 0;
+.profile-dropdown .nav-link:hover {
+  color: #2f2f2f;
+  transform: scale(1.02);
 }
 
 /* .profile-dropdown .nav-link:hover {
@@ -94,17 +88,23 @@
   position: relative;
 }
 
-.logout-button {
-    padding: 2px 8px 2px 8px;
-    font-size: 8px;
-    color: #eb7bc0;
-    background: #eb7bc0;
-    border: none;
-    box-shadow: none;
-    cursor: pointer;
+.profile-button-container .logout-button {
+  width: 80%;
+  margin: 8px auto;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: white;
+  background: #7c606b;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+  transition: all 0.2s ease;
 }
 
-.logout-button:hover {
-  background-color: #eda4bd;
-  color: #7c606b;
+.profile-button-container .logout-button:hover {
+  background-color: #7c606b;
+  color: white;
+  transform: scale(1.02);
 }

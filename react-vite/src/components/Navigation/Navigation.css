@@ -8,7 +8,7 @@
 }
 
 .nav-container {
-  background-color: #8b575c;
+  background-color: white;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -30,7 +30,7 @@
 
 .nav-link {
   text-decoration: none;
-  color: #f6bdd1;
+  color: palevioletred;
   padding: 8px 16px;
   border-radius: 4px;
   /* transition: all 0.2s ease; */
@@ -41,7 +41,6 @@
 .nav-link:hover {
   transform: scale(1.02);
   background-color: transparent;
-  color: #f6bdd1;
 }
 .nav-right {
   display: flex;
@@ -72,67 +71,63 @@
 .search-icon {
   position: absolute;
   left: 12px;
-  color: #f6bdd1;
+  color: pink;
   font-size: 1rem;
 }
 
 .search-input {
   width: 100%;
   padding: 12px 20px 12px 40px;
-  border: 2px solid #f6bdd1;
+  border: 2px solid pink;
   border-radius: 25px;
   font-size: 16px;
-  background-color: #f4f4f4;
 }
 
 .search-input:focus {
   outline: none;
-  box-shadow: 0 2px 8px #f6e4f6;
+  box-shadow: 0 2px 8px lightgray;
 }
 
 .search-input:focus + .search-icon {
-  color: #c98986;
+  color: hotpink;
 }
 
 .search-input::placeholder {
-  color: #8b575c;
+  color: #999;
   font-style: italic;
 }
 
-/* .favorites-link {
+.favorites-link {
   display: flex;
   align-items: center;
   color: pink;
   text-decoration: none;
   transition: color 0.2s ease;
-} */
-
-
-/* Update these styles to be more specific */
-.favorites-link .heart-icon {
-  font-size: 24px;
-  color: #f6bdd1;
 }
 
-.favorites-link:hover .heart-icon {
-  color: #c98986;
+.favorites-link:hover {
+  color: hotpink;
+}
+
+.heart-icon {
+  font-size: 1.5rem;
 }
 
 .create-product-link {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #8b575c;
+  color: #333;
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 20px;
-  background-color: #f6bdd1;
+  background-color: pink;
   transition: all 0.2s ease;
 }
 
 .create-product-link:hover {
-  background-color: #c98986;
-  color: #f4f4f4;
+  background-color: hotpink;
+  color: white;
   transform: translateY(-1px);
 }
 

@@ -27,6 +27,7 @@ function CreateProductForm() {
 
     useEffect(() => {
         console.log("user: ", user)
+        console.log("user.id: ", user.id)
         // console.log("user first name: ", user.firstName)
         // if (!user) {
         //     return navigate("/", {

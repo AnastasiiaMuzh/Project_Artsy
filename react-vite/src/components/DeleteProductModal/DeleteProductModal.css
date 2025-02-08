@@ -1,0 +1,52 @@
+.modal-container {
+    /* height: 300px;
+    width: 600px; */
+    border-radius: 8px;
+    max-width: 90%; 
+    padding: 20px;
+}
+
+.delete-product-header {
+    text-align: center;
+}
+
+.h4-container {
+    /* width: 200px;
+    margin-left: 15px; */
+    text-align: center;
+}
+
+.action-buttons {
+    /* margin-left: 15px;
+    margin-top: 20px; */
+    display: flex;
+    margin: auto;
+    flex-direction: column;
+    width: 200px;
+    gap:12px;
+}
+
+.yes {
+    height: 35px;
+    background-color: grey;
+    color: white;
+    padding: 7px 15px;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);;
+}
+
+.no {
+    height: 35px;
+    background-color: #e99cb2;
+    color: white;
+    padding: 7px 15px;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);;
+}
+
+
+.yes:hover, .no:hover {
+   background-color: hotpink;
+}

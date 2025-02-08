@@ -8,7 +8,7 @@
 }
 
 .nav-container {
-  background-color: #2f2f2f;
+  background-color: #7c606b;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -30,7 +30,7 @@
 
 .nav-link {
   text-decoration: none;
-  color: #dc7f9b;
+  color: #eb7bc0;
   padding: 8px 16px;
   border-radius: 4px;
   /* transition: all 0.2s ease; */
@@ -41,14 +41,14 @@
 .nav-link:hover {
   transform: scale(1.02);
   background-color: transparent;
-  color: #dc7f9b;
+  color: #c46bae;
 }
 .nav-right {
   display: flex;
   align-items: center;
   gap: 16px;
   white-space: nowrap;
-  color: #f7a1c4;  
+  color: #eb7bc0;  
 }
 
 .search-container {
@@ -73,30 +73,30 @@
 .search-icon {
   position: absolute;
   left: 12px;
-  color: #e0b7b7;
+  color: #eda4bd;
   font-size: 1rem;
 }
 
 .search-input {
   width: 100%;
   padding: 12px 20px 12px 40px;
-  border: 2px solid #e0b7b7;
+  border: 2px solid #eda4bd;
   border-radius: 25px;
   font-size: 16px;
-  background-color: #2f2f2f;
+  background-color: #7c606b;
 }
 
 .search-input:focus {
   outline: none;
-  box-shadow: 0 2px 8px #dc7f9b;  
+  box-shadow: 0 2px 8px #c46bae;  
 }
 
 .search-input:focus + .search-icon {
-  color: #f7a1c4; 
+  color: #eb7bc0; 
 }
 
 .search-input::placeholder {
-  color: #94bfa7;
+  color: #eed5c2;
   font-style: italic;
 }
 
@@ -112,11 +112,11 @@
 /* Update these styles to be more specific */
 .favorites-link .heart-icon {
   font-size: 24px;
-  color: #f7a1c4;
+  color: #eb7bc0;
 }
 
 .favorites-link:hover .heart-icon {
-  color: #dc7f9b;
+  color: #c46bae;
   transform: scale(1.02);
 }
 
@@ -124,17 +124,17 @@
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #2f2f2f;
+  color: #7c606b;
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 20px;
-  background-color: #f7a1c4;
+  background-color: #eb7bc0;
   transition: all 0.2s ease;
 }
 
 .create-product-link:hover {
-  background-color: #dc7f9b;
-  color: #2f2f2f;
+  background-color: #c46bae;
+  color: #7c606b;
   transform: translateY(-1px);
 }
 

@@ -6,21 +6,21 @@
   display: flex;
   align-items: center;
   font-size: 24px;
-  color: #f7a1c4;
+  color: #eb7bc0;
   transition: all 0.2s ease;
 }
 
 .profile-button:hover {
   transform: scale(1.1);
-  color: #dc7f9b;
+  color: #c46bae;
 }
 
 .profile-dropdown {
   position: absolute;
   right: 0;
   top: 100%;
-  background-color: #2f2f2f;
-  border: 1px solid #e0b7b7;
+  background-color: #7c606b;
+  border: 1px solid #eda4bd;
   border-radius: 8px;
   padding: 8px 0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
@@ -32,7 +32,7 @@
   padding: 6px 16px;
   list-style: none;
   font-size: 13px;
-  color: #f7a1c4;
+  color: #eb7bc0;
 }
 
 /* .profile-dropdown li:hover {
@@ -52,11 +52,11 @@
 
 .profile-dropdown button:hover {
     transform: scale(1.1);
-    color: #ff8fa3;
+    color: #c46bae;
 }
 
 .profile-dropdown .user-info {
-  border-bottom: 1px solid #e0b7b7;
+  border-bottom: 1px solid #eda4bd;
   padding-bottom: 8px;
   margin-bottom: 8px;
 }
@@ -68,18 +68,19 @@
 
 .profile-dropdown .nav-link {
   text-decoration: none;
-  color: #f7a1c4;
+  color: #eb7bc0;
   padding: 8px 12px;
   display: block;
   transition: background-color 0.2s ease;
 }
 
 .nav-link:hover {
-  color: #dc7f9b;
+  color: #c46bae;
+  background-color: rgba(235, 123, 192, 0.1);
 }
 
 .profile-dropdown .nav-link {
-  color: #f7a1c4;
+  color: #eb7bc0;
   font-size: 14px;
   padding: 8px 12px;
   margin: 4px 0;
@@ -96,14 +97,14 @@
 .logout-button {
     padding: 2px 8px 2px 8px;
     font-size: 8px;
-    color: #94bfa7;
-    background: #94bfa7;
+    color: #eb7bc0;
+    background: #eb7bc0;
     border: none;
     box-shadow: none;
     cursor: pointer;
 }
 
 .logout-button:hover {
-  background-color: #f7a1c4;
-  color: #2f2f2f;
+  background-color: #c46bae;
+  color: #7c606b;
 }

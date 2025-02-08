@@ -59,4 +59,10 @@
 
 .remove-button:hover {
   background-color: #ff0000;
+}
+
+.favorites-container {
+  max-width: 1200px;  /* Same as nav-list max-width */
+  margin: 0 auto;
+  padding: 16px 32px;  /* Same as nav-list padding */
 } 

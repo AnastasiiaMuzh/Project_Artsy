@@ -64,8 +64,13 @@ function ProfileButton() {
                 <li>{user.email}</li>
               </div>
               <li>
-                <NavLink to="/favorites" onClick={closeMenu} className="nav-link">
-                  My Favorites
+                <NavLink to="/products" onClick={closeMenu} className="nav-link">
+                  Manage Products
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/reviews" onClick={closeMenu} className="nav-link">
+                  Manage Reviews
                 </NavLink>
               </li>
               <li>

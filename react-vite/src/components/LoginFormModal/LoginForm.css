@@ -62,10 +62,21 @@
 
 .login-form button:hover {
   background-color: pink;
+  transform: scale(1.02);
 }
 
 .login-form p {
   color: lightskyblue;
   font-size: 14px;
   margin-top: 4px;
+}
+
+.demo-login {
+  margin-top: 10px !important;
+  background-color: #a5d6a7 !important;  /* A softer green color */
+}
+
+.demo-login:hover {
+  background-color: #81c784 !important;  /* Slightly darker green on hover */
+  transform: scale(1.02);
 }

@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   font-size: 24px;
-  color: #ffc4eb;
+  color: #f1dedc;
   transition: all 0.2s ease;
 }
 
@@ -19,91 +19,58 @@
   position: absolute;
   right: 0;
   top: 100%;
-  background-color: #abc798;
-  border: 1px solid #f1dedc;
-  border-radius: 8px;
+  background-color: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
   padding: 8px 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  min-width: 200px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  min-width: 180px;
   z-index: 1000;
 }
 
 .profile-dropdown li {
   padding: 6px 16px;
-  list-style: none;
+  color: #2f2f2f;
   font-size: 13px;
-  color: #f1dedc;
-}
-
-/* .profile-dropdown li:hover {
-  background-color: #fce4ec;
-} */
-
-.profile-dropdown button {
-  width: 100%;
-  text-align: left;
-  background: none;
-  border: none;
-  padding: 6px 16px;
-  font-size: 13px;
-  color: #333;
-  cursor: pointer;
-}
-
-.profile-dropdown button:hover {
-    transform: scale(1.1);
 }
 
 .profile-dropdown .user-info {
-  border-bottom: 1px solid #ffc4eb;
+  border-bottom: 1px solid #e0e0e0;
   padding-bottom: 8px;
   margin-bottom: 8px;
 }
 
-.profile-dropdown .user-info li {
-  font-size: 14px;
-  padding: 8px 16px;
-}
-
 .profile-dropdown .nav-link {
-  text-decoration: none;
-  color: #f1dedc;
-  padding: 8px 12px;
   display: block;
-  transition: background-color 0.2s ease;
+  color: #2f2f2f;
+  text-decoration: none;
+  padding: 6px 16px;
+  font-size: 13px;
 }
 
-.nav-link:hover {
-  color: #ffe4fa;
-  background-color: rgba(241, 222, 220, 0.1);
-}
-
-.profile-dropdown .nav-link {
-  color: #f1dedc;
-  font-size: 14px;
-  padding: 8px 12px;
-  margin: 4px 0;
-}
-
-/* .profile-dropdown .nav-link:hover {
-  background-color: #fce4ec;
-} */
-
-.profile-button-container {
-  position: relative;
+.profile-dropdown .nav-link:hover {
+  /* background-color: #f5f5f5; */
+  color: #2f2f2f;
 }
 
 .logout-button {
-    padding: 2px 8px 2px 8px;
-    font-size: 8px;
-    color: #abc798;
-    background: #f1dedc;
-    border: none;
-    box-shadow: none;
-    cursor: pointer;
+  width: 80%;
+  margin: 8px;
+  text-align: center;
+  background-color: #2f2f2f;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 16px;
+  color: white;
+  cursor: pointer;
+  font-size: 13px;
+  transition: all 0.2s ease;
 }
 
 .logout-button:hover {
-  background-color: #ffe4fa;
-  color: #abc798;
+  transform: scale(1.02);
+}
+
+.profile-button-container {
+  position: relative;
 }

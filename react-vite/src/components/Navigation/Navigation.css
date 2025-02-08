@@ -8,8 +8,8 @@
 }
 
 .nav-container {
-  background-color: #abc798;  /* Sage green background */
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  background-color: #abc798;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
 .nav-list {
@@ -30,7 +30,7 @@
 
 .nav-link {
   text-decoration: none;
-  color: #f1dedc;  
+  color: #f1dedc;
   padding: 8px 16px;
   border-radius: 4px;
   /* transition: all 0.2s ease; */
@@ -43,6 +43,7 @@
   background-color: transparent;
   color:#ffc4eb;
 }
+
 .nav-right {
   display: flex;
   align-items: center;
@@ -73,30 +74,31 @@
 .search-icon {
   position: absolute;
   left: 12px;
-  color: #abc798; 
+  color: #abc798;
   font-size: 1rem;
 }
 
 .search-input {
   width: 100%;
   padding: 12px 20px 12px 40px;
-  border: 2px solid #f1dedc;  
+  border: 1px solid #f1dedc;
   border-radius: 25px;
   font-size: 16px;
-  background-color: #f1dedc;  
+  background-color: white;
 }
 
 .search-input:focus {
   outline: none;
-  box-shadow: 0 2px 8px #ffe4fa;  
+  border-color: #ffc4eb;
+  box-shadow: 0 0 4px rgba(255, 196, 235, 0.2);
 }
 
 .search-input:focus + .search-icon {
-  color: #abc798;  
+  color: #abc798;
 }
 
 .search-input::placeholder {
-  color: #abc798;  
+  color: #abc798;
   font-style: italic;
 }
 
@@ -111,30 +113,32 @@
 
 /* Update these styles to be more specific */
 .favorites-link .heart-icon {
-  font-size: 24px;
-  color: #ffc4eb;  /* Change to soft peach */
+  font-size: 20px;
+  color: #f1dedc;
 }
 
 .favorites-link:hover .heart-icon {
-  color: #ffc4eb;  /* Light pink on hover */
+  color: #ffe4fa;
+  transform: none;
 }
 
 .create-product-link {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #abc798;  /* Keep sage green text */
+  color: #abc798;
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 20px;
-  background-color: #f1dedc;  /* Soft peach background */
+  background-color: #f1dedc;
   transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: normal;
 }
 
 .create-product-link:hover {
   background-color: #ffe4fa;
-  color: #abc798;
-  transform: translateY(-1px);
+  transform: none;
 }
 
 .plus-icon {

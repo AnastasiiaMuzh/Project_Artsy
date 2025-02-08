@@ -65,7 +65,7 @@ export const getDetails = (productId) => async (dispatch) => {
 }
 
 export const createProduct = (newProductData, imageUrl) => async (dispatch) => {
-    const response = await csrfFetch("/api/products", {
+    const response = await csrfFetch("/api/products/", {
         method: "POST",
         headers: {
             "Content-Type": "application/json", 
@@ -87,7 +87,7 @@ export const createProduct = (newProductData, imageUrl) => async (dispatch) => {
                 preview: index === 0, // Mark the first image as the preview
             };
 
-            await csrfFetch(`/api/products/${newProduct.id}/images`, {
+            await csrfFetch(`/api/products/${newProduct.id}/productImages`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(imgDetails),

@@ -129,7 +129,7 @@ function CreateProductForm() {
         };
 
         const imageUrls = [previewImage, ...otherImages.filter((url) => url.trim() !== "")];
-
+        console.log("imageUrls: ", imageUrls)
         try {
             if (isUpdate) {
                 const updatedProduct = await dispatch(updateProduct(productId, productData));

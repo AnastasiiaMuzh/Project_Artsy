@@ -73,6 +73,10 @@ function CreateProductForm() {
         setOtherImages(updatedImages);
     };
 
+    const addEmptyImageInput = () => {
+        setOtherImages((prev) => [...prev, '']); // Add an empty string for the new input
+    };
+
     const validateFields = () => {
         const errors = {};
         const urlRegex = /(png|jpg|jpeg)/i; 
@@ -231,6 +235,9 @@ function CreateProductForm() {
               />
             </div>
           ))}
+        <button type="button" onClick={addEmptyImageInput}>
+                        Add Another Image
+        </button>
         </div>
 
         <div className="create-button-div">

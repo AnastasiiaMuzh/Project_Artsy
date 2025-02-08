@@ -63,10 +63,18 @@
 .product-tile-rating {
     font-size: 16px;
     display: flex;
+    align-items: center;
 }
 
 .star {
     color: #ffc107;
+    font-size: 20px;
+    margin-right: 3px;
+}
+
+.rating {
+    font-size: 16px;
+   
 }
 
 .price-and-rating {

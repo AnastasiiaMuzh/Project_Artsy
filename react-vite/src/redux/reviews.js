@@ -1,19 +1,25 @@
 import { csrfFetch } from "./csrf";
 
-export const GET_ALL_REVIEWS = 'reviews/getAllReviews'
-export const ADD_REVIEW = 'reviews/addReview'
-export const DELETE_REVIEW = 'reviews/deleteReview'
-export const EDIT_REVIEW = 'reviews/editReview'
-export const LOAD_REVIEWABLE_PRODUCTS = 'reviews/getReviewableProducts'
+const GET_ALL_REVIEWS = 'reviews/getAllReviews'
+const ADD_REVIEW = 'reviews/addReview'
+const DELETE_REVIEW = 'reviews/deleteReview'
+const EDIT_REVIEW = 'reviews/editReview'
+const LOAD_REVIEWABLE_PRODUCTS = 'reviews/getReviewableProducts'
+const LOAD_USER_REVIEWS = 'reviews/getUserReviews'
 
-export const loadReviews = allReviews => ({
+const loadReviews = allReviews => ({
     type: GET_ALL_REVIEWS,
     allReviews
 })
 
-export const loadReviewableProducts = (reviewableProducts) => ({
+const loadReviewableProducts = (reviewableProducts) => ({
     type: LOAD_REVIEWABLE_PRODUCTS,
     reviewableProducts
+})
+
+const loadUserReviews = userReviews => ({
+    type: LOAD_USER_REVIEWS,
+    userReviews
 })
 
 export const getAllReviews = (productId) => async dispatch => {
@@ -33,6 +39,16 @@ export const fetchReviewableProducts = () => async dispatch => {
         const data = await response.json();
         dispatch(loadReviewableProducts(data))
         return data;
+    }
+}
+
+export const getCurrUserReviews = () => async dispatch => {
+    const response = await csrfFetch('/api/reviews/current')
+
+    if (response.ok) {
+        const data = await response.json()
+        dispatch(loadUserReviews(data))
+        return data
     }
 }
 
@@ -64,6 +80,12 @@ const reviewReducer = (state = initialState, action) => {
                 ...state,
                 reviewableProducts: action.reviewableProducts
             }
+        case LOAD_USER_REVIEWS:
+            return {
+                ...state,
+                currentUserReviews: action.userReviews
+            }
+
         default:
             return state;
     }

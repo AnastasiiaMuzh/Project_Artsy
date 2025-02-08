@@ -20,7 +20,7 @@ function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(""); // To track the selected image
 
-  const currentUser = useSelector((state) => state.session.user)
+  const currentUser = useSelector((state) => state.session.session)
   const product = useSelector((state) => state.products.productDetails);
   const reviews = useSelector((state) => state.reviews.reviewsByProduct[productId])
   const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
@@ -148,6 +148,7 @@ function ProductDetails() {
               <div>{review.review}</div>
               <div>{review.User.firstName} {review.User.lastName}</div>
               <div>{createdAt}</div>
+              {review.User?.id === currentUser?.id ? <button>Update</button> : null}
               {review.User?.id === currentUser?.id ? <button>Delete</button> : null}
             </div>
           )

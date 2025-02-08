@@ -19,11 +19,11 @@
   position: absolute;
   right: 0;
   top: 100%;
-  background-color: #2f2f2f;
+  background-color: white;
   border: 1px solid #e0b7b7;
   border-radius: 8px;
   padding: 8px 0;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   min-width: 200px;
   z-index: 1000;
 }
@@ -32,7 +32,7 @@
   padding: 6px 16px;
   list-style: none;
   font-size: 13px;
-  color: #f7a1c4;
+  color: #2f2f2f;
 }
 
 /* .profile-dropdown li:hover {
@@ -46,17 +46,17 @@
   border: none;
   padding: 6px 16px;
   font-size: 13px;
-  color: #333;
+  color: #2f2f2f;
   cursor: pointer;
 }
 
 .profile-dropdown button:hover {
-    transform: scale(1.1);
-    color: #ff8fa3;
+  transform: scale(1.1);
+  color: #dc7f9b;
 }
 
 .profile-dropdown .user-info {
-  border-bottom: 1px solid #e0b7b7;
+  border-bottom: 1px solid #e0e0e0;
   padding-bottom: 8px;
   margin-bottom: 8px;
 }
@@ -68,22 +68,18 @@
 
 .profile-dropdown .nav-link {
   text-decoration: none;
-  color: #f7a1c4;
+  color: #2f2f2f;
+  font-size: 14px;
   padding: 8px 12px;
   display: block;
   transition: background-color 0.2s ease;
 }
 
-.nav-link:hover {
-  color: #dc7f9b;
+.profile-dropdown .nav-link:hover {
+  transform: scale(1.02);
+  color: #2f2f2f;
 }
 
-.profile-dropdown .nav-link {
-  color: #f7a1c4;
-  font-size: 14px;
-  padding: 8px 12px;
-  margin: 4px 0;
-}
 
 /* .profile-dropdown .nav-link:hover {
   background-color: #fce4ec;
@@ -93,17 +89,22 @@
   position: relative;
 }
 
-.logout-button {
-    padding: 2px 8px 2px 8px;
-    font-size: 8px;
-    color: #94bfa7;
-    background: #94bfa7;
-    border: none;
-    box-shadow: none;
-    cursor: pointer;
+.profile-button-container .logout-button {
+  width: 80%;
+  margin: 8px auto;
+  padding: 8px 16px;
+  font-size: 13px;
+  color: #2f2f2f;
+  background: #dc7f9b;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  display: block;
+  text-align: center;
 }
 
-.logout-button:hover {
-  background-color: #f7a1c4;
+.profile-button-container .logout-button:hover {
+  background-color: #dc7f9b;
   color: #2f2f2f;
+  transform: scale(1.02);
 }

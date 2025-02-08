@@ -29,12 +29,12 @@ function CreateProductForm() {
         console.log("user: ", user)
         console.log("user.id: ", user.id)
         // console.log("user first name: ", user.firstName)
-        // if (!user) {
-        //     return navigate("/", {
-        //         state: { error: "Please login to create a product" },
-        //         replace: true
-        //     });
-        // }
+        if (!user) {
+            return navigate("/", {
+                state: { error: "Please login to create a product" },
+                replace: true
+            });
+        }
 
         if (isUpdate && productId) {
             console.log("Fetching details for productId: ", productId);
@@ -71,12 +71,18 @@ function CreateProductForm() {
         const urlRegex = /(png|jpg|jpeg)/i; 
 
         // Check if product name already exists
-        const isNameTaken = Object.values(allProducts).some(
-            (product) => product.name.toLowerCase() === name.toLowerCase() && product.id !== productId
-        );
-
-        if (!name) errors.name = "Name is required";
-        else if (isNameTaken) errors.name = "Product name already exists";
+        if (!isUpdate) {
+            const isNameTaken = Object.values(allProducts).some(
+                (product) => product.name.toLowerCase() === name.toLowerCase() && product.id !== productId
+            );
+    
+            if (!name) errors.name = "Name is required";
+            else if (isNameTaken) errors.name = "Product name already exists";
+        } else {
+            // Check if the name is provided during an update, as this could be required based on your form behavior
+            if (!name) errors.name = "Name is required";
+        }
+    
 
         if (!description || description.length < 30) errors.description = "Description needs a minimum of 30 characters";
         if (!price || price <= 0) errors.price = "Price is required and cannot be used by an existing product";
@@ -117,11 +123,11 @@ function CreateProductForm() {
             if (isUpdate) {
                 const updatedProduct = await dispatch(updateProduct(productId, productData, imageUrls));
                 console.log("updatedProduct: ", updatedProduct)
-                navigate(`/api/products/${productId}`);
+                navigate(`/products/${productId}`);
             } else {
                 const createdProduct = await dispatch(createProduct(productData, imageUrls));
                 console.log("createdProduct: ", createdProduct)
-                navigate(`/api/products/${createdProduct.id}`); // Redirect to the new product page
+                navigate(`/products/${createdProduct.id}`); // Redirect to the new product page
             }
         } catch (error) {
             console.error("Error creating product: ", error)
@@ -209,7 +215,7 @@ function CreateProductForm() {
           </div>
           {otherImages.map((url, index) => (
             <div key={index}>
-              <label>Additional Images {index + 1}:</label>
+              <label>Additional Image:</label>
               <input 
                 type="text" 
                 // placeholder="Additional Image URL" 

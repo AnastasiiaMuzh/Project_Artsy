@@ -67,7 +67,9 @@ export const getDetails = (productId) => async (dispatch) => {
 export const createProduct = (newProductData, imageUrl) => async (dispatch) => {
     const response = await csrfFetch("/api/products", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json", 
+        },
         body: JSON.stringify(newProductData),
     });
 
@@ -173,12 +175,13 @@ const productsReducer = (state = initialState, action) => {
         }
 
         case DELETE_PRODUCT: {
-            const newState = { ...state };
-            delete newState.allProducts[action.payload];
-            if (state.productDetails.id === action.payload) {
-                newState.productDetails = {}; // Clear productDetails if the deleted product was the current one
-            }
-            return newState;
+            const remainingProducts = { ...state.allProducts };
+            delete remainingProducts[action.payload];
+            return {
+                ...state,
+                allProducts: remainingProducts,
+                productDetails: state.productDetails.id === action.payload ? {} : state.productDetails,
+            };
         }
 
     default:

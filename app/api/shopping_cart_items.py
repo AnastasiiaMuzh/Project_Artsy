@@ -1,10 +1,10 @@
 from flask import Blueprint, request, jsonify
 from flask_login import login_required, current_user  
-from werkzeug.exceptions import BadRequest, NotFound, Forbidden
+#from werkzeug.exceptions import BadRequest, NotFound, Forbidden
 from app.models import db, ShoppingCartItem, Product, Order, OrderItem, User
 from datetime import datetime
 
-cart_routes = Blueprint('cart_routes', __name__, url_prefix='/api/cart')
+cart_routes = Blueprint('cart', __name__)
 
 
 #------------------------Task 1) Returns cart items for current user with products details and total cart price. Auth required. GET /api/cart------------------------

@@ -1,13 +1,17 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { NavLink, Link } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import { FaHeart, FaPlus, FaSearch } from 'react-icons/fa';
 import "./Navigation.css";
+import { useSelector } from 'react-redux';
+import { FaShoppingCart } from 'react-icons/fa';
 
 function Navigation() {
   const [searchQuery, setSearchQuery] = useState("");
   const sessionUser = useSelector((state) => state.session.session);
+  const cartItems = useSelector((state) => state.cart.cart);
+
+  const itemCount = cartItems.length;
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -37,26 +41,17 @@ function Navigation() {
           </form>
         </div>
 
-        {sessionUser && (
-          <>
-            <li className="nav-item">
-              <NavLink to="/favorites" className="favorites-link">
-                <FaHeart className="heart-icon" />
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink to="/products/new" className="create-product-link">
-                <FaPlus className="plus-icon" />
-                <span>Create Product</span>
-              </NavLink>
-            </li>
-          </>
-        )}
+        <li className="nav-cart">
+            <Link to="/cart" className="cart-link">
+              <FaShoppingCart size={23} />
+            </Link>
+          </li>
 
         <div className="nav-right">
           <li className="nav-item">
             <ProfileButton />
           </li>
+
         </div>
       </ul>
     </nav>

@@ -8,7 +8,7 @@
 }
 
 .nav-container {
-  background-color: #abc798;  /* Sage green background */
+  background-color: #48284a;  /* Deep purple background */
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -30,7 +30,7 @@
 
 .nav-link {
   text-decoration: none;
-  color: #f1dedc;  
+  color: #fff7ae;  
   padding: 8px 16px;
   border-radius: 4px;
   /* transition: all 0.2s ease; */
@@ -41,14 +41,14 @@
 .nav-link:hover {
   transform: scale(1.02);
   background-color: transparent;
-  color:#ffc4eb;
+  color: #ffc6d9;  
 }
 .nav-right {
   display: flex;
   align-items: center;
   gap: 16px;
   white-space: nowrap;
-  color: #ffc4eb;
+  color: #ffc6d9;  
 }
 
 .search-container {
@@ -73,30 +73,30 @@
 .search-icon {
   position: absolute;
   left: 12px;
-  color: #abc798; 
+  color: #916c80; 
   font-size: 1rem;
 }
 
 .search-input {
   width: 100%;
   padding: 12px 20px 12px 40px;
-  border: 2px solid #f1dedc;  
+  border: 2px solid #916c80;
   border-radius: 25px;
   font-size: 16px;
-  background-color: #f1dedc;  
+  background-color: #ffe1c6;  
 }
 
 .search-input:focus {
   outline: none;
-  box-shadow: 0 2px 8px #ffe4fa;  
+  box-shadow: 0 2px 8px #ffc6d9;  
 }
 
 .search-input:focus + .search-icon {
-  color: #abc798;  
+  color: #ffc6d9;  
 }
 
 .search-input::placeholder {
-  color: #abc798;  
+  color: #916c80;  
   font-style: italic;
 }
 
@@ -112,28 +112,28 @@
 /* Update these styles to be more specific */
 .favorites-link .heart-icon {
   font-size: 24px;
-  color: #ffc4eb;  /* Change to soft peach */
+  color: #ffc6d9;  
 }
 
 .favorites-link:hover .heart-icon {
-  color: #ffc4eb;  /* Light pink on hover */
+  color: #fff7ae; 
 }
 
 .create-product-link {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #abc798;  /* Keep sage green text */
+  color: #fff7ae; 
   text-decoration: none;
   padding: 8px 16px;
   border-radius: 20px;
-  background-color: #f1dedc;  /* Soft peach background */
+  background-color: #916c80;  
   transition: all 0.2s ease;
 }
 
 .create-product-link:hover {
-  background-color: #ffe4fa;
-  color: #abc798;
+  background-color: #ffc6d9;  
+  color: #48284a;  
   transform: translateY(-1px);
 }
 

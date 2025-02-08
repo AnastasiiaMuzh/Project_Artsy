@@ -8,7 +8,7 @@
 }
 
 .nav-container {
-  background-color: #48284a;  /* Deep purple background */
+  background-color: #48284a;  
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
@@ -30,7 +30,7 @@
 
 .nav-link {
   text-decoration: none;
-  color: #fff7ae;  
+  color: #ffc6d9;
   padding: 8px 16px;
   border-radius: 4px;
   /* transition: all 0.2s ease; */
@@ -116,7 +116,8 @@
 }
 
 .favorites-link:hover .heart-icon {
-  color: #fff7ae; 
+  color: #ffc6d9; 
+  transform: scale(1.02);
 }
 
 .create-product-link {

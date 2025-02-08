@@ -12,7 +12,7 @@
 
 .profile-button:hover {
   transform: scale(1.1);
-  color: #fff7ae;
+  color: #ffc6d9;
 }
 
 .profile-dropdown {
@@ -52,6 +52,7 @@
 
 .profile-dropdown button:hover {
     transform: scale(1.1);
+    color: #ffc6d9;
 }
 
 .profile-dropdown .user-info {

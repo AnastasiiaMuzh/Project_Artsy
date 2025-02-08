@@ -39,10 +39,10 @@
 }
 
 .nav-link:hover {
-  transform: scale(1.02);
+  color: #eda4bd;
   background-color: transparent;
-  color: #c46bae;
 }
+
 .nav-right {
   display: flex;
   align-items: center;
@@ -116,7 +116,7 @@
 }
 
 .favorites-link:hover .heart-icon {
-  color: #c46bae;
+  color: #eda4bd;
   transform: scale(1.02);
 }
 
@@ -133,9 +133,8 @@
 }
 
 .create-product-link:hover {
-  background-color: #c46bae;
+  background-color: #eda4bd;
   color: #7c606b;
-  transform: translateY(-1px);
 }
 
 .plus-icon {

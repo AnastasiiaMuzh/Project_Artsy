@@ -12,7 +12,7 @@
 
 .profile-button:hover {
   transform: scale(1.1);
-  color: #c46bae;
+  color: #eda4bd;
 }
 
 .profile-dropdown {
@@ -52,7 +52,7 @@
 
 .profile-dropdown button:hover {
     transform: scale(1.1);
-    color: #c46bae;
+    color: #eda4bd;
 }
 
 .profile-dropdown .user-info {
@@ -75,8 +75,8 @@
 }
 
 .nav-link:hover {
-  color: #c46bae;
-  background-color: rgba(235, 123, 192, 0.1);
+  color: #eda4bd;
+  background-color: rgba(237, 164, 189, 0.1);
 }
 
 .profile-dropdown .nav-link {
@@ -105,6 +105,6 @@
 }
 
 .logout-button:hover {
-  background-color: #c46bae;
+  background-color: #eda4bd;
   color: #7c606b;
 }

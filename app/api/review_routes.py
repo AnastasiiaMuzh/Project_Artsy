@@ -302,6 +302,8 @@ def get_reviewable_products():
         reviewable_data.append({
             "id": item.id,
             "productName": item.products.name,
+            "createdAt": item.orders.createdAt
+            # "previewImage": item.products.previewImage
             # "productImage": item.
         })
 

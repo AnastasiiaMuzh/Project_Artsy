@@ -1,22 +1,58 @@
-// import { useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux"
-// import { getAllReviews } from "../../redux/reviews";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux"
+import { useModal } from "../../context/Modal";
+import { fetchReviewableProducts, getCurrUserReviews } from "../../redux/reviews";
+import ReviewableProductModal from "./ReviewableProductModal";
 
-// const ManageReviews = () => {
-//     const dispatch = useDispatch();
+const ManageReviews = () => {
+    const dispatch = useDispatch();
+    const { setModalContent } = useModal();
+    const [loading, setLoading] = useState(true);
 
-//     const currUserId = useSelector(state => state.session.user?.id)
-//     const reviewObj = useSelector(state => state.reviewsByProduct)
+    const currentUser = useSelector(state => state.session.session)
+    const reviews = useSelector(state => state.reviews.currentUserReviews?.Reviews)
+    const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
 
-//     useEffect(() => {
-//         dispatch(getAllReviews());
-//     }, [dispatch])
+    useEffect(() => {
+        setLoading(true);
+        Promise.all([
+            dispatch(getCurrUserReviews()),
+            dispatch(fetchReviewableProducts())
+        ]).finally(() => setLoading(false))
+    }, [dispatch])
 
-//     return (
-//         <div>
+    const handleReviewableProductButton = async (e) => {
+        e.preventDefault();
+        setModalContent(<ReviewableProductModal/>)
+    }
 
-//         </div>
-//     )
-// }
+    if (loading) return <p>Loading reviews...</p>
 
-// export default ManageReviews
+    return (
+        <div>
+            <h1>Manage Reviews</h1>
+            {!reviewableProducts?.message && reviewableProducts?.reviewlessProducts?.length > 0 && (
+                <button onClick={handleReviewableProductButton}>Leave a review for recent purchases!</button>
+            )}
+            {reviews?.map((review, index) => {
+                const createdAt = new Date(review.createdAt).toLocaleDateString("en-US", {
+                    month: 'short',
+                    day: 'numeric',
+                    year: 'numeric',
+                })
+
+                return (
+                    <div key={index}>
+                        <div>{review.Products.name}</div>
+                        <div>{createdAt}</div>
+                        <div>{review.review}</div>
+                        <button>Update</button>
+                        <button>Delete</button>
+                    </div>
+                )
+            })}
+        </div>
+    )
+}
+
+export default ManageReviews

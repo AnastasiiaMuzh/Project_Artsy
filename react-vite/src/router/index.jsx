@@ -7,7 +7,7 @@ import HomePage from '../components/HomePage';
 import ProductDetails from '../components/ProductDetails/ProductDetails';
 import ManageProducts from '../components/ManageProducts';
 import CreateProductForm from '../components/CreateProductForm/CreateProductForm';
-// import UserReviews from '../components/Reviews/ManageReviews';
+import ManageReviews from '../components/Reviews';
 
 
 
@@ -48,10 +48,10 @@ export const router = createBrowserRouter([
         path: "favorites",
         element: <FavoritesPage />,
       },
-      // {
-      //   path: "reviews",
-      //   element: <UserReviews />,
-      // },
+      {
+        path: '/reviews/current',
+        element: <ManageReviews />
+      },
       {
         path: "products/new",
         element: <CreateProductForm />,

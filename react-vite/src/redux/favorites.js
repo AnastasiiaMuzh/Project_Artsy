@@ -41,9 +41,9 @@ export const addToFavorites = (productId) => async (dispatch) => {
   });
 
   if (response.ok) {
-    const data = await response.json();
-    dispatch(addFavorite(data));
-    return data;
+    const favorite = await response.json();
+    dispatch(addFavorite(favorite));
+    return favorite;
   }
 };
 

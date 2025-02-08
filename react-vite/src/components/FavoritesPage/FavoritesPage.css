@@ -17,6 +17,8 @@
   padding: 15px;
   background: white;
   transition: transform 0.2s;
+  display: flex;
+  flex-direction: column;
 }
 
 .favorite-item:hover {
@@ -65,4 +67,14 @@
   max-width: 1200px;  /* Same as nav-list max-width */
   margin: 0 auto;
   padding: 16px 32px;  /* Same as nav-list padding */
+}
+
+.favorite-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.favorite-link:hover {
+  opacity: 0.9;
 } 

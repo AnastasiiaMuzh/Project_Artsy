@@ -29,7 +29,7 @@ const ReviewsModal = ({productId}) => {
 
         try {
             // need postAReview redux store
-            await dispatch(postAReview({productId, review: textArea, stars: starRating}));
+            // await dispatch(postAReview({productId, review: textArea, stars: starRating}));
             await dispatch(getDetails(productId));
             closeModal();
         } catch (error) {

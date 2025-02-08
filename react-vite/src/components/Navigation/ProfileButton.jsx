@@ -48,7 +48,7 @@ function ProfileButton() {
 
   return (
     <div className="profile-button-container">
-      <button 
+      <button
         onClick={toggleMenu}
         className="profile-button"
         ref={buttonRef}
@@ -69,7 +69,7 @@ function ProfileButton() {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="/reviews" onClick={closeMenu} className="nav-link">
+                <NavLink to="/reviews/current" onClick={closeMenu} className="nav-link">
                   Manage Reviews
                 </NavLink>
               </li>

@@ -2,36 +2,57 @@ import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { IoMdStar } from "react-icons/io";
+import { FaHeart, FaRegHeart } from 'react-icons/fa';  // Import both filled and outline hearts
 // import { Tooltip } from 'react-tooltip'
 import { getProducts } from '../../redux/products'
+import { addToFavorites, removeFromFavorites, fetchUserFavorites } from '../../redux/favorites'
 import "./HomePage.css";
 
 const HomePage = () => {
     const dispatch = useDispatch();
+    const products = useSelector((state) => state.products.allProducts);
+    const favorites = useSelector((state) => state.favorites.items);
+    const sessionUser = useSelector((state) => state.session.session);
+    const [loading, setLoading] = useState(true);
+    const [selectedCategory, setSelectedCategory] = useState("all"); // Track the selected category
 
-  // Get products from Redux store
-  const products = useSelector((state) => state.products.allProducts);
-
-  const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState("all"); // Track the selected category
-
-  useEffect(() => {
-    dispatch(getProducts())
-    .then(() => setLoading(false));
-  }, [dispatch]);
+    useEffect(() => {
+        const loadInitialData = async () => {
+            await dispatch(getProducts());
+            if (sessionUser) {
+                await dispatch(fetchUserFavorites());
+            }
+            setLoading(false);
+        };
+        
+        loadInitialData();
+    }, [dispatch, sessionUser]);
 
   // Handle category click and filter products
   const handleCategoryClick = (category) => {
     setSelectedCategory(category); // Update selected category
   };
 
-  // Filter products based on selected category
-  const filteredProducts = selectedCategory === "all" 
-    ? products 
-    : products.filter(product => product.category === selectedCategory);
+    // Filter products based on selected category
+    const filteredProducts = selectedCategory === "all" 
+        ? products 
+        : products.filter(product => product.category === selectedCategory);
+
+    const handleFavoriteClick = async (e, productId) => {
+        e.preventDefault(); // Prevent navigation to product details
+        if (!sessionUser) return; // if user is not logged in, return
+
+        const isFavorited = favorites.some(fav => fav.productId === productId);
+        
+        if (isFavorited) {
+            await dispatch(removeFromFavorites(productId));
+        } else {
+            await dispatch(addToFavorites(productId));
+        }
+    };
 
   if (loading) {
-    return <div>Loading products...</div>;
+      return <div>Loading products...</div>;
   }
 
   if (!filteredProducts || filteredProducts.length === 0) {
@@ -82,6 +103,17 @@ const HomePage = () => {
             <div className="product-tile">
               <div className="product-img-container">
                 <img src={product.previewImage} alt={product.name} className="product-img" />
+                {sessionUser && (
+                                    <button
+                                        className="favorite-button"
+                                        onClick={(e) => handleFavoriteClick(e, product.id)}
+                                    >
+                                        {favorites.some(fav => fav.productId === product.id) 
+                                            ? <FaHeart className="heart-icon filled" />
+                                            : <FaRegHeart className="heart-icon" />
+                                        }
+                                    </button>
+                                )}
               </div>
               <div className="product-info">
                     <div className='product-tile-name'>{product.name}</div>

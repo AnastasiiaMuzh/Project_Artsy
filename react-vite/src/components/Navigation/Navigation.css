@@ -97,20 +97,23 @@
   font-style: italic;
 }
 
-.favorites-link {
+/* .favorites-link {
   display: flex;
   align-items: center;
   color: pink;
   text-decoration: none;
   transition: color 0.2s ease;
+} */
+
+
+/* Update these styles to be more specific */
+.favorites-link .heart-icon {
+  font-size: 24px;
+  color: pink;
 }
 
-.favorites-link:hover {
+.favorites-link:hover .heart-icon {
   color: hotpink;
-}
-
-.heart-icon {
-  font-size: 1.5rem;
 }
 
 .create-product-link {

@@ -7,6 +7,8 @@ import './ProductDetails.css'
 import { fetchReviewableProducts, getAllReviews } from '../../redux/reviews';
 import { useModal } from '../../context/Modal';
 import ReviewsModal from '../Reviews/ReviewsModal'
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
+import { addToFavorites, removeFromFavorites, fetchUserFavorites } from '../../redux/favorites';
 // import { IoMdStar } from "react-icons/io";
 // import { GoDotFill } from "react-icons/go";
 
@@ -20,10 +22,12 @@ function ProductDetails() {
   const [loading, setLoading] = useState(true);
   const [selectedImage, setSelectedImage] = useState(""); // To track the selected image
 
-  const currentUser = useSelector((state) => state.session.user)
+  const currentUser = useSelector((state) => state.session.session)
   const product = useSelector((state) => state.products.productDetails);
   const reviews = useSelector((state) => state.reviews.reviewsByProduct[productId])
   const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
+  const favorites = useSelector((state) => state.favorites.items);
+
 
   const isReviewable = reviewableProducts?.reviewlessProducts?.some(item => item.id === Number(productId))
   const handlePostReviewButton = async (e) => {
@@ -36,9 +40,10 @@ function ProductDetails() {
     Promise.all([
       dispatch(getDetails(productId)),
       dispatch(getAllReviews(productId)),
-      dispatch(fetchReviewableProducts())
+      dispatch(fetchReviewableProducts()),
+      currentUser ? dispatch(fetchUserFavorites()) : Promise.resolve()
     ]).finally(() => setLoading(false));
-  }, [dispatch, productId])
+  }, [dispatch, productId, currentUser]);
 
   // console.log("product: ", product)
   // console.log("product.ProductImages[1].url", product.ProductImages[0].url)
@@ -76,6 +81,22 @@ function ProductDetails() {
 
     return '★'.repeat(filledStars) + '☆'.repeat(emptyStars);
   }
+
+  // Add favorite handler
+  const handleFavoriteClick = async (e) => {
+    e.preventDefault();
+    if (!currentUser) return;
+
+    const isFavorited = favorites.some(fav => fav.productId === Number(productId));
+    
+    if (isFavorited) {
+      await dispatch(removeFromFavorites(productId));
+      await dispatch(fetchUserFavorites());
+    } else {
+      await dispatch(addToFavorites(productId));
+      await dispatch(fetchUserFavorites());
+    }
+  };
 
   if (loading) return <p>Loading product details...</p>
 
@@ -115,6 +136,17 @@ function ProductDetails() {
       {/* Main Image */}
       <div className="main-image-container">
           <img src={selectedImage} alt={product.name} className="main-image" />
+          {currentUser && (
+            <button
+              className="favorite-button"
+              onClick={handleFavoriteClick}
+            >
+              {favorites.some(fav => fav.productId === Number(productId))
+                ? <FaHeart className="heart-icon filled" />
+                : <FaRegHeart className="heart-icon" />
+              }
+            </button>
+          )}
         </div>
       </div>
 

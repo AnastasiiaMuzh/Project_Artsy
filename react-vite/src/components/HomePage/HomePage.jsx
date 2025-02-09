@@ -79,7 +79,8 @@ const HomePage = () => {
       <h2>Insert Ana&apos;s idea for a banner here?</h2> */}
       <div className='banner-category'>
             <div className='home-banner'>
-                <h3>Click to view Valentine&apos;s Day products now!</h3>
+                <h3>Gift ideas for Valentine&apos;s Day!</h3>
+                <button>Shop now</button>
             </div>
             <div className='categories'>
                 <p>Search Products by Category:</p>

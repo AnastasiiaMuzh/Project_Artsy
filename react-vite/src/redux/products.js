@@ -102,20 +102,47 @@ export const createProduct = (newProductData, imageUrl) => async (dispatch) => {
     }
 };
 
-export const updateProduct = (productId, updatedData) => async (dispatch) => {
+export const updateProduct = (productId, updatedData, imageUrls = [], previewImageUrl = null) => async (dispatch) => {
     const response = await csrfFetch(`/api/products/${productId}`, {
         method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify(updatedData),
     });
 
     if (response.ok) {
         const updatedProduct = await response.json();
+
+        // If there are images to update
+        if (imageUrls.length > 0) {
+            const imageUpdateResponse = await csrfFetch(`/api/products/${productId}/images`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    imageUrls,          // List of new image URLs
+                    previewImageUrl,    // URL of the preview image
+                }),
+            });
+
+            if (imageUpdateResponse.ok) {
+                const updatedImages = await imageUpdateResponse.json();
+                console.log("Updated images: ", updatedImages);
+            } else {
+                const imageError = await imageUpdateResponse.json();
+                console.error("Error updating images:", imageError);
+                throw imageError;
+            }
+
         dispatch(updateProductAction(updatedProduct));
         return updatedProduct;
     } else {
         const errorData = await response.json();
         console.error("Error response:", errorData);
         throw errorData;
+    }
     }
 };
 
@@ -152,7 +179,7 @@ const productsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 productDetails: action.payload,
-                allProduct: newAllProducts,
+                allProducts: newAllProducts,
             };
         }
 

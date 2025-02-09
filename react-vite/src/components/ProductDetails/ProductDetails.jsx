@@ -32,7 +32,7 @@ function ProductDetails() {
   const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
   const favorites = useSelector((state) => state.favorites.items);
   
-  const sellerId = product.sellerId
+  // const sellerId = product.sellerId
   // product.sellerName.split(' ')[0] + ' ' + product.sellerName.split(' ')[1]?.charAt(0) + '.'
   // console.log("seller name: ", product.User.firstName)
 
@@ -77,14 +77,14 @@ const handleAddToCart = async () => {
   if (!currentUser) {
     setPopupMessage("Please log in to add items to your cart.");
     setShowPopup(true);
-    setTimeout(() => setShowPopup(false), 3000);
+    setTimeout(() => setShowPopup(false), 2000);
     return;
   }
 
   if (product.sellerId === currentUser.id) {
     setPopupMessage("You cannot add your own product to the cart.");
     setShowPopup(true);
-    setTimeout(() => setShowPopup(false), 3000);
+    setTimeout(() => setShowPopup(false), 2000);
     return;
   }
 
@@ -98,13 +98,13 @@ const handleAddToCart = async () => {
     }
     
     setShowPopup(true);
-    setTimeout(() => setShowPopup(false), 3000);
+    setTimeout(() => setShowPopup(false), 2000);
 
   } catch (error) {
     console.error("Failed to add to cart:", error);
     setPopupMessage("Something went wrong. Please try again.");
     setShowPopup(true);
-    setTimeout(() => setShowPopup(false), 3000);
+    setTimeout(() => setShowPopup(false), 2000);
   }
 };
 

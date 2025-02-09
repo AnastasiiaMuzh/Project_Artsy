@@ -36,7 +36,9 @@
 .categories {
     color: #e99cb2;
     text-align: center; 
-    padding: 5px; 
+    padding: 10px; 
+    padding-top: 5px;
+    padding-right: 25px;
     font-size: 18px; 
     font-weight: bold; 
     margin-bottom: 5px;  
@@ -44,6 +46,8 @@
     width: 50%;
     border-radius: 8px;
     border: #e99cb2 3px solid;
+    max-height: 200px; /* Set a max height to prevent the container from expanding too much */
+    overflow-y: auto; /* Add vertical scrolling when content overflows */
 }
 
 .categories p {

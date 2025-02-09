@@ -28,6 +28,11 @@ const addOneReview = (review) => ({
     review
 })
 
+const deleteReview = (reviewId) => ({
+    type: DELETE_REVIEW,
+    reviewId
+})
+
 //thunk
 export const getAllReviews = (productId) => async dispatch => {
     const response = await csrfFetch(`/api/reviews/${productId}`)
@@ -69,8 +74,19 @@ export const addReview = (newReview) => async dispatch => {
     if (response.ok) {
         const data = await response.json();
         dispatch(addOneReview(data))
-        dispatch(getAllReviews(productId))
+        // dispatch(getAllReviews(productId))
         return data;
+    }
+}
+
+export const removeReview = (reviewId) => async dispatch => {
+    const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+        method: 'DELETE'
+    })
+
+    if (response.ok) {
+        dispatch(deleteReview(reviewId));
+        return reviewId;
     }
 }
 
@@ -126,10 +142,27 @@ const reviewReducer = (state = initialState, action) => {
                 ...state,
                 reviewsByProduct: {
                     ...state.reviewsByProduct,
-                    [productId]: [...(state.reviewsByProduct[productId] || []), action.review]
+                    [action.review.productId]: [...(state.reviewsByProduct[productId] || []), action.review]
                 },
                 singleProduct: updatedProduct
             }
+        case DELETE_REVIEW:
+            if (!state.singleProduct) return state;
+            const remainingReviews = state.singleProduct.Reviews.filter(
+                (review) => review.id !== action.reviewId
+            )
+
+            const totalStars = remainingReviews.reduce((sum, review) => sum + review.stars, 0);
+            const updatedAvgStarRating = remainingReviews.length > 0 ? totalStars / remainingReviews.length : null;
+
+            const updatedSingleProduct = {
+                ...state.singleProduct,
+                Reviews: remainingReviews,
+                numReviews: remainingReviews.length,
+                avgStarRating: updatedAvgStarRating,
+            }
+
+            return {...state, singleProduct: updatedSingleProduct}
         default:
             return state;
     }

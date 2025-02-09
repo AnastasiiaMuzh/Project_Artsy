@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useDispatch } from "react-redux"
 import { useModal } from "../../context/Modal";
 import { getDetails } from "../../redux/products";
-import './ReviewsModal.css'
+import './CreateReviewModal.css'
 import { addReview } from "../../redux/reviews";
 
-const ReviewsModal = ({productId}) => {
+const CreateReviewModal = ({productId}) => {
     const dispatch = useDispatch();
     const [textArea, setTextArea] = useState('');
     const [starRating, setStarRating] = useState(0);
@@ -78,4 +78,4 @@ const ReviewsModal = ({productId}) => {
     )
 }
 
-export default ReviewsModal;
+export default CreateReviewModal;

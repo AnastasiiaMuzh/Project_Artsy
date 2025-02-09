@@ -4,9 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getDetails } from '../../redux/products';
 // import { getProducts } from '../../redux/products';
 import './ProductDetails.css'
-import { fetchReviewableProducts, getAllReviews } from '../../redux/reviews';
+import { fetchReviewableProducts, getAllReviews, removeReview } from '../../redux/reviews';
 import { useModal } from '../../context/Modal';
-import ReviewsModal from '../Reviews/ReviewsModal'
+import { CreateReviewModal, DeleteReviewModal } from '../Reviews';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { addToFavorites, removeFromFavorites, fetchUserFavorites } from '../../redux/favorites';
 // import { IoMdStar } from "react-icons/io";
@@ -36,7 +36,7 @@ function ProductDetails() {
   const isReviewable = reviewableProducts?.reviewlessProducts?.some(item => item.id === Number(productId))
   const handlePostReviewButton = async (e) => {
     e.preventDefault()
-    if (isReviewable) setModalContent(<ReviewsModal productId={productId}/>)
+    if (isReviewable) setModalContent(<CreateReviewModal productId={productId}/>)
   }
 
   useEffect(() => {
@@ -229,7 +229,7 @@ const handleAddToCart = async () => {
               <div>{review.User.firstName} {review.User.lastName}</div>
               <div>{createdAt}</div>
               {review.User?.id === currentUser?.id ? <button>Update</button> : null}
-              {review.User?.id === currentUser?.id ? <button>Delete</button> : null}
+              {review.User?.id === currentUser?.id ? <button onClick={() => setModalContent(<DeleteReviewModal reviewId={review.id} productId={productId}/>)}>Delete</button> : null}
             </div>
           )
         })}

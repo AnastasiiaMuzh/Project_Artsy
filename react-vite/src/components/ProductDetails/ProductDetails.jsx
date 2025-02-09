@@ -31,7 +31,10 @@ function ProductDetails() {
   const reviews = useSelector((state) => state.reviews.reviewsByProduct[productId])
   const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
   const favorites = useSelector((state) => state.favorites.items);
-
+  
+  // const sellerId = product.sellerId
+  // product.sellerName.split(' ')[0] + ' ' + product.sellerName.split(' ')[1]?.charAt(0) + '.'
+  // console.log("seller name: ", product.User.firstName)
 
   const isReviewable = reviewableProducts?.reviewlessProducts?.some(item => item.id === Number(productId))
   const handlePostReviewButton = async (e) => {
@@ -74,14 +77,14 @@ const handleAddToCart = async () => {
   if (!currentUser) {
     setPopupMessage("Please log in to add items to your cart.");
     setShowPopup(true);
-    setTimeout(() => setShowPopup(false), 3000);
+    setTimeout(() => setShowPopup(false), 2000);
     return;
   }
 
   if (product.sellerId === currentUser.id) {
     setPopupMessage("You cannot add your own product to the cart.");
     setShowPopup(true);
-    setTimeout(() => setShowPopup(false), 3000);
+    setTimeout(() => setShowPopup(false), 2000);
     return;
   }
 
@@ -95,13 +98,13 @@ const handleAddToCart = async () => {
     }
 
     setShowPopup(true);
-    setTimeout(() => setShowPopup(false), 3000);
+    setTimeout(() => setShowPopup(false), 2000);
 
   } catch (error) {
     console.error("Failed to add to cart:", error);
     setPopupMessage("Something went wrong. Please try again.");
     setShowPopup(true);
-    setTimeout(() => setShowPopup(false), 3000);
+    setTimeout(() => setShowPopup(false), 2000);
   }
 };
 
@@ -148,14 +151,15 @@ const handleAddToCart = async () => {
 
 
   return (
-    <div>
-      <h1>Product Page</h1>
-
-      {showPopup && (
-        <div className="popup-notification">
-          {popupMessage}
-        </div>
-      )}
+    <div className='product-page'>
+      {/* <h1>Product Page</h1> */}
+      <div className='product-section'>
+    
+        {showPopup && (
+          <div className="popup-notification">
+            {popupMessage}
+          </div>
+        )}
 
       <div className="product-images-container">
         {/* Thumbnails Column */}
@@ -200,14 +204,25 @@ const handleAddToCart = async () => {
 
       <div className='product-info-container'>
         <div className='product-name'>{product.name}</div>
-        <div className='product-price'>${product.price}</div>
-        {/* <div className='product-category'>{product.category}</div> */}
-        <div className='product-sellername'>{product.sellerName}</div>
-        <div className='add-to-cart'>
-          <button className='add-to-cart-button' onClick={handleAddToCart}>Add to cart</button>
+
+
+        <div className='price-and-add-button'>
+          <div className='product-price'>${product.price}</div>
+          <div className='add-to-cart'>
+            <button className='add-to-cart-button' onClick={handleAddToCart}>Add to cart</button>
+          </div>
+
         </div>
+
+        {/* <div className='product-category'>Found in {product.category.charAt(0).toUpperCase() + product.category.slice(1)}</div> */}
+
+        {/* <div className='product-sellername'>Sold by {}</div> */}
         <div className='product-description'>{product.description}</div>
       </div>
+
+    </div>
+
+
 
       <div className='reviews-container'>
         <h1>{reviewCount(getStarRating(product.avgStarRating), product.numReviews)}</h1>

@@ -65,14 +65,19 @@ export const getDetails = (productId) => async (dispatch) => {
 }
 
 export const createProduct = (newProductData, imageUrl) => async (dispatch) => {
-    const response = await csrfFetch("/api/products", {
+    const response = await csrfFetch("/api/products/", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+            "Content-Type": "application/json", 
+        },
         body: JSON.stringify(newProductData),
     });
 
+    console.log("response: ", response)
+
     if (response.ok) {
         const newProduct = await response.json();
+        console.log("newPorduct before dispatch", newProduct)
         dispatch(createProductAction(newProduct));
 
         // Handle images associated with the product
@@ -82,13 +87,13 @@ export const createProduct = (newProductData, imageUrl) => async (dispatch) => {
                 preview: index === 0, // Mark the first image as the preview
             };
 
-            await csrfFetch(`/api/products/${newProduct.id}/images`, {
+            await csrfFetch(`/api/products/${newProduct.id}/productImages`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(imgDetails),
             });
         }
-
+        console.log("newPorduct after dispatch: ", newProduct)
         return newProduct; // Return the newly created product
     } else {
         const errorData = await response.json();
@@ -97,20 +102,47 @@ export const createProduct = (newProductData, imageUrl) => async (dispatch) => {
     }
 };
 
-export const updateProduct = (productId, updatedData) => async (dispatch) => {
+export const updateProduct = (productId, updatedData, imageUrls = [], previewImageUrl = null) => async (dispatch) => {
     const response = await csrfFetch(`/api/products/${productId}`, {
         method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
         body: JSON.stringify(updatedData),
     });
 
     if (response.ok) {
         const updatedProduct = await response.json();
+
+        // If there are images to update
+        if (imageUrls.length > 0) {
+            const imageUpdateResponse = await csrfFetch(`/api/products/${productId}/images`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    imageUrls,          // List of new image URLs
+                    previewImageUrl,    // URL of the preview image
+                }),
+            });
+
+            if (imageUpdateResponse.ok) {
+                const updatedImages = await imageUpdateResponse.json();
+                console.log("Updated images: ", updatedImages);
+            } else {
+                const imageError = await imageUpdateResponse.json();
+                console.error("Error updating images:", imageError);
+                throw imageError;
+            }
+
         dispatch(updateProductAction(updatedProduct));
         return updatedProduct;
     } else {
         const errorData = await response.json();
         console.error("Error response:", errorData);
         throw errorData;
+    }
     }
 };
 
@@ -147,16 +179,15 @@ const productsReducer = (state = initialState, action) => {
             return {
                 ...state,
                 productDetails: action.payload,
-                allProduct: newAllProducts,
+                allProducts: newAllProducts,
             };
         }
+
         case CREATE_PRODUCT: {
+            const newAllProducts = { ...state.allProducts, [action.payload.id]: action.payload };
             return {
                 ...state,
-                allProducts: {
-                    ...state.allProducts,
-                    [action.payload.id]: action.payload,
-                },
+                allProducts: newAllProducts,
                 productDetails: action.payload,
             };
         }
@@ -173,12 +204,13 @@ const productsReducer = (state = initialState, action) => {
         }
 
         case DELETE_PRODUCT: {
-            const newState = { ...state };
-            delete newState.allProducts[action.payload];
-            if (state.productDetails.id === action.payload) {
-                newState.productDetails = {}; // Clear productDetails if the deleted product was the current one
-            }
-            return newState;
+            const remainingProducts = { ...state.allProducts };
+            delete remainingProducts[action.payload];
+            return {
+                ...state,
+                allProducts: remainingProducts,
+                productDetails: state.productDetails.id === action.payload ? {} : state.productDetails,
+            };
         }
 
     default:

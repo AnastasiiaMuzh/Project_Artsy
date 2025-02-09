@@ -30,13 +30,19 @@ const HomePage = () => {
 
   // Handle category click and filter products
   const handleCategoryClick = (category) => {
-    setSelectedCategory(category); // Update selected category
+    setSelectedCategory(category);
   };
 
     // Filter products based on selected category
     const filteredProducts = selectedCategory === "all" 
-        ? products 
-        : products.filter(product => product.category === selectedCategory);
+    ? Object.values(products)  // Convert products object to an array
+    : Object.values(products).filter(product => product.category === selectedCategory);
+
+    // Get a list of unique categories
+    const uniqueCategories = [
+      'all', // Include the "all" category
+      ...new Set(Object.values(products).map(product => product.category)) // Get unique categories
+    ];
 
     const handleFavoriteClick = async (e, productId) => {
         e.preventDefault(); // Prevent navigation to product details
@@ -56,7 +62,7 @@ const HomePage = () => {
   }
 
   if (!filteredProducts || filteredProducts.length === 0) {
-    return <div>No products available</div>;
+    return <div>No products available in this category</div>;
   }
 
 
@@ -76,29 +82,26 @@ const HomePage = () => {
                 <h3>Click to view Valentine&apos;s Day products now!</h3>
             </div>
             <div className='categories'>
-                <p>Categories:</p>
+                <p>Search Products by Category:</p>
                 <ul>
                     {/* Loop through the unique categories */}
-                    {[
-                    'all', 
-                    ...new Set(Object.values(products).map((product) => product.category))
-                    ].map((category) => (
-                    <li key={category}>
-                        <Link 
-                        to={`/category/${category}`} // Link to the category page
-                        className={`category-link ${selectedCategory === category ? "selected" : ""}`}
-                        onClick={() => handleCategoryClick(category)} // Optionally handle category click for any other logic
-                        >
-                        {category}
-                        </Link>
-                    </li>
+                    {uniqueCategories.map((category) => (
+                        <li key={category}>
+                            <Link
+                                to="#"
+                                className={`category-link ${selectedCategory === category ? "selected" : ""}`}
+                                onClick={() => handleCategoryClick(category)} 
+                            >
+                                {category.charAt(0).toUpperCase() + category.slice(1)} {/* Capitalize first letter */}
+                            </Link>
+                        </li>
                     ))}
                 </ul>
             </div>
         </div>
 
       <div className="products-container">
-        {Object.values(products).map((product) => (
+        {Object.values(filteredProducts).map((product) => (
           <Link to={`/products/${product.id}`} key={product.id} className="product-tile-link">
             <div className="product-tile">
               <div className="product-img-container">
@@ -120,8 +123,8 @@ const HomePage = () => {
                     <div className='price-and-rating'>
                         <div className='product-tile-price'>${product.price}</div>
                         <div className='product-tile-rating'>
-                            <div className='star'><IoMdStar /> </div>
-                            <div className='rating'>{product.avgRating}</div>
+                            <div className='product-star'><IoMdStar /> </div>
+                            <div className='product-rating'>{product.avgRating}</div>
                             </div>
                     </div>
               </div>

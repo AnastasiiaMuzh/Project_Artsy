@@ -26,8 +26,11 @@ function CreateProductForm() {
     const isUpdate = !!productId;
 
     useEffect(() => {
-        console.log("user: ", user)
-        console.log("user.id: ", user.id)
+
+        setErrors({}); // Reset errors whenever the form is loaded
+
+        // console.log("user: ", user)
+        // console.log("user.id: ", user.id)
         // console.log("user first name: ", user.firstName)
         if (!user) {
             return navigate("/", {
@@ -148,7 +151,7 @@ function CreateProductForm() {
     };
 
     const renderError = (field) => {
-        return errors[field] ?  <div className="error">{errors[field]}</div> : null;
+        return errors[field] ?  <div className="error-message">{errors[field]}</div> : null;
     };
 
     if (loading) {
@@ -168,47 +171,47 @@ function CreateProductForm() {
           <h3>Product Details</h3>
           <div className="name-category">
             <div>
-              <label>Name:</label>
+              <label>Name:</label> {renderError("name")}
               <input 
                 type="text" 
                 // placeholder="Product Name" 
                 value={name} 
                 onChange={(e) => setName(e.target.value)} 
               />
-              {renderError("name")}
+           
             </div>
             <div>
-              <label>Category:</label>
+              <label>Category:</label> {renderError("category")}
               <input 
                 type="text" 
                 // placeholder="Category" 
                 value={category} 
                 onChange={(e) => setCategory(e.target.value)} 
               />
-              {renderError("category")}
+              
             </div>
           </div>
 
           <div className="description-price">
             <div>
-              <label>Description:</label>
+              <label>Description:</label> {renderError("description")}
               <textarea 
                 value={description} 
                 // placeholder="Product description" 
                 onChange={(e) => setDescription(e.target.value)} 
               />
-              {renderError("description")}
+             
             </div>
 
             <div>
-              <label>Price:</label>
+              <label>Price:</label> {renderError("price")}
               <input 
                 type="number" 
                 // placeholder="Price in USD" 
                 value={price} 
                 onChange={(e) => setPrice(parseFloat(e.target.value))} 
               />
-              {renderError("price")}
+            
             </div>
           </div>
         </div>
@@ -216,14 +219,14 @@ function CreateProductForm() {
         <div className="add-photos">
           <h3>Upload Product Images</h3>
           <div>
-            <label>Preview Image:</label>
+            <label>Preview Image:</label> {renderError("previewImage")}
             <input 
               type="text" 
             //   placeholder="Preview Image URL" 
               value={previewImage} 
               onChange={(e) => setPreviewImage(e.target.value)} 
             />
-            {renderError("previewImage")}
+          
           </div>
           {otherImages.map((url, index) => (
             <div key={index}>

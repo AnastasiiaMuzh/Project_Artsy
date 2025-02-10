@@ -3,14 +3,17 @@ import { useDispatch, useSelector } from "react-redux"
 import { useModal } from "../../context/Modal";
 import { fetchReviewableProducts, getCurrUserReviews } from "../../redux/reviews";
 import ReviewableProductModal from "./ReviewableProductModal";
+import DeleteReviewModal from "./DeleteReviewModal";
+import UpdateReviewModal from "./UpdateReviewModal";
 
 const ManageReviews = () => {
     const dispatch = useDispatch();
     const { setModalContent } = useModal();
     const [loading, setLoading] = useState(true);
 
-    const currentUser = useSelector(state => state.session.session)
+    // const currentUser = useSelector(state => state.session.session)
     const reviews = useSelector(state => state.reviews.currentUserReviews?.Reviews)
+    console.log('look here', reviews)
     const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
 
     useEffect(() => {
@@ -47,8 +50,8 @@ const ManageReviews = () => {
                         <div>{review.Products.name}</div>
                         <div>{createdAt}</div>
                         <div>{review.review}</div>
-                        <button>Update</button>
-                        <button>Delete</button>
+                        <button onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={review.productId} currentReview={review.review} currentStars={review.stars}/>)}>Update</button>
+                        <button onClick={() => setModalContent(<DeleteReviewModal reviewId={review.id} productId={review.productId}/>)}>Delete</button>
                     </div>
                 )
             })}

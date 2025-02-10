@@ -70,7 +70,7 @@ const CreateReviewModal = ({productId}) => {
                                     ★
                                 </span>
                             ))}
-                            <span>Stars</span>
+                            {/* <span>Stars</span> */}
                 </div>
                 <button type='submit' disabled={disableButton()}>Submit Your Review</button>
             </form>

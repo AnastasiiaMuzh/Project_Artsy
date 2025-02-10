@@ -6,7 +6,7 @@ import { getDetails } from '../../redux/products';
 import './ProductDetails.css'
 import { fetchReviewableProducts, getAllReviews, removeReview } from '../../redux/reviews';
 import { useModal } from '../../context/Modal';
-import { CreateReviewModal, DeleteReviewModal } from '../Reviews';
+import { CreateReviewModal, DeleteReviewModal, UpdateReviewModal } from '../Reviews';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { addToFavorites, removeFromFavorites, fetchUserFavorites } from '../../redux/favorites';
 // import { IoMdStar } from "react-icons/io";
@@ -228,7 +228,7 @@ const handleAddToCart = async () => {
               <div>{review.review}</div>
               <div>{review.User.firstName} {review.User.lastName}</div>
               <div>{createdAt}</div>
-              {review.User?.id === currentUser?.id ? <button>Update</button> : null}
+              {review.User?.id === currentUser?.id ? <button onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={productId} currentReview={review.review} currentStars={review.stars}/>)}>Update</button> : null}
               {review.User?.id === currentUser?.id ? <button onClick={() => setModalContent(<DeleteReviewModal reviewId={review.id} productId={productId}/>)}>Delete</button> : null}
             </div>
           )

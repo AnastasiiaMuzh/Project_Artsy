@@ -1,3 +1,4 @@
+import { csrfFetch } from "./csrf";
 // Constants
 const LOAD_FAVORITES = "favorites/LOAD_FAVORITES";
 const ADD_FAVORITE = "favorites/ADD_FAVORITE";

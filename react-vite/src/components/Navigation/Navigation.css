@@ -1,105 +1,208 @@
-/* Close the menu dropdown when clicking elsewhere */
+* Close the menu dropdown when clicking elsewhere */
 /* .hidden {
-  display: none
+ display: none
 } */
 
+
 .profile-dropdown {
-  position: absolute;
+ position: absolute;
 }
+
 
 .nav-container {
-  background-color: var(--white);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+ background-color: #8b575c;
+ box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
+
 
 .nav-list {
-  list-style: none;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 32px;
-  max-width: 1200px;
-  margin: 0 auto;
-  gap: 16px;
+ list-style: none;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ padding: 16px 32px;
+ max-width: 1200px;
+ margin: 0 auto;
+ gap: 16px;
 }
+
 
 .nav-item {
-  display: flex;
-  align-items: center;
+ display: flex;
+ align-items: center;
 }
+
 
 .nav-link {
-  text-decoration: none;
-  color: palevioletred;
-  padding: 8px 16px;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-  font-size: 40px;
+ text-decoration: none;
+ color: #f6bdd1;
+ padding: 8px 16px;
+ border-radius: 4px;
+ /* transition: all 0.2s ease; */
+ font-size: 40px;
+ /* background-color: transparent; */
 }
 
-.nav-link:hover,
-.nav-link.active {
-  background-color: var(--millennial-pink-light);
-}
 
+.nav-link:hover {
+ transform: scale(1.02);
+ background-color: transparent;
+ color: #f6bdd1;
+}
 .nav-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  white-space: nowrap;
+ display: flex;
+ align-items: center;
+ gap: 16px;
+ white-space: nowrap;
 }
+
 
 .search-container {
-  display: flex;
-  align-items: center;
-  width: 50%;
-  margin: 0 32px;
-  position: relative;
+ display: flex;
+ align-items: center;
+ width: 50%;
+ margin: 0 32px;
+ position: relative;
 }
+
 
 .search-container form {
-  width: 100%;
+ width: 100%;
 }
+
+
+.search-input-wrapper {
+ position: relative;
+ display: flex;
+ align-items: center;
+ width: 100%;
+}
+
+
+.search-icon {
+ position: absolute;
+ left: 12px;
+ color: #f6bdd1;
+ font-size: 1rem;
+}
+
 
 .search-input {
-  width: 100%;
-  padding: 12px 20px;
-  border: 2px solid pink;
-  border-radius: 25px;
-  font-size: 16px;
+ width: 100%;
+ padding: 12px 20px 12px 40px;
+ border: 2px solid #f6bdd1;
+ border-radius: 25px;
+ font-size: 16px;
+ background-color: #f4f4f4;
 }
+
 
 .search-input:focus {
-  outline: none;
-  /* border-color: pink; */
-  box-shadow: 0 2px 8px lightgray;
+ outline: none;
+ box-shadow: 0 2px 8px #f6e4f6;
 }
 
-.search-input::placeholder {
-  color: #999;
-  font-style: italic;
+
+.search-input:focus + .search-icon {
+ color: #c98986;
 }
+
+
+.search-input::placeholder {
+ color: #8b575c;
+ font-style: italic;
+}
+
+
+/* .favorites-link {
+ display: flex;
+ align-items: center;
+ color: pink;
+ text-decoration: none;
+ transition: color 0.2s ease;
+} */
+
+
+
+
+/* Update these styles to be more specific */
+.favorites-link .heart-icon {
+ font-size: 24px;
+ color: #f6bdd1;
+}
+
+
+.favorites-link:hover .heart-icon {
+ color: #c98986;
+}
+
+
+.create-product-link {
+ display: flex;
+ align-items: center;
+ gap: 8px;
+ color: #8b575c;
+ text-decoration: none;
+ padding: 8px 16px;
+ border-radius: 20px;
+ background-color: #f6bdd1;
+ transition: all 0.2s ease;
+}
+
+
+.create-product-link:hover {
+ background-color: #c98986;
+ color: #f4f4f4;
+ transform: translateY(-1px);
+}
+
+
+.plus-icon {
+ font-size: 1.2rem;
+}
+
+
+.create-product-link span {
+ font-size: 14px;
+ font-weight: 500;
+}
+
 
 /* Responsive design */
 @media (max-width: 768px) {
-  .search-container {
-    margin: 0 1rem;
-  }
-  
+ .search-container {
+   margin: 0 1rem;
+ }
   .nav-list {
-    padding: 1rem;
-  }
+   padding: 1rem;
+ }
 }
 
+
 @media (max-width: 576px) {
-  .nav-list {
-    flex-wrap: wrap;
-  }
-  
+ .nav-list {
+   flex-wrap: wrap;
+ }
   .search-container {
-    order: 3;
-    margin: 0.5rem 0;
-    width: 100%;
-    max-width: none;
-  }
+   order: 3;
+   margin: 0.5rem 0;
+   width: 100%;
+   max-width: none;
+ }
+}
+
+
+/******* For cart icon *******/
+.cart-link {
+  position: relative;
+  color: pink;
+  text-decoration: none;
+  margin-left: 30px;
+}
+
+.cart-link:hover,
+.cart-link.active {
+  /* color: palevioletred; */
+  color: deeppink;
+  transition: color 0.2s ease;
 }

@@ -339,7 +339,50 @@ def add_product_image(productId):
         'preview': new_image.preview
     }), 201
 
+# Update a product image
+# PUT /api/products/:id/images
+@product_routes.route('/<int:id>/images', methods=['PUT'])
+@login_required
+def update_product_images(id):
+    current_user_id = current_user.id
 
+    # Get the product by its id
+    product = Product.query.get(id)
+
+    # If the product doesn't exist, return an error
+    if not product:
+        return jsonify({"message": "Product couldn't be found"}), 404
+
+    # If the logged-in user is not the seller of the product, return a 403 Forbidden error
+    if product.sellerId != current_user_id:
+        return jsonify({"message": "Forbidden"}), 403
+
+    # Get the data (new images) from the request
+    data = request.get_json()
+    imageUrls = data.get('imageUrls', [])  # An array of image URLs to add to the product
+    previewImageUrl = data.get('previewImageUrl', None)  # The URL of the new preview image
+
+    # Remove old images or keep them based on your logic (optional)
+    # For example, clear all images and only add the new ones
+    product.images.clear()
+
+    # Add new images to the product
+    for image_url in imageUrls:
+        # make first image the preview image
+        preview = image_url == previewImageUrl if previewImageUrl else False
+        new_image = ProductImage(url=image_url, preview=preview, productId=product.id)
+        db.session.add(new_image)
+
+    # Commit the changes to the database
+    db.session.commit()
+
+    # Return the updated list of images along with their preview status
+    updated_images = [{'id': img.id, 'url': img.url, 'preview': img.preview} for img in product.images]
+
+    return jsonify({
+        'productId': product.id,
+        'images': updated_images
+    }), 200
 
 
 # Delete a product image 

@@ -12,7 +12,7 @@ function ProfileButton() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [showMenu, setShowMenu] = useState(false);
-  const user = useSelector((store) => store.session.user);
+  const user = useSelector((store) => store.session.session);
   const ulRef = useRef();
   const buttonRef = useRef();
 
@@ -48,7 +48,7 @@ function ProfileButton() {
 
   return (
     <div className="profile-button-container">
-      <button 
+      <button
         onClick={toggleMenu}
         className="profile-button"
         ref={buttonRef}
@@ -64,8 +64,13 @@ function ProfileButton() {
                 <li>{user.email}</li>
               </div>
               <li>
-                <NavLink to="/favorites" onClick={closeMenu} className="nav-link">
-                  My Favorites
+                <NavLink to="/products/current" onClick={closeMenu} className="nav-link">
+                  Manage Products
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/reviews/current" onClick={closeMenu} className="nav-link">
+                  Manage Reviews
                 </NavLink>
               </li>
               <li>

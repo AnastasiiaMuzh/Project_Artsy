@@ -2,6 +2,7 @@ import { useState } from "react";
 import { thunkLogin } from "../../redux/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
+import { fetchUserFavorites } from "../../redux/favorites";
 import "./LoginForm.css";
 
 function LoginFormModal() {
@@ -24,6 +25,24 @@ function LoginFormModal() {
     if (serverResponse) {
       setErrors(serverResponse);
     } else {
+      await dispatch(fetchUserFavorites());
+      closeModal();
+    }
+  };
+
+  const handleDemoLogin = async (e) => {
+    e.preventDefault();
+    const serverResponse = await dispatch(
+      thunkLogin({
+        email: "john.smith@io.com",
+        password: "password1"
+      })
+    );
+
+    if (serverResponse) {
+      setErrors(serverResponse);
+    } else {
+      await dispatch(fetchUserFavorites());
       closeModal();
     }
   };
@@ -53,6 +72,9 @@ function LoginFormModal() {
         </label>
         {errors.password && <p>{errors.password}</p>}
         <button type="submit">Log In</button>
+        <button type="button" onClick={handleDemoLogin} className="demo-login">
+          Demo User
+        </button>
       </form>
     </div>
   );

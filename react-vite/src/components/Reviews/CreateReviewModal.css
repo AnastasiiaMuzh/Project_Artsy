@@ -1,0 +1,16 @@
+.review-star.highlighted, .review-star:hover {
+    color: gold;
+    transform: scale(1.1);
+}
+
+.review-star {
+    font-size: 2rem;
+    cursor: pointer;
+    color: lightgray;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.image-preview {
+    width: auto;
+    height: 100px;
+}

@@ -1,0 +1,92 @@
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { updateCartItem, removeFromCart } from '../../redux/shopping_carts';
+import { useModal } from '../../context/Modal';
+import './ShoppingCart.css';
+
+const CartEditModal = ({ item }) => {
+  const dispatch = useDispatch();
+  const { closeModal } = useModal();
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
+  const [quantity, setQuantity] = useState(item.quantity);
+
+  // Check for available images
+  const images = item.product.images || [];  // Using images from API
+  const currentImage = images[selectedImageIndex];  // Since images are already an array of URLs
+
+  // Switch to the next image
+  const handleNextImage = () => {
+    if (images.length > 0) {
+      setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }
+  };
+
+  // Switch to the previous image
+  const handlePrevImage = () => {
+    if (images.length > 0) {
+      setSelectedImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+    }
+  };
+
+  // Change the quantity of the product
+  const handleQuantityChange = (e) => {
+    setQuantity(Number(e.target.value));
+  };
+
+  // Save changes and update the cart
+  const handleSave = async () => {
+    await dispatch(updateCartItem(item.id, quantity));
+    closeModal(); // Close the modal after saving
+  };
+
+  // Remove the product from the cart
+  const handleDelete = async () => {
+    await dispatch(removeFromCart(item.id));
+    closeModal(); // Close the modal after deletion
+  };
+
+  return (
+    <div className="cart-edit-modal">
+      <div className="image-carousel">
+        {images.length > 0 ? (
+          <>
+            <button onClick={handlePrevImage}>&lt;</button>
+            <img src={currentImage} alt={item.product.name} className="product-image" style={{ width: '200px', height: '200px', objectFit: 'cover' }} />
+            <button onClick={handleNextImage}>&gt;</button>
+          </>
+        ) : (
+          <p>No images available</p>
+        )}
+      </div>
+
+      <div className="product-details">
+        <h3>{item.product.name}</h3>
+        <p>{item.product.description || 'No description available.'}</p>
+        <p>${item.product.price.toFixed(2)}</p>
+      </div>
+
+      <div className="quantity-selector">
+        <label htmlFor={`quantity-${item.id}`}>Quantity</label>
+        <select
+          id={`quantity-${item.id}`}
+          value={quantity}
+          onChange={handleQuantityChange}
+        >
+          {[...Array(200).keys()].map((num) => (
+            <option key={num + 1} value={num + 1}>
+              {num + 1}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="button-group">
+        <button onClick={handleSave} className="save-button">Save</button>
+        <button onClick={handleDelete} className="delete-button">Remove</button>
+      </div>
+    </div>
+  );
+};
+
+export default CartEditModal;
+

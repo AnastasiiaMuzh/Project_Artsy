@@ -40,14 +40,6 @@ const checkoutCartAction = () => ({
       const res = await csrfFetch('/api/cart/');
       if (res.ok) {
           const data = await res.json();
-          console.log('Fetched cart data:', data);  // Лог данных, пришедших от API
-  
-          const newCart = data.cart.map(item => ({
-              ...item,
-              itemId: item.id,
-          }));
-  
-          data.cart = newCart;
           dispatch(getCartAction(data));
       }
   };
@@ -75,9 +67,14 @@ export const updateCartItem = (itemId, quantity) => async (dispatch) => {
     });
     if (res.ok) {
       const data = await res.json();
-      dispatch(updateItemAction(data));
+      dispatch(updateItemAction({
+        itemId: data.itemId,
+        quantity: data.quantity  // Обновляем количество товара
+      }));
+      dispatch(fetchCart());  // Обновляем корзину для отображения актуальных данных
     }
   };
+
 
     // Remove items from the cart
 export const removeFromCart = (itemId) => async (dispatch) => {
@@ -86,6 +83,7 @@ export const removeFromCart = (itemId) => async (dispatch) => {
     });
     if (res.ok) {
         dispatch(removeItemAction(itemId));
+        dispatch(fetchCart());  // Обновляем корзину после удаления
     }
 };
 
@@ -107,10 +105,9 @@ const initialState = { cart: [], totalPrice: 0, itemCount: 0 };
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_CART:
-      console.log('Reducer received cart:', action.cart);  // Лог данных, поступивших в редьюсер
       return {
         ...state,
-        cart: action.cart.cart,  // Убедись, что данные правильно сохраняются
+        cart: action.cart.cart,
         totalPrice: action.cart.totalPrice,
         itemCount: action.cart.itemCount
       };
@@ -125,7 +122,7 @@ const cartReducer = (state = initialState, action) => {
     case REMOVE_ITEM:
       return {
         ...state,
-        cart: state.cart.filter(item => item.itemId !== action.itemId),
+        cart: state.cart.filter(item => item.id !== action.itemId),
         itemCount: state.itemCount - 1,
       };
 
@@ -133,7 +130,7 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         cart: state.cart.map(item =>
-          item.itemId === action.item.itemId ? { ...item, quantity: action.item.quantity } : item
+          item.id === action.item.itemId ? { ...item, quantity: action.item.quantity } : item
         ),
       };
 

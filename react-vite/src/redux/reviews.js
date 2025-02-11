@@ -70,10 +70,10 @@ export const getCurrUserReviews = () => async dispatch => {
 }
 
 export const addReview = (newReview) => async dispatch => {
-    const { productId, buyerId, review, stars} = newReview
+    const { productId, buyerId, review, stars, imageUrl } = newReview
     const response = await csrfFetch(`/api/reviews/products/${productId}`, {
         method: 'POST',
-        body: JSON.stringify({review, stars})
+        body: JSON.stringify({review, stars, imageUrl})
     })
 
     if (response.ok) {
@@ -99,7 +99,8 @@ export const updateReview = (updatedReview) => async dispatch => {
         method: 'PATCH',
         body: JSON.stringify({
             'review': updatedReview.review,
-            'stars': updatedReview.stars
+            'stars': updatedReview.stars,
+            'imageUrl': updatedReview.imageUrl
         })
     })
 
@@ -161,46 +162,57 @@ const reviewReducer = (state = initialState, action) => {
             }
         case ADD_REVIEW:
             // if (!state.singleProduct) return state;
-            const {productId} = action.review
+            const {productId, imageUrl} = action.review
             const updatedProduct = state.singleProduct
             ? {
                 ...state.singleProduct,
                 numReviews: state.singleProduct.numReviews + 1,
-                avgStarRating: calculateNewAverage(state.singleProduct.avgStarRating, state.singleProduct.numReviews, action.review.stars)
+                avgStarRating: calculateNewAverage(state.singleProduct.avgStarRating, state.singleProduct.numReviews, action.review.stars),
+                Reviews: [...state.singleProduct.Reviews, action.review]
             }
             :null;
             return {
                 ...state,
                 reviewsByProduct: {
                     ...state.reviewsByProduct,
-                    [action.review.productId]: [...(state.reviewsByProduct[productId] || []), action.review]
+                    [action.review.productId]: [...(state.reviewsByProduct[productId] || []), {...action.review, imageUrl}]
                 },
                 singleProduct: updatedProduct
             }
         case DELETE_REVIEW:
             if (!state.singleProduct) return state;
-            const remainingReviews = state.singleProduct.Reviews.filter(
+            const updatedReviews = state.singleProduct.Reviews.filter(
                 (review) => review.id !== action.reviewId
             )
 
-            const totalStars = remainingReviews.reduce((sum, review) => sum + review.stars, 0);
-            const updatedAvgStarRating = remainingReviews.length > 0 ? totalStars / remainingReviews.length : null;
+            const totalStars = updatedReviews.reduce((sum, review) => sum + review.stars, 0);
+            const updatedAvgStarRating = updatedReviews.length > 0 ? totalStars / updatedReviews.length : null;
 
             const updatedSingleProduct = {
                 ...state.singleProduct,
-                Reviews: remainingReviews,
-                numReviews: remainingReviews.length,
+                Reviews: updatedReviews,
+                numReviews: updatedReviews.length,
                 avgStarRating: updatedAvgStarRating,
             }
 
-            return {...state, singleProduct: updatedSingleProduct}
+            return {
+                ...state,
+                singleProduct: updatedSingleProduct,
+                reviewsByProduct: {
+                    ...state.reviewsByProduct,
+                    [state.singleProduct.id]: state.reviewsByProduct[state.singleProduct.id]?.filter(
+                        (review) => review.id !== action.reviewId
+                    ) || []
+                }
+            }
         case EDIT_REVIEW:
             const { id } = action.review
             return {
                 ...state,
                 reviewsByProduct: {
                     ...state.reviewsByProduct,
-                    [action.review.productId]: state.reviewsByProduct[action.review.productId]?.map(review => review.id === id ? action.review : review) || []
+                    [action.review.productId]: state.reviewsByProduct[action.review.productId]?.map(review =>
+                        review.id === id ? { ...review, imageUrl:action.review.imageUrl } : review) || []
                 },
                 singleProduct: updateSingleProductReview(state.singleProduct, action.review)
             }

@@ -24,14 +24,14 @@ function ProductDetails() {
   const [selectedImage, setSelectedImage] = useState(""); // To track the selected image
   const [showPopup, setShowPopup] = useState(false);
   const [popupMessage, setPopupMessage] = useState("");  // Добавляем состояние для текста уведомлений
-
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const currentUser = useSelector((state) => state.session.session)
   const product = useSelector((state) => state.products.productDetails);
   const reviews = useSelector((state) => state.reviews.reviewsByProduct[productId])
   const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
   const favorites = useSelector((state) => state.favorites.items);
-  
+  // console.log('look here', reviews?.ReviewImages)
   // const sellerId = product.sellerId
   // product.sellerName.split(' ')[0] + ' ' + product.sellerName.split(' ')[1]?.charAt(0) + '.'
   // console.log("seller name: ", product.User.firstName)
@@ -39,7 +39,11 @@ function ProductDetails() {
   const isReviewable = reviewableProducts?.reviewlessProducts?.some(item => item.id === Number(productId))
   const handlePostReviewButton = async (e) => {
     e.preventDefault()
-    if (isReviewable) setModalContent(<CreateReviewModal productId={productId}/>)
+    if (isReviewable) setModalContent(<CreateReviewModal productId={productId} triggerRefresh={triggerRefresh}/>)
+  }
+
+  const triggerRefresh = () => {
+    setRefreshTrigger(prev => prev + 1)
   }
 
   useEffect(() => {
@@ -50,7 +54,7 @@ function ProductDetails() {
       dispatch(fetchReviewableProducts()),
       currentUser ? dispatch(fetchUserFavorites()) : Promise.resolve()
     ]).finally(() => setLoading(false));
-  }, [dispatch, productId, currentUser]);
+  }, [dispatch, productId, currentUser, refreshTrigger]);
 
   // console.log("product: ", product)
   // console.log("product.ProductImages[1].url", product.ProductImages[0].url)
@@ -154,7 +158,7 @@ const handleAddToCart = async () => {
     <div className='product-page'>
       {/* <h1>Product Page</h1> */}
       <div className='product-section'>
-    
+
         {showPopup && (
           <div className="popup-notification">
             {popupMessage}
@@ -240,6 +244,11 @@ const handleAddToCart = async () => {
           return (
             <div key={index} >
               <div>{getStarRating(review.stars)}</div>
+              {review?.ReviewImages[0]?.url ?
+                <img src={review?.ReviewImages[0]?.url} alt={review.review} className='product-img'/>
+                : null
+              }
+              {/* <div>{review?.ReviewImages[0]?.url}</div> */}
               <div>{review.review}</div>
               <div>{review.User.firstName} {review.User.lastName}</div>
               <div>{createdAt}</div>

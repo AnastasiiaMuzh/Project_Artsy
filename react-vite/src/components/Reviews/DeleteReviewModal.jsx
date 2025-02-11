@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal"
-import { getAllReviews, removeReview } from "../../redux/reviews";
+import { fetchReviewableProducts, getAllReviews, getCurrUserReviews, removeReview } from "../../redux/reviews";
 import { getDetails } from "../../redux/products";
 
 const DeleteReviewModal = ({reviewId, productId}) => {
@@ -9,6 +9,8 @@ const DeleteReviewModal = ({reviewId, productId}) => {
 
     const handleDeleteButton = async () => {
         await dispatch(removeReview(reviewId))
+        await dispatch(getCurrUserReviews())
+        await dispatch(fetchReviewableProducts())
         await dispatch(getAllReviews(productId))
         await dispatch(getDetails(productId))
         closeModal();

@@ -48,6 +48,10 @@ const ManageReviews = () => {
                 return (
                     <div key={index}>
                         <div>{review.Products.name}</div>
+                        {review?.ReviewImages[0]?.url ?
+                            <img src={review?.ReviewImages[0]?.url} alt={review.review} className='product-img'/>
+                            : null
+                        }
                         <div>{createdAt}</div>
                         <div>{review.review}</div>
                         <button onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={review.productId} currentReview={review.review} currentStars={review.stars}/>)}>Update</button>

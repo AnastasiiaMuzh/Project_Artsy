@@ -35,7 +35,10 @@ def get_cart():
                 "product": {
                     "name": item.products.name,
                     "price": float(item.products.price),
-                    "imageUrl": next((img.url for img in item.products.images if img.preview), None)
+                    "imageUrl": next((img.url for img in item.products.images if img.preview), None),
+                    "description": item.products.description,
+                    # "images": [img.url for img in item.products.images]
+                    "images": [img.url for img in item.products.images]
                 }
             } for item in cart_items],
             "totalPrice": float(total_price),
@@ -114,11 +117,11 @@ def add_to_cart():
         return jsonify({"error": "Internal server error. Please try again later."}), 500
     
 
-# --------------------- Decrease quantity of cart item PATCH /api/cart/item/:id ------------------------
+# --------------------- Update quantity of cart item PATCH /api/cart/item/:id ------------------------
 
 @cart_routes.route('/item/<int:item_id>', methods=['PATCH'])
 @login_required
-def decrease_cart_item(item_id):
+def update_cart_item(item_id):
     """
     Decrease item quantity in cart
     Expects JSON: { "quantity": int }
@@ -132,14 +135,16 @@ def decrease_cart_item(item_id):
         if 'quantity' not in data or not isinstance(data['quantity'], int):
             return jsonify({"error": "Missing or invalid quantity"}), 400
 
-        decrease_quantity = data['quantity']
+        new_quantity = data['quantity']
 
         # Ensure that the quantity to be decreased is at least 1
-        if decrease_quantity < 1:
+        if new_quantity < 1:
             return jsonify({"error": "Quantity must be at least 1"}), 400
+        
 
         # Fetch the cart item by its ID
         cart_item = ShoppingCartItem.query.get(item_id)
+
 
         # If the cart item doesn't exist, return a 404 Not Found error
         if not cart_item:
@@ -149,14 +154,13 @@ def decrease_cart_item(item_id):
         if cart_item.buyerId != current_user.id:
             return jsonify({"error": "Not authorized to modify this cart"}), 403
 
-        # Reduce the quantity of the item in the cart
-        cart_item.quantity -= decrease_quantity
 
         # If the quantity is now zero or less, remove the item from the cart
-        if cart_item.quantity <= 0:
+        if new_quantity == 0:
             db.session.delete(cart_item)
             message = "Cart item removed from cart"
         else:
+            cart_item.quantity = new_quantity
             message = "Cart item quantity updated"
 
         db.session.commit()
@@ -164,7 +168,7 @@ def decrease_cart_item(item_id):
         return jsonify({
             "message": message,
             "itemId": item_id,
-            "newQuantity": cart_item.quantity if cart_item.quantity > 0 else 0
+            "Quantity": cart_item.quantity if new_quantity > 0 else 0
         }), 200
 
     except Exception:

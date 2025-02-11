@@ -35,7 +35,7 @@
 
 .cancel-button {
   background-color: #f4f4f4;
-  color: #2f2f2f;
+  color: #8b575c;
 }
 
 .cancel-button:hover {
@@ -43,10 +43,11 @@
 }
 
 .confirm-button {
-  background-color: #c98986;
-  color: white;
+  background-color: #f6bdd1;
+  color: #8b575c;
 }
 
 .confirm-button:hover {
-  background-color: #8b575c;
+  background-color: #c98986;
+  color: white;
 } 

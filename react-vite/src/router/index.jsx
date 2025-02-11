@@ -9,7 +9,7 @@ import ProductDetails from '../components/ProductDetails/ProductDetails';
 import ManageProducts from '../components/ManageProducts';
 import CreateProductForm from '../components/CreateProductForm/CreateProductForm';
 import { ManageReviews } from '../components/Reviews';
-import OrdersPage from '../components/OrdersPage/OrdersPage';
+import OrdersPage from '../components/OrdersPage';
 
 
 

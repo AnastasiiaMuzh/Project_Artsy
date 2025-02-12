@@ -4,6 +4,11 @@
     width: 450px;
     margin: auto;
     /* border: solid 1px red; */
+    margin-top: 30px;
+    border-radius: 8px;
+    border: #e99cb2 3px solid;
+    padding-left: 50px;
+    padding-right: 50px;
 }
 
 .create-product-container h1 {

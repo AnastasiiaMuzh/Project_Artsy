@@ -227,37 +227,72 @@ const handleAddToCart = async () => {
     </div>
 
 
-
-      <div className='reviews-container'>
+      <div className='main-review-header'>
         <h1>{reviewCount(getStarRating(product.avgStarRating), product.numReviews)}</h1>
 
         {isReviewable && (
-          <button onClick={handlePostReviewButton}>Post Your Review!</button>
+          <button className='post-review-button' onClick={handlePostReviewButton}>Post Your Review!</button>
         )}
-        {reviews?.map((review, index) => {
-          const createdAt = new Date(review.createdAt).toLocaleDateString("en-US", {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-          })
-
-          return (
-            <div key={index} >
-              <div>{getStarRating(review.stars)}</div>
-              {review?.ReviewImages[0]?.url ?
-                <img src={review?.ReviewImages[0]?.url} alt={review.review} className='product-img'/>
-                : null
-              }
-              {/* <div>{review?.ReviewImages[0]?.url}</div> */}
-              <div>{review.review}</div>
-              <div>{review.User.firstName} {review.User.lastName}</div>
-              <div>{createdAt}</div>
-              {review.User?.id === currentUser?.id ? <button onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={productId} currentReview={review.review} currentStars={review.stars}/>)}>Update</button> : null}
-              {review.User?.id === currentUser?.id ? <button onClick={() => setModalContent(<DeleteReviewModal reviewId={review.id} productId={productId}/>)}>Delete</button> : null}
-            </div>
-          )
-        })}
       </div>
+        <div className='reviews-section'>
+
+
+          <div className='reviews-container'>
+            {reviews?.map((review, index) => {
+              const createdAt = new Date(review.createdAt).toLocaleDateString("en-US", {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })
+
+              return (
+                <div key={index} className='review'>
+                  <div className='review-formatting'>
+                    <div className='review-subheader'>
+                      <div className='review-header'>
+                        <img
+                          src='/images/character_avatar.png'
+                          alt={review.User.firstName}
+                          className='profile-pic'
+                        />
+                        <div>
+                          <span className='user-name'>{review.User.firstName} {review.User.lastName}</span>
+                          <span className='review-date'>{createdAt}</span>
+                        </div>
+                      </div>
+
+                      <div className='reviewed-stars'>{getStarRating(review.stars)}</div>
+                      </div>
+                      {review?.ReviewImages[0]?.url ?
+                        <img src={review?.ReviewImages[0]?.url} alt={review.review} className='review-image'/>
+                        : null
+                      }
+                  </div>
+                  <p className='review-text'>{review.review}</p>
+                  <div className='review-buttons'>
+                    {review.User?.id === currentUser?.id ? <button className='update-button' onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={productId} currentReview={review.review} currentStars={review.stars}/>)}>Update</button> : null}
+                    {review.User?.id === currentUser?.id ? <button className='delete-button' onClick={() => setModalContent(<DeleteReviewModal reviewId={review.id} productId={productId}/>)}>Delete</button> : null}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <div className='reviews-images-container'>
+            {reviews?.map((review, index) => (
+              // return (
+                review?.ReviewImages[0]?.url ?
+                <div key={index}>
+                  <span>Photos from reviews</span>
+                  <img src={review?.ReviewImages[0]?.url} alt={review.review} className='displaying-all-review-images'/>
+                </div>
+                  : null
+
+              // )
+            ))}
+          </div>
+
+        </div>
 
     </div>
   )

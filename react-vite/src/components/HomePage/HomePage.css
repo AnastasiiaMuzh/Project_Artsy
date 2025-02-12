@@ -229,27 +229,38 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    background: none;
+    background: white;
     border: none;
     cursor: pointer;
-    padding: 8px;
+    padding: 4px;
     z-index: 2;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    width: 28px;
+    height: 28px;
 }
 
-.heart-icon {
-    font-size: 1.5rem;
-    color: #ccc;
+.product-img-container .heart-icon {
+    font-size: 1.2rem;
+    color: #f6bdd1;
     transition: all 0.2s ease;
 }
 
-.heart-icon.filled {
-    color: hotpink;
+.product-img-container .heart-icon.filled {
+    color: #f6bdd1;
 }
 
-.favorite-button:hover .heart-icon {
-    transform: scale(1.1);
-    color: hotpink;
+.product-img-container .favorite-button:hover {
+    transform: scale(1.05);
+    background-color: #fff;  /* Keep white background on hover */
 }
+
+/* .product-img-container .favorite-button:hover .heart-icon {
+    color: red;
+} */
 
 /* Prevent the Link from capturing the button click */
 .favorite-button {

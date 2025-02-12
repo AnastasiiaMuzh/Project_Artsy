@@ -99,7 +99,7 @@
  transform: translateY(-100%);
  color: #f6bdd1;
  font-size: 16px;
- z-index: 1;
+ z-index: 0;
 }
 
 

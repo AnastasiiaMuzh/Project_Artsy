@@ -170,6 +170,7 @@
     margin-bottom: 8px;
     text-overflow: ellipsis;
     overflow: hidden;
+    
     /* white-space: nowrap; */
     /* border: 1px solid red; */
     height: 37px;
@@ -178,6 +179,8 @@
 .product-tile-price {
     font-size: 16px;
     margin-bottom: 0;
+    color: #8b575c;
+    font-weight: bold;
 }
 
 .product-tile-rating {
@@ -186,6 +189,7 @@
     align-items: center;
     gap: 4px;
     margin-bottom: 8px;
+    font-weight: bold;
 }
 
 .product-star {

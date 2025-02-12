@@ -159,7 +159,7 @@ function CreateProductForm() {
     }
 
   return (
-    <div>
+    <div className="create-form-page">
       {/* <h1>Create Product</h1> */}
         <div className="create-product-container">
       <div className="header">
@@ -239,8 +239,8 @@ function CreateProductForm() {
               />
             </div>
           ))}
-        <button type="button" onClick={addEmptyImageInput}>
-                        Add Another Image
+        <button className='add-image-button' type="button" onClick={addEmptyImageInput}>
+          Add Another Image
         </button>
         </div>
 

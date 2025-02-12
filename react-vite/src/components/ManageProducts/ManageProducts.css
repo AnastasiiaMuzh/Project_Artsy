@@ -118,7 +118,8 @@
 }
 
 .product-actions button {
-    background-color: #e99cb2;
+    background-color: #8b575c;
+    color: #f4f4f4;
     /* color: white; */
     padding: 7px 15px;
     border: none;
@@ -127,6 +128,6 @@
 }
 
 .product-actions button:hover {
-    background-color: hotpink;
+    background-color: #c98986;
 }
 

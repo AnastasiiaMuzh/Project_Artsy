@@ -36,12 +36,12 @@ const HomePage = () => {
     // Filter products based on selected category
     const filteredProducts = selectedCategory === "all" 
     ? Object.values(products)  // Convert products object to an array
-    : Object.values(products).filter(product => product.category === selectedCategory);
+    : Object.values(products).filter(product => product.category.toLowerCase() === selectedCategory.toLowerCase());
 
     // Get a list of unique categories
     const uniqueCategories = [
       'all', // Include the "all" category
-      ...new Set(Object.values(products).map(product => product.category)) // Get unique categories
+      ...new Set(Object.values(products).map(product => product.category.toLowerCase())) // Get unique categories
     ];
 
     const handleFavoriteClick = async (e, productId) => {

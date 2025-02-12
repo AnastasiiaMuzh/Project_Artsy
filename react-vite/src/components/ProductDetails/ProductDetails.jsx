@@ -136,11 +136,6 @@ const handleAddToCart = async () => {
     e.preventDefault();
     if (!currentUser) return;
 
-    // Check if the product belongs to the current user
-    if (product.sellerId === currentUser.id) {
-        return; // Don't allow favoriting own product
-    }
-
     const isFavorited = favorites.some(fav => fav.productId === Number(productId));
 
     if (isFavorited) {
@@ -197,7 +192,7 @@ const handleAddToCart = async () => {
       {/* Main Image */}
       <div className="main-image-container">
           <img src={selectedImage} alt={product.name} className="main-image" />
-          {currentUser && product.sellerId !== currentUser.id && (
+          {currentUser && (
             <button
               className="favorite-button"
               onClick={handleFavoriteClick}

@@ -54,8 +54,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 400px;
-    height: 300px;
+    width: 500px;
+    height: 400px;
     cursor: pointer;
 }
   
@@ -68,7 +68,7 @@
   
 
 .product-info-container {
-    border: 2px solid #e99cb2;
+    /* border: 2px solid #e99cb2; */
     border-radius: 5px;
     padding: 20px;
     /* flex-grow: 1; */
@@ -76,6 +76,7 @@
     flex-direction: column;
     gap: 10px;
     margin-left: 20px;
+    width: 400px;
     align-items: center; 
     text-align: center;
     max-height: 300px;  /* Set a max-height to enable scrolling */
@@ -86,9 +87,10 @@
 
 
 .product-name {
-    font-size: 20px;
+    font-size: 30px;
     font-weight: bold;
-  
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .product-price {
@@ -121,6 +123,7 @@
 .product-description {
     text-align: center;
     margin-top: 10px;
+    margin-top: 40px;
 }
 
 

@@ -48,13 +48,6 @@ const HomePage = () => {
         e.preventDefault(); // Prevent navigation to product details
         if (!sessionUser) return; // if user is not logged in, return
 
-        // Check if the product belongs to the current user
-        const product = products[productId];
-        if (product.sellerId === sessionUser.id) {
-            // You could show a tooltip or message here
-            return; // Don't allow favoriting own product
-        }
-
         const isFavorited = favorites.some(fav => fav.productId === productId);
         
         if (isFavorited) {
@@ -114,17 +107,17 @@ const HomePage = () => {
             <div className="product-tile">
               <div className="product-img-container">
                 <img src={product.previewImage} alt={product.name} className="product-img" />
-                {sessionUser && product.sellerId !== sessionUser.id && (
-                                    <button
-                                        className="favorite-button"
-                                        onClick={(e) => handleFavoriteClick(e, product.id)}
-                                    >
-                                        {favorites.some(fav => fav.productId === product.id) 
-                                            ? <FaHeart className="heart-icon filled" />
-                                            : <FaRegHeart className="heart-icon" />
-                                        }
-                                    </button>
-                                )}
+                {sessionUser && (
+                  <button
+                    className="favorite-button"
+                    onClick={(e) => handleFavoriteClick(e, product.id)}
+                  >
+                    {favorites.some(fav => fav.productId === product.id) 
+                      ? <FaHeart className="heart-icon filled" />
+                      : <FaRegHeart className="heart-icon" />
+                    }
+                  </button>
+                )}
               </div>
               <div className="product-info">
                     <div className='product-tile-name'>{product.name}</div>

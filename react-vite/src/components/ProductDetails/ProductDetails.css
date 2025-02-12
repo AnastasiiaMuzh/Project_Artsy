@@ -80,7 +80,7 @@
     align-items: center; 
     text-align: center;
     max-height: 300px;  /* Set a max-height to enable scrolling */
-    overflow-y: auto;   /* Enable vertical scrolling if the content exceeds the max-height */
+    /* overflow-y: auto;    */
     box-sizing: border-box;
 }
 
@@ -94,7 +94,7 @@
 }
 
 .product-price {
-    font-size: 16px;
+    font-size: 25px;
     font-weight: bold;
 
 }
@@ -108,22 +108,23 @@
 }
 
 .add-to-cart-button {
-    background-color: #e99cb2;
-    color: white;
+    background-color: #c98986;
+    color: #f4f4f4;
     padding: 7px 15px;
     border: none;
     border-radius: 5px;
-   
+    font-size: 25px;
 }
 
 .add-to-cart-button:hover {
-    background-color: hotpink;
+    background-color: #f6bdd1;
 }
 
 .product-description {
     text-align: center;
     margin-top: 10px;
     margin-top: 40px;
+    font-size: 22px;
 }
 
 

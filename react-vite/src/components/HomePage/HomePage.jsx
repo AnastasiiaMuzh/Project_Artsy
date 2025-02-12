@@ -124,9 +124,18 @@ const HomePage = () => {
                     <div className='price-and-rating'>
                         <div className='product-tile-price'>${product.price}</div>
                         <div className='product-tile-rating'>
-                            <div className='product-star'><IoMdStar /> </div>
-                            <div className='product-rating'>{product.avgRating}</div>
-                            </div>
+                          <div className="product-star">
+                            {product.avgRating && product.avgRating > 0 
+                              ? <IoMdStar /> 
+                              : ""
+                            }
+                          </div>
+                          <div className="product-rating">
+                            {product.avgRating && product.avgRating > 0 
+                              ? product.avgRating 
+                              : "New!"}
+                          </div>
+                        </div>
                     </div>
               </div>
             </div>

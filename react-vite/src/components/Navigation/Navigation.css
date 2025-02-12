@@ -149,7 +149,7 @@
 
 
 .favorites-link:hover .heart-icon {
- color: #c98986;
+ transform: scale(1.05);
 }
 
 
@@ -167,9 +167,9 @@
 
 
 .create-product-link:hover {
- background-color: #c98986;
- color: #f4f4f4;
- transform: translateY(-1px);
+ /* background-color: #c98986;
+ color: #f4f4f4; */
+ transform: scale(1.05);
 }
 
 
@@ -220,6 +220,7 @@
 .cart-link:hover,
 .cart-link.active {
   /* color: palevioletred; */
-  color: deeppink;
-  transition: color 0.2s ease;
+  /* color: deeppink;
+  transition: color 0.2s ease; */
+  transform: scale(1.05);
 }

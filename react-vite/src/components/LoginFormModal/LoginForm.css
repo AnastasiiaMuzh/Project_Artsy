@@ -51,7 +51,8 @@
   display: flex;
   justify-content: center;
   width: 112%;
-  background-color: pink;
+  color: #8b575c;
+  background-color: #f6bdd1;
   padding: 12px;
   border: none;
   border-radius: 4px;
@@ -61,7 +62,7 @@
 }
 
 .login-form button:hover {
-  background-color: pink;
+  background-color: #f6bdd1;
   transform: scale(1.02);
 }
 
@@ -73,10 +74,10 @@
 
 .demo-login {
   margin-top: 10px !important;
-  background-color: #a5d6a7 !important;  /* A softer green color */
+  color: whitesmoke !important;
+  background-color: #8b575c !important;  
 }
 
 .demo-login:hover {
-  background-color: #81c784 !important;  /* Slightly darker green on hover */
   transform: scale(1.02);
 }

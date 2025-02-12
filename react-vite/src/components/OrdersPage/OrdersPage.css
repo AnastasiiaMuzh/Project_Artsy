@@ -1,0 +1,17 @@
+.orders-page {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.orders-page h1 {
+  color: #2f2f2f;
+  margin-bottom: 20px;
+}
+
+.orders-container {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  border: 1px solid lightgray;
+} 

@@ -36,12 +36,12 @@ const HomePage = () => {
     // Filter products based on selected category
     const filteredProducts = selectedCategory === "all" 
     ? Object.values(products)  // Convert products object to an array
-    : Object.values(products).filter(product => product.category === selectedCategory);
+    : Object.values(products).filter(product => product.category.toLowerCase() === selectedCategory.toLowerCase());
 
     // Get a list of unique categories
     const uniqueCategories = [
       'all', // Include the "all" category
-      ...new Set(Object.values(products).map(product => product.category)) // Get unique categories
+      ...new Set(Object.values(products).map(product => product.category.toLowerCase())) // Get unique categories
     ];
 
     const handleFavoriteClick = async (e, productId) => {
@@ -108,25 +108,34 @@ const HomePage = () => {
               <div className="product-img-container">
                 <img src={product.previewImage} alt={product.name} className="product-img" />
                 {sessionUser && (
-                                    <button
-                                        className="favorite-button"
-                                        onClick={(e) => handleFavoriteClick(e, product.id)}
-                                    >
-                                        {favorites.some(fav => fav.productId === product.id) 
-                                            ? <FaHeart className="heart-icon filled" />
-                                            : <FaRegHeart className="heart-icon" />
-                                        }
-                                    </button>
-                                )}
+                  <button
+                    className="favorite-button"
+                    onClick={(e) => handleFavoriteClick(e, product.id)}
+                  >
+                    {favorites.some(fav => fav.productId === product.id) 
+                      ? <FaHeart className="heart-icon filled" />
+                      : <FaRegHeart className="heart-icon" />
+                    }
+                  </button>
+                )}
               </div>
               <div className="product-info">
                     <div className='product-tile-name'>{product.name}</div>
                     <div className='price-and-rating'>
                         <div className='product-tile-price'>${product.price}</div>
                         <div className='product-tile-rating'>
-                            <div className='product-star'><IoMdStar /> </div>
-                            <div className='product-rating'>{product.avgRating}</div>
-                            </div>
+                          <div className="product-star">
+                            {product.avgRating && product.avgRating > 0 
+                              ? <IoMdStar /> 
+                              : ""
+                            }
+                          </div>
+                          <div className="product-rating">
+                            {product.avgRating && product.avgRating > 0 
+                              ? product.avgRating 
+                              : "New!"}
+                          </div>
+                        </div>
                     </div>
               </div>
             </div>

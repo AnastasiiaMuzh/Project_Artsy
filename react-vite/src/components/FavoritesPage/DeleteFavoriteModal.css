@@ -34,19 +34,22 @@
 }
 
 .cancel-button {
-  background-color: #f4f4f4;
-  color: #2f2f2f;
+  background-color: #e0e0e0;
+  color: #8b575c;
 }
 
 .cancel-button:hover {
   background-color: #e0e0e0;
+  transform: scale(1.05);
 }
 
 .confirm-button {
   background-color: #c98986;
-  color: white;
+  color: whitesmoke;
 }
 
 .confirm-button:hover {
-  background-color: #8b575c;
+  background-color: #c98986;
+  color: whitesmoke;
+  transform: scale(1.05);
 } 

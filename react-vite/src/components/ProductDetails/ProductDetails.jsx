@@ -139,11 +139,11 @@ const handleAddToCart = async () => {
     const isFavorited = favorites.some(fav => fav.productId === Number(productId));
 
     if (isFavorited) {
-      await dispatch(removeFromFavorites(productId));
-      await dispatch(fetchUserFavorites());
+        await dispatch(removeFromFavorites(productId));
+        await dispatch(fetchUserFavorites());
     } else {
-      await dispatch(addToFavorites(productId));
-      await dispatch(fetchUserFavorites());
+        await dispatch(addToFavorites(productId));
+        await dispatch(fetchUserFavorites());
     }
   };
 

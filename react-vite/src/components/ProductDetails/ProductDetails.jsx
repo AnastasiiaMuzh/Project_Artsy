@@ -136,14 +136,19 @@ const handleAddToCart = async () => {
     e.preventDefault();
     if (!currentUser) return;
 
+    // Check if the product belongs to the current user
+    if (product.sellerId === currentUser.id) {
+        return; // Don't allow favoriting own product
+    }
+
     const isFavorited = favorites.some(fav => fav.productId === Number(productId));
 
     if (isFavorited) {
-      await dispatch(removeFromFavorites(productId));
-      await dispatch(fetchUserFavorites());
+        await dispatch(removeFromFavorites(productId));
+        await dispatch(fetchUserFavorites());
     } else {
-      await dispatch(addToFavorites(productId));
-      await dispatch(fetchUserFavorites());
+        await dispatch(addToFavorites(productId));
+        await dispatch(fetchUserFavorites());
     }
   };
 
@@ -192,7 +197,7 @@ const handleAddToCart = async () => {
       {/* Main Image */}
       <div className="main-image-container">
           <img src={selectedImage} alt={product.name} className="main-image" />
-          {currentUser && (
+          {currentUser && product.sellerId !== currentUser.id && (
             <button
               className="favorite-button"
               onClick={handleFavoriteClick}

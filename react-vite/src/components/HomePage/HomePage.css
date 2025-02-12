@@ -132,6 +132,7 @@
     cursor: pointer;
     box-sizing: border-box;
     height: 280px;
+    width: 250px;
 }
 
 .product-tile:hover {

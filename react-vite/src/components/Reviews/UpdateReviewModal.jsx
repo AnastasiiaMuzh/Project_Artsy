@@ -3,8 +3,9 @@ import { useModal } from "../../context/Modal"
 import { getAllReviews, updateReview } from "../../redux/reviews";
 import { getDetails } from "../../redux/products";
 import { useState } from "react";
+import './UpdateReviewModal.css'
 
-const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, currentImageUrl}) => {
+const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, currentImageUrl, triggerRefresh}) => {
     const {closeModal} = useModal();
     const dispatch = useDispatch();
 
@@ -31,6 +32,7 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
         }
 
         await dispatch(updateReview({id: reviewId, review, stars: starRating, imageUrl: imageUrl.trim() || null}))
+        triggerRefresh()
         await dispatch(getAllReviews(productId))
         await dispatch(getDetails(productId))
         closeModal();
@@ -42,8 +44,26 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
     const handleStarMouseOut = () => setHoverRating(0)
 
     return (
-        <div>
-            <div>Update Review</div>
+        <div className="update-review-modal">
+            <h2>Update Review</h2>
+                <label>
+                    <span>Your review rating</span>
+                    <div>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <span
+                                key={star}
+                                className={`review-star ${
+                                    (hoverRating || starRating) >= star ? 'highlighted' : ''
+                                }`}
+                                onClick={() =>  handleStarClick(star)}
+                                onMouseOver={() => handleStarHover(star)}
+                                onMouseOut={handleStarMouseOut}
+                            >
+                                ★
+                            </span>
+                        ))}
+                    </div>
+                </label>
             <label>
                 Review:
                 <textarea
@@ -54,8 +74,8 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
             {/* Image Input Field */}
             {errors.imageUrl && <p className="error-message">{errors.imageUrl}</p>}
             <label>
-                Review Image (Optional):
-                <input type="text" placeholder="Image URL" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+                Review Image:
+                <input type="text" placeholder="Image URL (Optional)" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
             </label>
 
             {/* Show Image Preview */}
@@ -65,24 +85,6 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
                 // </div>
             )}
 
-            <label>
-                Star Rating:
-                <div>
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <span
-                            key={star}
-                            className={`review-star ${
-                                (hoverRating || starRating) >= star ? 'highlighted' : ''
-                            }`}
-                            onClick={() =>  handleStarClick(star)}
-                            onMouseOver={() => handleStarHover(star)}
-                            onMouseOut={handleStarMouseOut}
-                        >
-                            ★
-                        </span>
-                    ))}
-                </div>
-            </label>
             <div>
                 <button disabled={disableButton()} onClick={handleUpdateButton}>Submit Changes</button>
                 <button onClick={closeModal}>Cancel</button>

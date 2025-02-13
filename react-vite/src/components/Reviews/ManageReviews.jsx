@@ -5,6 +5,7 @@ import { fetchReviewableProducts, getCurrUserReviews } from "../../redux/reviews
 import ReviewableProductModal from "./ReviewableProductModal";
 import DeleteReviewModal from "./DeleteReviewModal";
 import UpdateReviewModal from "./UpdateReviewModal";
+import './ManageReview.css'
 
 const ManageReviews = () => {
     const dispatch = useDispatch();
@@ -32,33 +33,39 @@ const ManageReviews = () => {
     if (loading) return <p>Loading reviews...</p>
 
     return (
-        <div>
-            <h1>Manage Reviews</h1>
-            {reviewableProducts?.message ? <h2>You have left reviews on all your orders! </h2> : null }
-            {!reviewableProducts?.message && reviewableProducts?.reviewlessProducts?.length > 0 && (
-                <button onClick={handleReviewableProductButton}>Leave a review for recent purchases!</button>
-            )}
-            {reviews?.map((review, index) => {
-                const createdAt = new Date(review.createdAt).toLocaleDateString("en-US", {
-                    month: 'short',
-                    day: 'numeric',
-                    year: 'numeric',
-                })
+        <div className="product-page">
+            <div className="manage-reviews-header">
+                <h1 className="manage-reviews-page">Manage Reviews</h1>
+                {reviewableProducts?.message ? <h2>You have left reviews on all your orders! </h2> : null }
+                {!reviewableProducts?.message && reviewableProducts?.reviewlessProducts?.length > 0 && (
+                    <button className='leave-review-button' onClick={handleReviewableProductButton}>Leave a review for recent purchases!</button>
+                )}
+            </div>
+            <div className="reviews-container">
+                {reviews?.map((review, index) => {
+                    const createdAt = new Date(review.createdAt).toLocaleDateString("en-US", {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                    })
 
-                return (
-                    <div key={index}>
-                        <div>{review.Products.name}</div>
-                        {review?.ReviewImages[0]?.url ?
-                            <img src={review?.ReviewImages[0]?.url} alt={review.review} className='product-img'/>
-                            : null
-                        }
-                        <div>{createdAt}</div>
-                        <div>{review.review}</div>
-                        <button onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={review.productId} currentReview={review.review} currentStars={review.stars}/>)}>Update</button>
-                        <button onClick={() => setModalContent(<DeleteReviewModal reviewId={review.id} productId={review.productId}/>)}>Delete</button>
-                    </div>
-                )
-            })}
+                    return (
+                        <div key={index} className="review">
+                            <div className="user-name">{review.Products.name}</div>
+                            {review?.ReviewImages[0]?.url ?
+                                <img src={review?.ReviewImages[0]?.url} alt={review.review} className='review-image'/>
+                                : null
+                            }
+                            <div className="review-date">{createdAt}</div>
+                            <div className="review-text">{review.review}</div>
+                            <div className="review-buttons">
+                                <button className='update-button' onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={review.productId} currentReview={review.review} currentStars={review.stars}/>)}>Update</button>
+                                <button className='delete-button' onClick={() => setModalContent(<DeleteReviewModal reviewId={review.id} productId={review.productId}/>)}>Delete</button>
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
         </div>
     )
 }

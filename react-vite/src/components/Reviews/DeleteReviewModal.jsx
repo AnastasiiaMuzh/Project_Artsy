@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal"
 import { fetchReviewableProducts, getAllReviews, getCurrUserReviews, removeReview } from "../../redux/reviews";
 import { getDetails } from "../../redux/products";
+import "../FavoritesPage/DeleteFavoriteModal.css"
 
 const DeleteReviewModal = ({reviewId, productId}) => {
     const {closeModal} = useModal();
@@ -17,12 +18,12 @@ const DeleteReviewModal = ({reviewId, productId}) => {
     }
 
     return (
-        <div>
-            <div>Confirm Delete</div>
+        <div className="delete-favorite-modal">
+            <h2>Confirm Delete</h2>
             <p>Are you sure you want to delete this review?</p>
-            <div>
-                <button onClick={handleDeleteButton}>Yes (Delete Review)</button>
-                <button onClick={closeModal}>No (Keep Review)</button>
+            <div className="delete-favorite-buttons">
+                <button className='confirm-button' onClick={handleDeleteButton}>Yes (Delete Review)</button>
+                <button className='cancel-button' onClick={closeModal}>No (Keep Review)</button>
             </div>
         </div>
     )

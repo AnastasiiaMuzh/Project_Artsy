@@ -114,6 +114,7 @@
     border: none;
     border-radius: 5px;
     font-size: 25px;
+    margin-left: 5px;
 }
 
 .add-to-cart-button:hover {

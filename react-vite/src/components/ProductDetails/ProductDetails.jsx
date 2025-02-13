@@ -211,7 +211,7 @@ const handleAddToCart = async () => {
 
 
         <div className='price-and-add-button'>
-          <div className='product-price'>${product.price}</div>
+          <div className='product-price'>${product.price} per item</div>
           <div className='add-to-cart'>
             <button className='add-to-cart-button' onClick={handleAddToCart}>Add to cart</button>
           </div>

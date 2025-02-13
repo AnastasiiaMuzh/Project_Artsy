@@ -6,12 +6,14 @@ import ReviewableProductModal from "./ReviewableProductModal";
 import DeleteReviewModal from "./DeleteReviewModal";
 import UpdateReviewModal from "./UpdateReviewModal";
 import './ManageReview.css'
+import { useNavigate } from "react-router-dom";
 
 const ManageReviews = () => {
     const dispatch = useDispatch();
     const { setModalContent } = useModal();
     const [loading, setLoading] = useState(true);
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const navigate = useNavigate()
 
     // const currentUser = useSelector(state => state.session.session)
     const reviews = useSelector(state => state.reviews.currentUserReviews?.Reviews)
@@ -58,13 +60,13 @@ const ManageReviews = () => {
 
                     return (
                         <div key={index} className="review">
-                            <div className="user-name">{review.Products.name}</div>
-                            {review?.ReviewImages[0]?.url ?
-                                <img src={review?.ReviewImages[0]?.url} alt={review.review} className='review-image'/>
-                                : null
-                            }
+                            <div onClick={() => navigate(`/products/${review.productId}`)} className="review-product-name">{review.Products.name}</div>
                             <div className="review-date">{createdAt}</div>
                             <div className="review-text">{review.review}</div>
+                            {review?.ReviewImages[0]?.url ?
+                                <img src={review?.ReviewImages[0]?.url} alt={review.review} className='manage-review-image'/>
+                                : null
+                            }
                             <div className="review-buttons">
                                 <button className='update-button' onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={review.productId} currentReview={review.review} currentStars={review.stars} triggerRefresh={triggerRefresh}/>)}>Update</button>
                                 <button className='delete-button' onClick={() => setModalContent(<DeleteReviewModal reviewId={review.id} productId={review.productId}/>)}>Delete</button>

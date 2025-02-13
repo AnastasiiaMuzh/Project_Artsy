@@ -1,0 +1,97 @@
+/* .update-review-modal {
+    background-color: white;
+    padding: 24px;
+    border-radius: 8px;
+    width: 400px;
+    text-align: center;
+}
+
+.update-review-modal h2 {
+    color: #2f2f2f;
+    margin-bottom: 16px; */
+    /* font-size: 20px; */
+/* } */
+
+.update-review-modal label {
+    /* display: flex;
+    flex-direction: column;
+    gap: 8px; */
+}
+
+.update-review-modal {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px; /* Adjust width */
+    /* max-width: 90%; */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.update-review-modal h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.update-review-modal label {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    text-align: left;
+    gap: 0;
+}
+
+.update-review-modal textarea,
+.update-review-modal input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.update-review-modal textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.update-review-modal div:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.update-review-modal button {
+    background: #007bff;
+    color: white;
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* .update-review-modal button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+.update-review-modal button:hover:not(:disabled) {
+    background: #0056b3;
+}
+
+.update-review-modal button:last-child {
+    background: #6c757d;
+}
+
+.update-review-modal button:last-child:hover {
+    background: #545b62;
+} */
+
+.update-review-modal span {
+    display: flex;
+    justify-content: center;
+}

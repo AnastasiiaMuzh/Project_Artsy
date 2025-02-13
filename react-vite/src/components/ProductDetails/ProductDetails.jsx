@@ -270,7 +270,7 @@ const handleAddToCart = async () => {
                   </div>
                   <p className='review-text'>{review.review}</p>
                   <div className='review-buttons'>
-                    {review.User?.id === currentUser?.id ? <button className='update-button' onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={productId} currentReview={review.review} currentStars={review.stars}/>)}>Update</button> : null}
+                    {review.User?.id === currentUser?.id ? <button className='update-button' onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={productId} currentReview={review.review} currentStars={review.stars} triggerRefresh={triggerRefresh}/>)}>Update</button> : null}
                     {review.User?.id === currentUser?.id ? <button className='delete-button' onClick={() => setModalContent(<DeleteReviewModal reviewId={review.id} productId={productId}/>)}>Delete</button> : null}
                   </div>
                 </div>

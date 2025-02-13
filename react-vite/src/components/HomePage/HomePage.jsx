@@ -122,7 +122,7 @@ const HomePage = () => {
               <div className="product-info">
                     <div className='product-tile-name'>{product.name}</div>
                     <div className='price-and-rating'>
-                        <div className='product-tile-price'>${product.price}</div>
+                        <div className='product-tile-price'>${product.price.toFixed(2)}</div>
                         <div className='product-tile-rating'>
                           <div className="product-star">
                             {product.avgRating && product.avgRating > 0 

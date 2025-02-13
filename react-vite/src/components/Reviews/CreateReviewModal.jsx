@@ -16,8 +16,10 @@ const CreateReviewModal = ({productId, triggerRefresh}) => {
 
     const handleValidation = () => {
         const validationErrors = {};
-        if (textArea.length < 10) validationErrors.textArea = 'Review must be at least 10 characters long.'
-        if (imageUrl && !(imageUrl.endsWith('.jpg') || imageUrl.endsWith('.jpeg') || imageUrl.endsWith('.png'))) {
+        const urlRegex = /(png|jpg|jpeg)/i;
+
+        if (review.length < 10) validationErrors.review = 'Review must be at least 10 characters long.'
+        if (imageUrl.trim() && !urlRegex.test(imageUrl)) {
             validationErrors.imageUrl = 'Image URL must end in .png, .jpg, .jpeg'
         }
         return validationErrors;

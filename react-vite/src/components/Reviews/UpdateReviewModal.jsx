@@ -34,10 +34,10 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
         }
 
         await dispatch(updateReview({id: reviewId, review, stars: starRating, imageUrl: imageUrl.trim() || null}))
-        triggerRefresh()
         await dispatch(getAllReviews(productId))
         await dispatch(getDetails(productId))
         closeModal();
+        triggerRefresh()
     }
 
     const disableButton = () => review.length < 10 || !starRating;

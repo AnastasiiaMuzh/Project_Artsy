@@ -79,6 +79,7 @@ export const addReview = (newReview) => async dispatch => {
     if (response.ok) {
         const data = await response.json();
         dispatch(addOneReview(data))
+        dispatch(getAllReviews(productId))
         return data;
     }
 }

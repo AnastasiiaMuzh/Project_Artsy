@@ -11,11 +11,16 @@ const ManageReviews = () => {
     const dispatch = useDispatch();
     const { setModalContent } = useModal();
     const [loading, setLoading] = useState(true);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
 
     // const currentUser = useSelector(state => state.session.session)
     const reviews = useSelector(state => state.reviews.currentUserReviews?.Reviews)
     console.log('look here', reviews)
     const reviewableProducts = useSelector((state) => state.reviews.reviewableProducts)
+
+    const triggerRefresh = () => {
+        setRefreshTrigger(prev => prev + 1)
+    }
 
     useEffect(() => {
         setLoading(true);
@@ -23,12 +28,14 @@ const ManageReviews = () => {
             dispatch(getCurrUserReviews()),
             dispatch(fetchReviewableProducts())
         ]).finally(() => setLoading(false))
-    }, [dispatch])
+    }, [dispatch, refreshTrigger])
 
     const handleReviewableProductButton = async (e) => {
         e.preventDefault();
         setModalContent(<ReviewableProductModal/>)
     }
+
+
 
     if (loading) return <p>Loading reviews...</p>
 
@@ -59,7 +66,7 @@ const ManageReviews = () => {
                             <div className="review-date">{createdAt}</div>
                             <div className="review-text">{review.review}</div>
                             <div className="review-buttons">
-                                <button className='update-button' onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={review.productId} currentReview={review.review} currentStars={review.stars}/>)}>Update</button>
+                                <button className='update-button' onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={review.productId} currentReview={review.review} currentStars={review.stars} triggerRefresh={triggerRefresh}/>)}>Update</button>
                                 <button className='delete-button' onClick={() => setModalContent(<DeleteReviewModal reviewId={review.id} productId={review.productId}/>)}>Delete</button>
                             </div>
                         </div>

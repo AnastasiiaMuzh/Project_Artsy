@@ -3,28 +3,26 @@
     flex-direction: column;
     gap: 20px;
     padding: 40px;
-    max-width: 1700px;  /*Максимальная ширина */
+    max-width: 1500px; 
     /* width: 906px;
     min-height: 1156px; */
-    margin: 0 auto; /* Центрирование */
-    box-sizing: border-box; /* Учитывать padding в общей ширине */
+    margin: 0 auto; 
+    box-sizing: border-box;
 
   }
   
-/* Header styling */
 .shopping-cart-header {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Вместо space-around */
-    padding: 0 20px; /* Отступы по бокам */
-    width: 100%; /* Полная ширина */
-    max-width: 1150px; /* Максимальная ширина */
-    margin: 0 auto; /* Центрирование */
+    justify-content: space-between; 
+    padding: 0 20px; 
+    width: 100%; 
+    max-width: 1150px; 
+    margin: 0 auto; 
 }
   
   .shopping-cart-header h1 {
-    /* padding-left: 30px; */
-    color: #8b575c;
+    color:  #5d3236;
    
   }
   
@@ -64,6 +62,7 @@
     display: flex;
     padding: 20px;
     background: #f7f6f6;
+    /* background-color: #f4f3f3; */
     border-radius: 10px; 
     margin-bottom: 20px;
     box-shadow: 1px 1px 4px rgba(73, 73, 73, 0.5);
@@ -92,14 +91,14 @@
     justify-content: center;
     font-size: 23px;
     margin: 15px 0;
-    color: #8b575c;
+    color: #5d3236;
     
 }
 
 .controls-group {
     display: flex;
     justify-content: center;
-    gap: 8px;
+    gap: 18px;
     align-items: center;
    padding-top: 23px;
 }
@@ -108,14 +107,17 @@
 .controls-group select,
 .controls-group button {
    /*  background-color:  #f7cfdd;  #a87c81 */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    border: 1px solid #ddd;
-    border-radius: 25px;
-    padding: 8px 18px;
-    font-size: 16px;
-    transition: background-color 0.3s ease; /* Плавный переход для hover */
-    cursor: pointer;
-    color: #8b575c;
+   background-color: rgb(235, 234, 234); /* Делаем фон белым */
+   color: #5d3236; /* Цвет текста */
+   border: 2px solid #5d3236; /* Обводка, чтобы сохранить стиль */
+   border-radius: 25px; /* Закругленные углы */
+   padding: 8px 18px; /* Увеличенный отступ */
+   font-size: 16px;
+   /* font-weight: bold; */
+   /* min-width: 100px; Делаем все кнопки одинаковой ширины */
+   text-align: center;
+   cursor: pointer;
+   transition: all 0.3s ease;
 }
 
 .controls-group select:hover,
@@ -131,7 +133,9 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3E%3Cpath fill='%23666' d='M0 2l4 4 4-4z'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 20px center;
-    min-width: 60px;
+    min-width: 70px;
+    outline: none;
+    
 }
 
 
@@ -142,13 +146,13 @@
 
 .price-product p {
     font-size: 25px;
-    color: #8b575c;
+    color:  #5d3236;
     margin: 0;
 }
 
 .price-product .price-each {
     font-size: 15px;
-    color: #b47b80;
+    color: #a5a2a2;
     margin-top: 5px;
 }
 
@@ -156,12 +160,12 @@
 .checkout-summary-section h1 {
     margin-bottom: 30px;
     font-size: 25px;
-    color: #8b575c;
+    color: #5d3236;
   }
 
 .checkout-summary-section {
   flex: 1;
-  justify-content: center;
+  /* justify-content: center; */
   margin-left: 140px;
   margin-top: -15px;
   max-width: 500px;
@@ -169,26 +173,37 @@
 
 
 .payment-methods {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  margin-bottom: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    gap: 1rem; 
+    margin-bottom: 30px;
+    margin: 0;
+    padding: 0;
+    
+  
 }
 
+/* Одна строчка: радиокнопка + логотип */
 .payment-option {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100px;
-  position: relative;
+    display: flex;
+    align-items: center;
+    width: 100px;
+
 }
+
+.payment-option input[type="radio"] {
+    transform: scale(1.7);
+    accent-color:  #5d3236;
+    margin: 0;
+   
+  }
 
 
 .payment-icon {
   width: 200px;  /* Adjusted width */
   height: 40px;  /* Consistent height */
   object-fit: contain;
-  object-position: left;
 }
 
 .payment-option:nth-child(2) .payment-icon {
@@ -202,81 +217,76 @@
     width: 150px;  /* Same as others */
     height: 25px;  /* Slightly taller to account for PayPal's proportions */
     transform-origin: left center;  /* Scale from left side */
-    margin-left: 40px;
+    margin-left: 10px;
   }
 
-  .payment-option input[type="radio"] {
-    transform: scale(1.7);
-    accent-color: #8b575c;
-    position: absolute;
-  }
-
- /* ------ Оформление блока "Order Summary" ------ */
+  
 
  .order-summary {
-    /* Установим разумную ширину, чтобы цены не уезжали далеко */
     max-width: 350px; 
-    /* Или width: 250px; - если хотите зафиксировать ширину */
+    margin-top: 15px;
   }
   
 .order-summary p {
-    display: flex;               /* Включаем флекс-контейнер */
-    justify-content: space-between; /* Разносим левый и правый span */
+    display: flex; 
+    justify-content: space-between; 
     margin: 5px 0;
     font-size: 20px;
-    color: #8b575c;
+    color: #5d3236;
     /* font-weight: bold; */
   }
 
   
   
-  /* Если хотите подчеркнуть границей строку "Shop discount", оставляем: */
   .discount {
     border-bottom: 1px solid #ddd;
     padding-bottom: 15px;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     width: 350px;
   }
   
-  /* Цвет текста для строки о налогах (опционально) */
+
   .tax {
     color: #8b575c;
     font-size: 5px; 
   }
   
-  /* ------ Gift-option (чекбокс + лейбл) ------ */
+
   .gift-option {
     display: flex;
-    align-items: center;
+    margin-right:240px;
     /* margin-top: 15px; */
     white-space: nowrap; /* Чтобы не переносило "Mark order as a gift" на другую строку */
   }
   
 
-  /* Styling for "Mark order as a gift" label */
 .gift-option label {
-    font-size: 19px;  /* Увеличим размер шрифта */
-    color: #8b575c;  /* Установим цвет текста */
+    font-size: 17px;  
+    color: #8b575c; 
     font-weight: bold;
+    margin-left: 20px;
+    margin-top: 10px;
   } 
 
- /* Увеличим чекбокс и покрасим */
+
   .gift-option input[type="checkbox"] {
     transform: scale(1.5);
-    accent-color: #8b575c;
+    accent-color: #5d3236;
     background-color: #8b575c;
-    margin-left: 10px;  /* Отступ между лейблом и чекбоксом */
     border: 2px solid #8b575c; /* Добавим границу для выделения */
-    border-radius: 4px; /* Скруглим углы */
+    border-radius: 4px; 
+    margin-top: 13px;
+    margin-right: -100px;
+   
     
   }
   
   .gift-option input[type="checkbox"]:checked {
-    background-color: #8b575c; /* Цвет заливки при выборе */
+    background-color: #8b575c; 
   }
   
   .gift-option input[type="checkbox"]:hover {
-    background-color: #f7cfdd;  /*Цвет заливки при наведении */
+    background-color: #f7cfdd;  
   }
   
 
@@ -284,7 +294,7 @@
     font-size: 17px;
   }
   
-  /* ------ Кнопка чекаута ------ */
+
   .checkout-button {
     background-color: #8b575c;
     color: white;
@@ -294,10 +304,18 @@
     border-radius: 25px;
     cursor: pointer;
     width: 70%;
-    margin-top: 20px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease; 
   }
   
- 
+  .checkout-button:hover {
+    background-color: #6d454a; /* Darker shade for hover */
+  }
+  
+  .checkout-button:active {
+    background-color: #4d3134; /* Even darker for click state */
+    transform: scale(0.98); /* Slight scale down when clicked */
+  }
 
 
 @media (max-width: 768px) {

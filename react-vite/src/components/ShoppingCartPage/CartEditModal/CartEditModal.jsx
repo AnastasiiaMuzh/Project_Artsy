@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useModal } from '../../context/Modal';
-import { checkout } from '../../redux/shopping_carts';
-
+import { updateCartItem, removeFromCart } from '../../../redux/shopping_carts';
+import { useModal } from '../../../context/Modal';
+import './CartEditModal.css';
 
 const CheckoutModal = () => {
   const dispatch = useDispatch();

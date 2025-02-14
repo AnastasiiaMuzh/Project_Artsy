@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchCart, removeFromCart, updateCartItem } from "../../redux/shopping_carts";
-import OpenModalButton from '../OpenModalButton'
-import CartEditModal from './CartEditModal'
-import GiftCheckoutModal from "./GiftFormModal";
-import CheckoutModal from "./CheckoutModal";
- import { useModal } from '../../context/Modal';
+import { fetchCart, removeFromCart, updateCartItem } from "../../../redux/shopping_carts";
+import OpenModalButton from '../../OpenModalButton'
+import CartEditModal from "../CartEditModal/./CartEditModal";
+import GiftCheckoutModal from "../GiftFormCheckout/GiftFormModal";
+import CheckoutModal from "../CheckoutModal/./CheckoutModal";
+ import { useModal } from '../../../context/Modal';
 
 import './ShoppingCart.css';
 
@@ -16,6 +16,10 @@ const ShoppingCart = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isGift, setIsGift] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('vasimaster');
+  const [localQuantities, setLocalQuantities] = useState({});
+
+
   const { setModalContent } = useModal();
 
 
@@ -37,9 +41,10 @@ const ShoppingCart = () => {
 }, [dispatch]);
 
 const handleQuantityChange = async (itemId, quantity) => {
+  setLocalQuantities(prev => ({ ...prev, [itemId]: quantity })); 
     try{
         await dispatch(updateCartItem(itemId, quantity));
-        setError()
+        setError(null)
     } catch (err) {
         setError("Failed to update quantity");
         console.error("Error updating quantity:", err);
@@ -60,9 +65,9 @@ const handleRemove = async (itemId) => {
 
 const handleCheckout = () => {
   if (isGift) {
-    setModalContent(<GiftCheckoutModal />);  // Открываем модалку для подарка
+    setModalContent(<GiftCheckoutModal />); 
   } else {
-    setModalContent(<CheckoutModal />);  // Открываем стандартную модалку
+    setModalContent(<CheckoutModal />);  
    }
 };
 
@@ -79,9 +84,9 @@ if (loading) return <div>Loading Cart...</div>;
     <div className="shopping-cart-container">
       <div className="shopping-cart-header">
         <h1>Your Cart</h1>
-        <h3>Artsy Purchase Protection: Shop confidently on Artsy knowing that if something goes wrong with your order, we're <span className="learn-more-link" onClick={() => setShowComingSoon(true)}>here to help</span>.<br />
+        <h3>Artsy Purchase Protection: Shop confidently on Artsy knowing that if something goes wrong with your order, we're <span className="learn-more-link">here to help</span>.<br />
              Our secure payment system and dedicated support team ensure your purchases are protected from start to finish. 
-          <span className="learn-more-link" onClick={() => setShowComingSoon(true)}> Learn more</span> about our protection policy.</h3>
+          <span className="learn-more-link"> Learn more</span> about our protection policy.</h3>
         </div>
 
         <div className="shopping-cart-main">
@@ -92,7 +97,7 @@ if (loading) return <div>Loading Cart...</div>;
                 <div className="name-erq">
                     <h3>{item.product.name}</h3>
                     <div className="controls-group">
-                        <select value={item.quantity} onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}>
+                        <select value={localQuantities[item.id] ?? item.quantity} onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}>
                             {[...Array(200).keys()].map((num) => (
                                 <option key={num + 1} value={num + 1}>{num + 1}</option>
                             ))}
@@ -114,10 +119,11 @@ if (loading) return <div>Loading Cart...</div>;
           <div className="payment-methods">
             {['vasimaster', 'paypal', 'googlepay'].map(method => (
               <div key={method} className="payment-option">
+                <input type="radio" id={method} name="paymentMethod" value={method} checked={paymentMethod === method} onChange={() => setPaymentMethod(method)} />
                 <label htmlFor={method}>
                   <img src={`/images/${method}.png`} alt={method} className="payment-icon" />
                   </label>
-                <input type="radio" id={method} name="paymentMethod" value={method} onChange={() => setPaymentMethod(method)} />
+                
               </div>
             ))}
           </div>
@@ -139,8 +145,9 @@ if (loading) return <div>Loading Cart...</div>;
           </div>
 
           <div className="gift-option">
-            <label htmlFor="gift">Mark order as a gift</label>
+            
             <input type="checkbox" id="gift" checked={isGift} onChange={() => setIsGift(!isGift)} />
+            <label htmlFor="gift">Mark order as a gift</label>
           </div>
 
           <button className="checkout-button" onClick={handleCheckout}>Proceed to checkout</button>

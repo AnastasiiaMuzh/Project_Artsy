@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useModal } from '../../context/Modal';
-import { checkout } from '../../redux/shopping_carts';
+import { useModal } from '../../../context/Modal';
+import { checkout } from '../../../redux/shopping_carts';
 
 
 const GiftCheckoutModal = () => {
@@ -25,8 +25,7 @@ const GiftCheckoutModal = () => {
   };
 
   const handleConfirm = async () => {
-    // Пока не сохраняем isGift / message и т.д. на сервер
-    // Передаём только shippingAddress в ваш checkout
+    
     const shippingAddress = giftForm.shippingAddress || '';
 
     try {

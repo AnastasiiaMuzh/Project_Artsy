@@ -82,7 +82,7 @@ export const removeFromCart = (itemId) => async (dispatch) => {
         method: 'DELETE',
     });
     if (res.ok) {
-        dispatch(removeItemAction(itemId));
+        dispatch(removeItemAction(itemd));
         dispatch(fetchCart());  // Обновляем корзину после удаления
     }
 };

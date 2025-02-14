@@ -1,89 +1,65 @@
-from app.models import db, OrderItem, Product, environment, SCHEMA
+from app.models import db, OrderItem, environment, SCHEMA
 from sqlalchemy.sql import text
-
-
 
 
 # Adds a demo user, you can add other users here if you want
 def seed_order_items():
-    # Get all products and their prices
-    products = Product.query.all()
-    products_dict = {p.id: p.price for p in products}
-    
-    # Create order items for all products that have reviews
-    order_items = []
-    
-    # Demo user's delivered orders (Order 1)
-    for product_id in range(1, 9):  # Products 1-8
-        product_price = products_dict[product_id]
-        order_items.append(OrderItem(
-            orderId=1,
-            productId=product_id,
-            price=product_price,
-            quantity=1
-        ))
-    
-    # Marnie's delivered orders (Order 2)
-    for product_id in range(9, 17):  # Products 9-16
-        product_price = products_dict[product_id]
-        order_items.append(OrderItem(
-            orderId=2,
-            productId=product_id,
-            price=product_price,
-            quantity=1
-        ))
-    
-    # Bobbie's delivered orders (Order 3)
-    for product_id in range(17, 25):  # Products 17-24
-        product_price = products_dict[product_id]
-        order_items.append(OrderItem(
-            orderId=3,
-            productId=product_id,
-            price=product_price,
-            quantity=1
-        ))
-    
-    # User 4's delivered orders (Order 4)
-    for product_id in range(25, 33):  # Products 25-32
-        product_price = products_dict[product_id]
-        order_items.append(OrderItem(
-            orderId=4,
-            productId=product_id,
-            price=product_price,
-            quantity=1
-        ))
-    
-    # User 5's delivered orders (Order 5)
-    for product_id in range(33, 41):  # Products 33-40
-        product_price = products_dict[product_id]
-        order_items.append(OrderItem(
-            orderId=5,
-            productId=product_id,
-            price=product_price,
-            quantity=1
-        ))
-    
-    # Additional order items for non-delivered orders
-    order_items.extend([
-        OrderItem(
-            orderId=6,  # Demo's processing order
-            productId=1,
-            price=products_dict[1],
-            quantity=2
-        ),
-        OrderItem(
-            orderId=7,  # Marnie's shipped order
-            productId=2,
-            price=products_dict[2],
-            quantity=1
-        ),
-        OrderItem(
-            orderId=8,  # Bobbie's processing order
-            productId=3,
-            price=products_dict[3],
-            quantity=1
-        )
-    ])
+    order_items = [
+        # Order 1 (Demo)
+        OrderItem(orderId=1, productId=5, price=12, quantity=1),
+        OrderItem(orderId=1, productId=10, price=10, quantity=1),
+        OrderItem(orderId=1, productId=15, price=10, quantity=1),
+        OrderItem(orderId=1, productId=4, price=30, quantity=1),
+        OrderItem(orderId=1, productId=9, price=50, quantity=1),
+        OrderItem(orderId=1, productId=14, price=40, quantity=1),
+        OrderItem(orderId=1, productId=3, price=20, quantity=1),
+        OrderItem(orderId=1, productId=8, price=8, quantity=1),
+
+        # Order 2 (Marnie)
+        OrderItem(orderId=2, productId=1, price=5, quantity=1),
+        OrderItem(orderId=2, productId=6, price=25, quantity=1),
+        OrderItem(orderId=2, productId=11, price=6, quantity=1),
+        OrderItem(orderId=2, productId=16, price=18, quantity=1),
+        OrderItem(orderId=2, productId=5, price=12, quantity=1),
+        OrderItem(orderId=2, productId=10, price=10, quantity=1),
+        OrderItem(orderId=2, productId=15, price=10, quantity=1),
+        OrderItem(orderId=2, productId=4, price=30, quantity=1),
+
+        # Order 3 (Bobbie)
+        OrderItem(orderId=3, productId=2, price=15, quantity=1),
+        OrderItem(orderId=3, productId=7, price=18, quantity=1),
+        OrderItem(orderId=3, productId=12, price=15, quantity=1),
+        OrderItem(orderId=3, productId=1, price=5, quantity=1),
+        OrderItem(orderId=3, productId=6, price=25, quantity=1),
+        OrderItem(orderId=3, productId=11, price=6, quantity=1),
+        OrderItem(orderId=3, productId=16, price=18, quantity=1),
+        OrderItem(orderId=3, productId=5, price=12, quantity=1),
+
+        # Order 4 (User 4)
+        OrderItem(orderId=4, productId=3, price=20, quantity=1),
+        OrderItem(orderId=4, productId=8, price=8, quantity=1),
+        OrderItem(orderId=4, productId=13, price=35, quantity=1),
+        OrderItem(orderId=4, productId=2, price=15, quantity=1),
+        OrderItem(orderId=4, productId=7, price=18, quantity=1),
+        OrderItem(orderId=4, productId=12, price=15, quantity=1),
+        OrderItem(orderId=4, productId=1, price=5, quantity=1),
+        OrderItem(orderId=4, productId=6, price=25, quantity=1),
+
+        # Order 5 (User 5)
+        OrderItem(orderId=5, productId=4, price=30, quantity=1),
+        OrderItem(orderId=5, productId=9, price=50, quantity=1),
+        OrderItem(orderId=5, productId=14, price=40, quantity=1),
+        OrderItem(orderId=5, productId=3, price=20, quantity=1),
+        OrderItem(orderId=5, productId=8, price=8, quantity=1),
+        OrderItem(orderId=5, productId=13, price=35, quantity=1),
+        OrderItem(orderId=5, productId=2, price=15, quantity=1),
+        OrderItem(orderId=5, productId=7, price=18, quantity=1),
+
+        # Additional orders
+        OrderItem(orderId=6, productId=2, price=15, quantity=2),
+        OrderItem(orderId=7, productId=3, price=20, quantity=1),
+        OrderItem(orderId=8, productId=4, price=30, quantity=1),
+    ]
 
     for item in order_items:
         db.session.add(item)

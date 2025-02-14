@@ -23,25 +23,32 @@ def seed():
         # command, which will  truncate all tables prefixed with
         # the schema name (see comment in users.py undo_users function).
         # Make sure to add all your other model's undo functions below
-        undo_order_items()
+        undo_users()
+        undo_products()
+        undo_product_images()
+        undo_favorites()
         undo_orders()
         undo_reviews()
         undo_review_images()
+        undo_order_items()
         undo_shopping_cart_items()
-        undo_favorites()
-        undo_product_images()
-        undo_products()
-        undo_users()
-
-    # Seed in correct order
+        # undo_review_images()
+        # undo_reviews()
+        # undo_order_items()
+        # undo_orders()
+        # undo_shopping_cart_items()
+        # undo_favorites()
+        # undo_product_images()
+        # undo_products()
+        # undo_users()
     seed_users()
-    seed_products()  # Products must be seeded first
+    seed_products()
     seed_product_images()
-    seed_orders()    # Then orders
-    seed_order_items()  # Then order items
-    seed_reviews()   # Then reviews (which depend on orders)
-    seed_review_images()
     seed_favorites()
+    seed_orders()
+    seed_reviews()
+    seed_review_images()
+    seed_order_items()
     seed_shopping_cart_items()
 
     # Add other seed functions here
@@ -49,15 +56,14 @@ def seed():
 # Creates the `flask seed undo` command
 @seed_commands.command('undo')
 def undo():
-    # Undo in reverse order
-    undo_shopping_cart_items()
-    undo_favorites()
-    undo_review_images()
-    undo_reviews()
-    undo_order_items()
-    undo_orders()
-    undo_product_images()
-    undo_products()
     undo_users()
+    undo_products()
+    undo_product_images()
+    undo_favorites()
+    undo_orders()
+    undo_reviews()
+    undo_review_images()
+    undo_order_items()
+    undo_shopping_cart_items()
 
     # Add other undo functions here

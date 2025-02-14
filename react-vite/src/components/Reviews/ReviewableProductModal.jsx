@@ -111,11 +111,16 @@ function ReviewableProductModal({triggerRefresh}) {
 
             {showReviewModal && selectedProduct && (
                 <div>
-                    <h2 className="review-your-purchases">Write a Review</h2>
-                    <div className="reviewable-products-product-name-2">{selectedProduct.productName}</div>
-                    <div className="review-date-2">Purchased on {new Date(selectedProduct.createdAt).toLocaleDateString("en-US", { month: 'short', day: 'numeric', year: 'numeric',})}</div>
-                    <img src={product[selectedProduct.id]?.previewImage} alt={product[selectedProduct.id]?.productName} className='reviewable-products-image-2' />
-                    <div>
+                    <h2 className="review-your-purchases-2">Write a Review</h2>
+                    <div className="review-header">
+                        <img src={product[selectedProduct.id]?.previewImage} alt={product[selectedProduct.id]?.productName} className='reviewable-products-image-2' />
+                        <div>
+                            <div className="reviewable-products-product-name-2">{selectedProduct.productName}</div>
+                            <div className="review-date-2">Purchased on {new Date(selectedProduct.createdAt).toLocaleDateString("en-US", { month: 'short', day: 'numeric', year: 'numeric',})}</div>
+
+                        </div>
+                    </div>
+                    <div className="reviewable-product-last-modal">
                             {[1, 2, 3, 4, 5].map((star) => (
                                         <span
                                             key={star}

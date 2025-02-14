@@ -1,68 +1,96 @@
-return (
-    <div className="shopping-cart-container">
-      <div className="shopping-cart-header">
-        <h1>Your Cart</h1>
-        <h3>Artsy Purchase Protection: Shop confidently on Artsy knowing that if something goes wrong with your order, we're <span className="learn-more-link" onClick={() => setShowComingSoon(true)}>here to help</span>.<br />
-             Our secure payment system and dedicated support team ensure your purchases are protected from start to finish. 
-          <span className="learn-more-link" onClick={() => setShowComingSoon(true)}> Learn more</span> about our protection policy.</h3>
-        </div>
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useModal } from '../../context/Modal';
+import './ShoppingCart.css';
 
-        <div className="shopping-cart-main">
-            <div className="items-cart">
-                {cart.map((item) => (
-                <div className="cart-item">
-                <img src={item.product?.imageUrl} alt={item.product.name} className="product-image" />
-                <div className="name-erq">
-                    <h3>{item.product.name}</h3>
-                    <div className="controls-group">
-                        <select value={item.quantity} onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}>
-                            {[...Array(200).keys()].map((num) => (
-                                <option key={num + 1} value={num + 1}>{num + 1}</option>
-                            ))}
-                        </select>
-                        <OpenModalButton buttonText="Edit" modalComponent={<CartEditModal item={item} />} />
-                        <button onClick={() => handleRemove(item.id)}>Remove</button>
-                    </div>
-                </div>
-                <div className="price-product">
-                    <p>${(item.product.price * item.quantity).toFixed(2)}</p>
-                    <p className="price-each">(${item.product.price} each)</p>
-                </div>
-            </div>
-                ))}
-            </div>
+const StandardCheckoutModal = () => {
+  const dispatch = useDispatch();
+  const { closeModal } = useModal();
+  const sessionUser = useSelector((state) => state.session.session);
+  const [shippingAddress, setShippingAddress] = useState('');
 
-        <div className="checkout-summary-section">
-          <h3>How you'll pay</h3>
-          <div className="payment-methods">
-            {['visa_master_amex', 'paypal', 'googlepay'].map(method => (
-              <div key={method} className="payment-option">
-                <label htmlFor={method}>
-                  <img src={`/images/${method}.png`} alt={method} className="payment-icon" />
-                </label>
-                <input type="radio" id={method} name="paymentMethod" value={method} onChange={() => setPaymentMethod(method)} />
-              </div>
-            ))}
-          </div>
+  const handleAddressChange = (e) => {
+    setShippingAddress(e.target.value);
+  };
 
-          <div className="order-summary">
-            <p>Item(s) total: ${totalPrice.toFixed(2)}</p>
-            <p>Shop discount: $0.00</p>
-            <p>Subtotal: ${totalPrice.toFixed(2)}</p>
-            <p>Shipping and tax calculated at checkout</p>
-          </div>
+  const handleConfirm = async () => {
+    const orderData = {
+      buyerId: sessionUser.id,
+      totalPrice: sessionUser.cartTotal, // assuming cart total is stored in session
+      shippingAddress,
+    };
+    await dispatch(createOrder(orderData)); // Assuming you have a createOrder action
+    closeModal();
+  };
 
-          <div className="gift-option">
-            
-            <label htmlFor="gift">Mark order as a gift</label>
-            <input type="checkbox" id="gift" checked={isGift} onChange={() => setIsGift(!isGift)} />
-          </div>
-
-          <button className="checkout-button" onClick={handleCheckout}>Proceed to checkout</button>
-        </div>
-      </div>
-      </div>
+  return (
+    <div className="checkout-modal">
+      <h2>Confirm Your Order</h2>
+      <p><strong>Name:</strong> {sessionUser.firstName} {sessionUser.lastName}</p>
+      <p><strong>Email:</strong> {sessionUser.email}</p>
+      <label htmlFor="shippingAddress">Shipping Address</label>
+      <input
+        type="text"
+        id="shippingAddress"
+        value={shippingAddress}
+        onChange={handleAddressChange}
+        placeholder="123 Main Street, New York, NY"
+      />
+      <button onClick={handleConfirm}>Confirm Order</button>
+    </div>
   );
 };
 
-export default ShoppingCart; 
+const GiftCheckoutModal = () => {
+  const dispatch = useDispatch();
+  const { closeModal } = useModal();
+  const [giftDetails, setGiftDetails] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    shippingAddress: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    setGiftDetails({
+      ...giftDetails,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleConfirm = async () => {
+    const orderData = {
+      buyerId: null, // Gift orders may not have a logged-in user
+      totalPrice: 0, // Replace with actual cart total if needed
+      shippingAddress: giftDetails.shippingAddress,
+      giftDetails,
+    };
+    await dispatch(createGiftOrder(orderData)); // Assuming you have a createGiftOrder action
+    closeModal();
+  };
+
+  return (
+    <div className="gift-checkout-modal">
+      <h2>Gift Checkout</h2>
+      <label htmlFor="firstName">First Name</label>
+      <input type="text" name="firstName" value={giftDetails.firstName} onChange={handleChange} />
+
+      <label htmlFor="lastName">Last Name</label>
+      <input type="text" name="lastName" value={giftDetails.lastName} onChange={handleChange} />
+
+      <label htmlFor="email">Email</label>
+      <input type="email" name="email" value={giftDetails.email} onChange={handleChange} />
+
+      <label htmlFor="shippingAddress">Shipping Address</label>
+      <input type="text" name="shippingAddress" value={giftDetails.shippingAddress} onChange={handleChange} placeholder="123 Main Street, New York, NY" />
+
+      <label htmlFor="message">Message</label>
+      <textarea name="message" value={giftDetails.message} onChange={handleChange} />
+
+      <button onClick={handleConfirm}>Confirm Gift Order</button>
+    </div>
+  );
+};
+
+export { StandardCheckoutModal, GiftCheckoutModal };

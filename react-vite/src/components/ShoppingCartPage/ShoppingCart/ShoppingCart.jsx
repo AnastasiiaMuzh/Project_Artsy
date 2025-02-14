@@ -1,22 +1,27 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchCart, removeFromCart, updateCartItem, addToCart } from "../../redux/shopping_carts";
-import OpenModalButton from '../OpenModalButton'
-import CartEditModal from './CartEditModal'
-import { FaCcVisa, FaCcMastercard, FaCcAmex, FaCcDiscover, FaPaypal, FaGooglePay } from 'react-icons/fa';
+import { fetchCart, removeFromCart, updateCartItem } from "../../../redux/shopping_carts";
+import OpenModalButton from '../../OpenModalButton'
+import CartEditModal from "../CartEditModal/./CartEditModal";
+import GiftCheckoutModal from "../GiftFormCheckout/GiftFormModal";
+import CheckoutModal from "../CheckoutModal/./CheckoutModal";
+ import { useModal } from '../../../context/Modal';
+
 import './ShoppingCart.css';
 
 const ShoppingCart = () => {
   const dispatch = useDispatch();
   const cart = useSelector((state) => state.cart.cart);
   const totalPrice = useSelector((state) => state.cart.totalPrice);
-  const itemCount = useSelector((state) => state.cart.itemCount);
-  const sessionUser = useSelector((state) => state.session.session);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isGift, setIsGift] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState('');
-  const [showComingSoon, setShowComingSoon] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('vasimaster');
+  const [localQuantities, setLocalQuantities] = useState({});
+
+
+  const { setModalContent } = useModal();
+
 
   useEffect(() => {
     const loadCart = async () => {
@@ -36,6 +41,7 @@ const ShoppingCart = () => {
 }, [dispatch]);
 
 const handleQuantityChange = async (itemId, quantity) => {
+  setLocalQuantities(prev => ({ ...prev, [itemId]: quantity })); 
     try{
         await dispatch(updateCartItem(itemId, quantity));
         setError(null)
@@ -46,22 +52,24 @@ const handleQuantityChange = async (itemId, quantity) => {
 }
 
 const handleRemove = async (itemId) => {
-    try {
-        await dispatch(removeFromCart(itemId));
-        setError(null);
-    } catch (err) {
-        setError("Failed to delete item");
-        console.error("Error deleting product:", err);
-    }
+
+    
+  try {   
+    await dispatch(removeFromCart(itemId));    
+    setError(null);  
+  } catch (err) {      
+    setError("Failed to delete item");       
+    console.error("Error deleting product:", err);    
+  }
 };
 
 const handleCheckout = () => {
-    if (isGift) {
-      OpenModalButton({ buttonText: "Gift Checkout", modalComponent: <GiftCheckoutModal /> });
-    } else {
-      OpenModalButton({ buttonText: "Standard Checkout", modalComponent: <StandardCheckoutModal /> });
-    }
-  };
+  if (isGift) {
+    setModalContent(<GiftCheckoutModal />); 
+  } else {
+    setModalContent(<CheckoutModal />);  
+   }
+};
 
 if (loading) return <div>Loading Cart...</div>;
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
@@ -76,20 +84,20 @@ if (loading) return <div>Loading Cart...</div>;
     <div className="shopping-cart-container">
       <div className="shopping-cart-header">
         <h1>Your Cart</h1>
-        <h3>Artsy Purchase Protection: Shop confidently on Artsy knowing that if something goes wrong with your order, we're <span className="learn-more-link" onClick={() => setShowComingSoon(true)}>here to help</span>.<br />
+        <h3>Artsy Purchase Protection: Shop confidently on Artsy knowing that if something goes wrong with your order, we're <span className="learn-more-link">here to help</span>.<br />
              Our secure payment system and dedicated support team ensure your purchases are protected from start to finish. 
-          <span className="learn-more-link" onClick={() => setShowComingSoon(true)}> Learn more</span> about our protection policy.</h3>
+          <span className="learn-more-link"> Learn more</span> about our protection policy.</h3>
         </div>
 
         <div className="shopping-cart-main">
             <div className="items-cart">
                 {cart.map((item) => (
-                <div className="cart-item">
+                <div className="cart-item" key={item.id}>
                 <img src={item.product?.imageUrl} alt={item.product.name} className="product-image" />
                 <div className="name-erq">
                     <h3>{item.product.name}</h3>
                     <div className="controls-group">
-                        <select value={item.quantity} onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}>
+                        <select value={localQuantities[item.id] ?? item.quantity} onChange={(e) => handleQuantityChange(item.id, parseInt(e.target.value))}>
                             {[...Array(200).keys()].map((num) => (
                                 <option key={num + 1} value={num + 1}>{num + 1}</option>
                             ))}
@@ -107,29 +115,39 @@ if (loading) return <div>Loading Cart...</div>;
             </div>
 
         <div className="checkout-summary-section">
-          <h3>How you'll pay</h3>
+          <h1>How you'll pay</h1>
           <div className="payment-methods">
-            {['visa_master_amex', 'paypal', 'googlepay'].map(method => (
+            {['vasimaster', 'paypal', 'googlepay'].map(method => (
               <div key={method} className="payment-option">
+                <input type="radio" id={method} name="paymentMethod" value={method} checked={paymentMethod === method} onChange={() => setPaymentMethod(method)} />
                 <label htmlFor={method}>
                   <img src={`/images/${method}.png`} alt={method} className="payment-icon" />
-                </label>
-                <input type="radio" id={method} name="paymentMethod" value={method} onChange={() => setPaymentMethod(method)} />
+                  </label>
+                
               </div>
             ))}
           </div>
 
           <div className="order-summary">
-            <p>Item(s) total: ${totalPrice.toFixed(2)}</p>
-            <p className="discount">Shop discount: $0.00</p>
-            <p>Subtotal: ${totalPrice.toFixed(2)}</p>
+            <p>
+              <span className="left-part">Item(s) total:</span>
+              <span className="right-part"> ${totalPrice.toFixed(2)}</span>
+            </p>
+            <p className="discount">
+              <span className="left-part">Shop discount:</span>
+              <span className="right-part"> $0.00</span>
+            </p>
+            <p className="total">
+              <span className="left-part">Subtotal: </span>
+              <span className="right-part">${totalPrice.toFixed(2)}</span>
+            </p>
             <p className="tax">Shipping and tax calculated at checkout</p>
           </div>
 
           <div className="gift-option">
             
-            <label htmlFor="gift">Mark order as a gift</label>
             <input type="checkbox" id="gift" checked={isGift} onChange={() => setIsGift(!isGift)} />
+            <label htmlFor="gift">Mark order as a gift</label>
           </div>
 
           <button className="checkout-button" onClick={handleCheckout}>Proceed to checkout</button>

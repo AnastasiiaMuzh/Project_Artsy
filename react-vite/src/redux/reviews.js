@@ -6,6 +6,7 @@ const DELETE_REVIEW = 'reviews/deleteReview'
 const EDIT_REVIEW = 'reviews/editReview'
 const LOAD_REVIEWABLE_PRODUCTS = 'reviews/getReviewableProducts'
 const LOAD_USER_REVIEWS = 'reviews/getUserReviews'
+const REMOVE_REVIEWABLE_PRODUCTS = 'reviews/removeReviewableProducts'
 
 // action creators
 const loadReviews = allReviews => ({
@@ -36,6 +37,11 @@ const deleteReview = (reviewId) => ({
 const editReview = (review) => ({
     type: EDIT_REVIEW,
     review
+})
+
+export const removeReviewableProducts = (productId) => ({
+    type: REMOVE_REVIEWABLE_PRODUCTS,
+    productId
 })
 
 //thunk
@@ -111,6 +117,7 @@ export const updateReview = (updatedReview) => async dispatch => {
         return data
     }
 }
+
 
 const initialState = {
     reviewsByProduct: {},
@@ -216,6 +223,16 @@ const reviewReducer = (state = initialState, action) => {
                         review.id === id ? { ...review, imageUrl:action.review.imageUrl } : review) || []
                 },
                 singleProduct: updateSingleProductReview(state.singleProduct, action.review)
+            }
+        case REMOVE_REVIEWABLE_PRODUCTS:
+            return {
+                ...state,
+                reviewableProducts: {
+                    ...state.reviewableProducts,
+                    reviewlessProducts: state.reviewableProducts.reviewlessProducts.filter(
+                        (product) => product.id !== action.productId
+                    )
+                }
             }
         default:
             return state;

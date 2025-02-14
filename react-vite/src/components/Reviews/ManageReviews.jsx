@@ -34,7 +34,7 @@ const ManageReviews = () => {
 
     const handleReviewableProductButton = async (e) => {
         e.preventDefault();
-        setModalContent(<ReviewableProductModal/>)
+        setModalContent(<ReviewableProductModal triggerRefresh={triggerRefresh}/>)
     }
 
 

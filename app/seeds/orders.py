@@ -1,60 +1,30 @@
 from app.models import db, Order, environment, SCHEMA
 from sqlalchemy.sql import text
 
-
 def seed_orders():
-    one = Order(
-        buyerId=1, totalPrice=25.50, status='shipped', shippingAddress="123 Apple Lane, NY"
-    )
-    two = Order(
-        buyerId=2, totalPrice=33.00, status='delivered', shippingAddress="456 Honeycomb Rd, CA"
-    )
-    three = Order(
-        buyerId=3, totalPrice=40.00, status='processing', shippingAddress="789 Coaster St, TX"
-    )
-    four = Order(
-        buyerId=4, totalPrice=62.00, status='shipped', shippingAddress="321 Vase Ave, FL"
-    )
-    five = Order(
-        buyerId=5, totalPrice=12.00, status='delivered', shippingAddress="654 Candle Ct, WA"
-    )
-    six = Order(
-        buyerId=1, totalPrice=36.00, status='processing', shippingAddress="123 Apple Lane, NY"
-    )
-    seven = Order(
-        buyerId=2, totalPrice=30.00, status='shipped', shippingAddress="456 Honeycomb Rd, CA"
-    )
-    eight = Order(
-        buyerId=3, totalPrice=16.00, status='delivered', shippingAddress="789 Coaster St, TX"
-    )
-    nine = Order(
-        buyerId=4, totalPrice=100.00, status='processing', shippingAddress="321 Vase Ave, FL"
-    )
-    ten = Order(
-        buyerId=5, totalPrice=35.00, status='shipped', shippingAddress="654 Candle Ct, WA"
-    )
+    orders = [
+        # Delivered orders
+        Order(buyerId=1, status='delivered', totalPrice=180, shippingAddress="123 Demo St, NY"),
+        Order(buyerId=2, status='delivered', totalPrice=116, shippingAddress="456 Marnie Ave, CA"),
+        Order(buyerId=3, status='delivered', totalPrice=114, shippingAddress="789 Bobbie Rd, TX"),
+        Order(buyerId=4, status='delivered', totalPrice=141, shippingAddress="321 Fourth St, FL"),
+        Order(buyerId=5, status='delivered', totalPrice=216, shippingAddress="654 Fifth Ave, WA"),
+        
+        # Additional orders
+        Order(buyerId=1, status='processing', totalPrice=15, shippingAddress="123 Demo St, NY"),
+        Order(buyerId=2, status='shipped', totalPrice=20, shippingAddress="456 Marnie Ave, CA"),
+        Order(buyerId=3, status='processing', totalPrice=30, shippingAddress="789 Bobbie Rd, TX")
+    ]
 
-
-    db.session.add(one)
-    db.session.add(two)
-    db.session.add(three)
-    db.session.add(four)
-    db.session.add(five)
-    db.session.add(six)
-    db.session.add(seven)
-    db.session.add(eight)
-    db.session.add(nine)
-    db.session.add(ten)
-
-
+    for order in orders:
+        db.session.add(order)
+    
     db.session.commit()
-
 
 def undo_orders():
     if environment == "production":
         db.session.execute(f"TRUNCATE table {SCHEMA}.orders RESTART IDENTITY CASCADE;")
     else:
         db.session.execute(text("DELETE FROM orders"))
-
 
     db.session.commit()

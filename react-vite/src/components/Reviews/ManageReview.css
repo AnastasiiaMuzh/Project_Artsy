@@ -32,3 +32,19 @@
     margin-bottom: 18px;
     cursor: pointer;
 }
+
+.review-product-name {
+    font-weight: bold;
+    display: block;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.manage-review-image {
+    width: 70px;
+    height: 70px;
+    border-radius: 8px;
+    /* margin-top: 10px; */
+    object-fit: cover;
+    /* margin-left: 40px; */
+}

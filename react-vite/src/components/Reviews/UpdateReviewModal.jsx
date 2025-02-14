@@ -49,7 +49,7 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
         <div className="update-review-modal">
             <h2>Update Review</h2>
                 <label>
-                    <span>Your review rating</span>
+                    <span className="your-review-rating">Your review rating</span>
                     <div>
                         {[1, 2, 3, 4, 5].map((star) => (
                             <span
@@ -73,7 +73,6 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
                     onChange={(e) => setReview(e.target.value)}
                 />
             </label>
-            {/* Image Input Field */}
             {errors.imageUrl && <p className="error-message">{errors.imageUrl}</p>}
             <label>
                 Review Image:
@@ -88,8 +87,8 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
             )}
 
             <div>
-                <button disabled={disableButton()} onClick={handleUpdateButton}>Submit Changes</button>
-                <button onClick={closeModal}>Cancel</button>
+                <button className='confirm-button' disabled={disableButton()} onClick={handleUpdateButton}>Submit Changes</button>
+                <button className='cancel-button' onClick={closeModal}>Cancel</button>
             </div>
         </div>
     )

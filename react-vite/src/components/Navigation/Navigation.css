@@ -112,6 +112,9 @@
  background-color: #f4f4f4;
 }
 
+.search-input:hover {
+  cursor: pointer;
+}
 
 .search-input:focus {
  outline: none;

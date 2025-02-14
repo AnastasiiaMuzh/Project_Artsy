@@ -1,4 +1,4 @@
-from app.models import db, OrderItem, environment, SCHEMA
+from app.models import db, OrderItem, Product, environment, SCHEMA
 from sqlalchemy.sql import text
 
 
@@ -6,54 +6,89 @@ from sqlalchemy.sql import text
 
 # Adds a demo user, you can add other users here if you want
 def seed_order_items():
-   order1 = OrderItem(
-       orderId=1, productId=1, price=5, quantity=5)
-   order2 = OrderItem(
-       orderId=2, productId=2, price=15, quantity=1)
-   order3 = OrderItem(
-       orderId=2, productId=1, price=18, quantity=1)
-   order4 = OrderItem(
-       orderId=3, productId=1, price=20, quantity=2)
-   order5 = OrderItem(
-       orderId=4, productId=1, price=12, quantity=1)
-   order6 = OrderItem(
-       orderId=4, productId=1, price=18, quantity=2)
-   order7 = OrderItem(
-       orderId=4, productId=2, price=10, quantity=2)
-   order8 = OrderItem(
-       orderId=5, productId=1, price=12, quantity=1)
-   order9 = OrderItem(
-       orderId=6, productId=1, price=15, quantity=2)
-   order10 = OrderItem(
-       orderId=6, productId=1, price=6, quantity=1)
-   order11 = OrderItem(
-       orderId=7, productId=1, price=30, quantity=1)
-   order12 = OrderItem(
-       orderId=8, productId=2, price=8, quantity=2)
-   order13 = OrderItem(
-       orderId=9, productId=1, price=50, quantity=1)
-   order14 = OrderItem(
-       orderId=9, productId=1, price=25, quantity=2)
-   order15 = OrderItem(
-       orderId=10, productId=1, price=35, quantity=1)
+    # Get all products and their prices
+    products = Product.query.all()
+    products_dict = {p.id: p.price for p in products}
+    
+    # Create order items for all products that have reviews
+    order_items = []
+    
+    # Demo user's delivered orders (Order 1)
+    for product_id in range(1, 9):  # Products 1-8
+        product_price = products_dict[product_id]
+        order_items.append(OrderItem(
+            orderId=1,
+            productId=product_id,
+            price=product_price,
+            quantity=1
+        ))
+    
+    # Marnie's delivered orders (Order 2)
+    for product_id in range(9, 17):  # Products 9-16
+        product_price = products_dict[product_id]
+        order_items.append(OrderItem(
+            orderId=2,
+            productId=product_id,
+            price=product_price,
+            quantity=1
+        ))
+    
+    # Bobbie's delivered orders (Order 3)
+    for product_id in range(17, 25):  # Products 17-24
+        product_price = products_dict[product_id]
+        order_items.append(OrderItem(
+            orderId=3,
+            productId=product_id,
+            price=product_price,
+            quantity=1
+        ))
+    
+    # User 4's delivered orders (Order 4)
+    for product_id in range(25, 33):  # Products 25-32
+        product_price = products_dict[product_id]
+        order_items.append(OrderItem(
+            orderId=4,
+            productId=product_id,
+            price=product_price,
+            quantity=1
+        ))
+    
+    # User 5's delivered orders (Order 5)
+    for product_id in range(33, 41):  # Products 33-40
+        product_price = products_dict[product_id]
+        order_items.append(OrderItem(
+            orderId=5,
+            productId=product_id,
+            price=product_price,
+            quantity=1
+        ))
+    
+    # Additional order items for non-delivered orders
+    order_items.extend([
+        OrderItem(
+            orderId=6,  # Demo's processing order
+            productId=1,
+            price=products_dict[1],
+            quantity=2
+        ),
+        OrderItem(
+            orderId=7,  # Marnie's shipped order
+            productId=2,
+            price=products_dict[2],
+            quantity=1
+        ),
+        OrderItem(
+            orderId=8,  # Bobbie's processing order
+            productId=3,
+            price=products_dict[3],
+            quantity=1
+        )
+    ])
 
+    for item in order_items:
+        db.session.add(item)
 
-   db.session.add(order1)
-   db.session.add(order2)
-   db.session.add(order3)
-   db.session.add(order4)
-   db.session.add(order5)
-   db.session.add(order6)
-   db.session.add(order7)
-   db.session.add(order8)
-   db.session.add(order9)
-   db.session.add(order10)
-   db.session.add(order11)
-   db.session.add(order12)
-   db.session.add(order13)
-   db.session.add(order14)
-   db.session.add(order15)
-   db.session.commit()
+    db.session.commit()
 
 
 
@@ -65,9 +100,9 @@ def seed_order_items():
 # sqlite3 in development you need to instead use DELETE to remove all data and
 # it will reset the primary keys for you as well.
 def undo_order_items():
-   if environment == "production":
-       db.session.execute(f"TRUNCATE table {SCHEMA}.order_items RESTART IDENTITY CASCADE;")
-   else:
-       db.session.execute(text("DELETE FROM order_items"))
+    if environment == "production":
+        db.session.execute(f"TRUNCATE table {SCHEMA}.order_items RESTART IDENTITY CASCADE;")
+    else:
+        db.session.execute(text("DELETE FROM order_items"))
       
-   db.session.commit()
+    db.session.commit()

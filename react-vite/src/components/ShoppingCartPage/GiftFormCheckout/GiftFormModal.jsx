@@ -16,6 +16,7 @@ const GiftCheckoutModal = () => {
     message: ''
   });
   const [errors, setErrors] = useState({});
+  
 
   const validateField = (name, value) => {
     let error = '';

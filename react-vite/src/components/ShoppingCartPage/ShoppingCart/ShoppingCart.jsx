@@ -165,7 +165,7 @@ const ShoppingCart = () => {
 
               {/* Price Section - Displays total price and per-item price */}
               <div className="price-product">
-                <p>${(item.product.price * item.quantity).toFixed(2)}</p>
+                <p>${isNaN(item.product.price) ? 0.00 : (item.product.price * item.quantity).toFixed(2)}</p>
                 <p className="price-each">(${item.product.price} each)</p>
               </div>
             </div>

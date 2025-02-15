@@ -38,7 +38,6 @@ const CheckoutModal = () => {
         error = 'Invalid state format (e.g., NY).';
       }
     }
-
     return error;
   };
 

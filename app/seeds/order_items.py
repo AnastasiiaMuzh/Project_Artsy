@@ -55,10 +55,17 @@ def seed_order_items():
         OrderItem(orderId=5, productId=2, price=15, quantity=1),
         OrderItem(orderId=5, productId=7, price=18, quantity=1),
 
-        # Additional orders
+        # Additional non-delivered orders
         OrderItem(orderId=6, productId=2, price=15, quantity=2),
         OrderItem(orderId=7, productId=3, price=20, quantity=1),
         OrderItem(orderId=8, productId=4, price=30, quantity=1),
+
+        # Additional delivered orders
+        OrderItem(orderId=9, productId=12, price=15, quantity=1),
+        OrderItem(orderId=9, productId=13, price=35, quantity=1),
+        OrderItem(orderId=9, productId=7, price=18, quantity=1),
+        OrderItem(orderId=9, productId=2, price=15, quantity=1),
+        OrderItem(orderId=10, productId=16, price=18, quantity=1),
     ]
 
     for item in order_items:

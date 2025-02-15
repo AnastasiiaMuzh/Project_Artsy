@@ -14,11 +14,26 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.login-form {
+.login-modal {
   display: flex;
   flex-direction: column;
+  align-items: center;
+  padding: 10px;
   width: 90%;
-  gap: 10px;
+  max-width: 90vw;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.login-form {
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 15px;
+  width: 100%;
 }
 
 .login-form h1 {
@@ -31,46 +46,67 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
+  width: 100%;
 }
 
 .login-form input {
+  width: 90%;
   padding: 12px;
-  border: 2px solid lightgray;
+  margin: 0;
+  border: 1px solid #ccc;
   border-radius: 4px;
   font-size: 16px;
-  width: 100%;
-  margin-top: 4px;
 }
 
-.login-form input:focus {
+/* Can use below to add focus styling */
+/* .login-form input:focus {
   outline: none;
-  box-shadow: 1px 2px 2px 2px lightgray;
+  border-color: #8b575c;
+  box-shadow: 0 0 0 2px rgba(139, 87, 92, 0.2);
+} */
+
+.login-form input.error {
+  border-color: #ff4444;
+  background-color: #fff8f8;
+  box-shadow: 0 0 0 1px #ff4444;
 }
+
+.login-error-message {
+  color: #ff4444;
+  font-size: 11px;
+  margin-top: 4px;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+.login-error-banner {
+  background-color: #ffebee;
+  color: #ff4444;
+  padding: 12px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  text-align: center;
+  width: 100%;
+  border: 1px solid #ffcdd2;
+}
+
 
 .login-form button {
-  display: flex;
-  justify-content: center;
-  width: 112%;
-  color: #8b575c;
-  background-color: #f6bdd1;
+  width: 100%;
   padding: 12px;
+  margin-top: 16px;
+  background-color: #f6bdd1;
+  color: #8b575c;
   border: none;
   border-radius: 4px;
-  font-weight: 500;
+  font-size: 16px;
   cursor: pointer;
-  transition: background-color 0.2s ease;
 }
 
 .login-form button:hover {
-  background-color: #f6bdd1;
   transform: scale(1.02);
 }
 
-.login-form p {
-  color: lightskyblue;
-  font-size: 14px;
-  margin-top: 4px;
-}
 
 .demo-login {
   margin-top: 10px !important;

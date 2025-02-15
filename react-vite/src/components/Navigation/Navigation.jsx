@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import ProfileButton from "./ProfileButton";
 import { FaHeart, FaPlus, FaSearch } from 'react-icons/fa';
 import "./Navigation.css";
@@ -10,13 +10,19 @@ function Navigation() {
   const [searchQuery, setSearchQuery] = useState("");
   const sessionUser = useSelector((state) => state.session.session);
   const cartItems = useSelector((state) => state.cart.cart);
+  const navigate = useNavigate();
 
   const itemCount = cartItems.length;
 
   const handleSearch = (e) => {
     e.preventDefault();
-    // TODO: Implement search functionality
-    console.log("Searching for:", searchQuery);
+    // console.log("Searching for:", searchQuery);
+    // Navigate to the home page with the search query in the URL
+    if (searchQuery.trim()) {
+      navigate(`/?search=${searchQuery}`);
+    } else {
+      navigate('/'); // Clear the search query if the search bar is empty
+    }
   };
 
   return (
@@ -33,7 +39,7 @@ function Navigation() {
               <input
                 type="text"
                 className="search-input"
-                placeholder="Search function coming soon..."
+                placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
               />

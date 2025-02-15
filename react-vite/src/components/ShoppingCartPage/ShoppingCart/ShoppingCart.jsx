@@ -147,7 +147,7 @@ const ShoppingCart = () => {
                     value={item.quantity}
                     onChange={(e) => {
                       const value = parseInt(e.target.value);
-                      handleQuantityChange(item.id, isNaN(value) ? item.quantity : value);
+                      handleQuantityChange(item.id, value);
                     }}
                   >
                     {[...Array(200).keys()].map((num) => (
@@ -165,7 +165,7 @@ const ShoppingCart = () => {
 
               {/* Price Section - Displays total price and per-item price */}
               <div className="price-product">
-              <p>${isNaN(item.product.price * item.quantity) ? '0.00' : (item.product.price * (item.quantity ?? 1)).toFixed(2)}</p>
+              <p>${isNaN(item.product.price * item.quantity) ? '' : (item.product.price * (item.quantity ?? 1)).toFixed(2)}</p>
 
                 <p className="price-each">(${item.product.price} each)</p>
               </div>

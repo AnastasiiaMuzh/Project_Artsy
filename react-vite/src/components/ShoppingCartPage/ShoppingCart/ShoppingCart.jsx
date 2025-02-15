@@ -144,7 +144,7 @@ const ShoppingCart = () => {
                 <div className="controls-group">
                   {/* Dropdown to select product quantity */}
                   <select
-                    value={item.quantity} // Use Redux state instead of local state
+                    value={item.quantity}
                     onChange={(e) => {
                       const value = parseInt(e.target.value);
                       handleQuantityChange(item.id, isNaN(value) ? item.quantity : value);
@@ -165,7 +165,8 @@ const ShoppingCart = () => {
 
               {/* Price Section - Displays total price and per-item price */}
               <div className="price-product">
-                <p>${isNaN(item.product.price) ? 0.00 : (item.product.price * item.quantity).toFixed(2)}</p>
+              <p>${isNaN(item.product.price * item.quantity) ? '0.00' : (item.product.price * (item.quantity ?? 1)).toFixed(2)}</p>
+
                 <p className="price-each">(${item.product.price} each)</p>
               </div>
             </div>

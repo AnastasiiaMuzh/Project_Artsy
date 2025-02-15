@@ -69,9 +69,9 @@ export const updateCartItem = (itemId, quantity) => async (dispatch) => {
       const data = await res.json();
       dispatch(updateItemAction({
         itemId: data.itemId,
-        quantity: data.quantity  // Обновляем количество товара
+        quantity: data.quantity  
       }));
-      dispatch(fetchCart());  // Обновляем корзину для отображения актуальных данных
+      dispatch(fetchCart()); 
     }
   };
 
@@ -82,8 +82,8 @@ export const removeFromCart = (itemId) => async (dispatch) => {
         method: 'DELETE',
     });
     if (res.ok) {
-        dispatch(removeItemAction(itemd));
-        dispatch(fetchCart());  // Обновляем корзину после удаления
+        dispatch(removeItemAction(itemId));
+        dispatch(fetchCart());  
     }
 };
 

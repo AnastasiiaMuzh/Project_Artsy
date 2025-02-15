@@ -87,10 +87,10 @@ const CartEditModal = ({ item }) => {
               </option>
             ))}
           </select>
-          <button onClick={handleSave} className="save-button">
+          <button onClick={handleSave} className="save-button-modal">
             Save
           </button>
-          <button onClick={handleDelete} className="delete-button">
+          <button onClick={handleDelete} className="delete-button-modal">
             Remove
           </button>
         </div>

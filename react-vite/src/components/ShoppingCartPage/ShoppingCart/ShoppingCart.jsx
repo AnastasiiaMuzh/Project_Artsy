@@ -3,12 +3,11 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchCart, removeFromCart, updateCartItem } from "../../../redux/shopping_carts";
 import OpenModalButton from '../../OpenModalButton'
 import CartEditModal from "../CartEditModal/./CartEditModal";
-import GiftCheckoutModal from "../GiftFormCheckout/GiftFormModal";
-import CheckoutModal from "../CheckoutModal/./CheckoutModal";
+import GiftCheckout from "../CheckoutModal/GiftCheckout";
+import RegularCheckout from "../CheckoutModal/RegularCheckout";
 import { useModal } from '../../../context/Modal';
 import { useNavigate } from 'react-router-dom';
 import './ShoppingCart.css';
-
 
 
 const ShoppingCart = () => {
@@ -17,6 +16,7 @@ const ShoppingCart = () => {
   // Select cart data from Redux store
   const cart = useSelector((state) => state.cart.cart);
   const totalPrice = useSelector((state) => state.cart.totalPrice);
+  const currentUser = useSelector((state) => state.session.session);
   // State management
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -88,26 +88,17 @@ const ShoppingCart = () => {
    * - Opens the gift checkout modal if `isGift` is checked
    * - Otherwise, opens the regular checkout modal*/
   const handleCheckout = () => {
+    const userName = `${currentUser.firstName} ${currentUser.lastName}`; 
     if (isGift) {
-      setModalContent(<GiftCheckoutModal setOrderPlaced={setOrderPlaced} />);
+      setModalContent(<GiftCheckout setOrderPlaced={setOrderPlaced} userName={userName} />);
     } else {
-      setModalContent(<CheckoutModal setOrderPlaced={setOrderPlaced} />);
+      setModalContent(<RegularCheckout setOrderPlaced={setOrderPlaced} userName={userName}/>);
     }
   };
 
   /** Render loading, error, or order confirmation screens*/
   if (loading) return <div>Loading Cart...</div>;
   if (error) return <div style={{ color: 'red' }}>{error}</div>;
-
-  if (orderPlaced) {
-    return (
-      <div className="order-confirmation">
-        <h2>Thank you for your order!</h2>
-        <p>Your order has been successfully placed.</p>
-        <button onClick={() => navigate('/')}>Continue Shopping</button>
-      </div>
-    );
-  }
 
   if (!cart || cart.length === 0) return (
     <div>

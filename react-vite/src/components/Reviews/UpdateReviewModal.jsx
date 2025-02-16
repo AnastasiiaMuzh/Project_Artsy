@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal"
 import { getAllReviews, updateReview } from "../../redux/reviews";
 import { getDetails } from "../../redux/products";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './UpdateReviewModal.css'
 
 const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, currentImageUrl, triggerRefresh}) => {
@@ -25,6 +25,10 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
         }
         return validationErrors;
     }
+
+    useEffect(() => {
+        setErrors(handleValidation());
+    }, [review, imageUrl])
 
     const handleUpdateButton = async () => {
         const validationErrors = handleValidation();
@@ -67,12 +71,14 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
                     </div>
                 </label>
             <label>
+                {errors.review && <p className="error-message">{errors.review}</p>}
                 Review:
                 <textarea
                     value={review}
                     onChange={(e) => setReview(e.target.value)}
                 />
             </label>
+
             {errors.imageUrl && <p className="error-message">{errors.imageUrl}</p>}
             <label>
                 Review Image:
@@ -82,7 +88,7 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
             {/* Show Image Preview */}
             {imageUrl && !errors.imageUrl && (
                 // <div className="image-preview">
-                    <img src={imageUrl} alt="Review Preview" className="image-preview"/>
+                    <img src={imageUrl} alt="Review Preview" className="review-image-preview"/>
                 // </div>
             )}
 

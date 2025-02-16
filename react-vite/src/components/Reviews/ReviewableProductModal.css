@@ -36,6 +36,13 @@
     margin-top: 16px
 }
 
+.review-your-purchases-2 {
+    color: #2f2f2f;
+    margin-bottom: 20px;
+    text-align: center;
+    margin-top: 16px
+}
+
 .reviewable-products-description {
     text-align: center;
     margin-bottom: 25px;
@@ -119,13 +126,24 @@
     transform: scale(1.05);
   }
 
-  .confirm-button {
+.reviews-confirm-button {
     background-color: #c98986;
     color: whitesmoke;
   }
 
-  .confirm-button:hover {
+.reviews-confirm-button:disabled {
+    cursor: not-allowed;
+}
+
+  .reviews-confirm-button:hover {
     background-color: #c98986;
     color: whitesmoke;
     transform: scale(1.05);
+  }
+
+  .reviewable-product-last-modal {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
   }

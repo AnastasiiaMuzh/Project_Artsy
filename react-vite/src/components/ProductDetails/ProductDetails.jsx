@@ -234,6 +234,8 @@ const handleAddToCart = async () => {
           <button className='post-review-button' onClick={handlePostReviewButton}>Post Your Review!</button>
         )}
       </div>
+      {reviews?.length > 0 && (
+
         <div className='reviews-section'>
 
 
@@ -279,20 +281,21 @@ const handleAddToCart = async () => {
           </div>
 
           <div className='reviews-images-container'>
-            {reviews?.map((review, index) => (
-              // return (
-                review?.ReviewImages[0]?.url ?
-                <div key={index}>
-                  <span>Photos from reviews</span>
-                  <img src={review?.ReviewImages[0]?.url} alt={review.review} className='displaying-all-review-images'/>
-                </div>
-                  : null
+            <span className='reviews-heading'>Photos from reviews</span>
+            <div className='review-images-grid'>
+              {reviews?.map((review, index) => (
+                  review?.ReviewImages[0]?.url ?
+                  <div className='displaying-all-review-images' key={index}>
+                    <img src={review?.ReviewImages[0]?.url} alt={review.review} className='all-review-images'/>
+                  </div>
+                    : null
+              ))}
 
-              // )
-            ))}
+            </div>
           </div>
 
         </div>
+      )}
 
     </div>
   )

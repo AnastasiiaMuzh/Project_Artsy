@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchReviewableProducts } from "../../redux/reviews";
+import { addReview, fetchReviewableProducts, removeReviewableProducts } from "../../redux/reviews";
 import { getProducts } from "../../redux/products";
 import './ReviewableProductModal.css'
+import { useModal } from "../../context/Modal";
 
 
-function ReviewableProductModal() {
+function ReviewableProductModal({triggerRefresh}) {
     const dispatch = useDispatch();
+    const {closeModal} = useModal();
     // const [loading, setLoading] = useState(true);
     // const [starRating, setStarRating] = useState(0);
     // const [hoverRating, setHoverRating] = useState(0);
@@ -29,6 +31,33 @@ function ReviewableProductModal() {
         if (review) {
             setSelectedProduct(review)
             setShowReviewModal(true)
+        }
+    }
+
+    const disableButton = () => reviewText.length < 10 || !starRating[selectedProduct?.id];
+
+    const handleSubmitReview = async () => {
+        if (disableButton()) return;
+
+        const newReview = {
+            productId: selectedProduct.id,
+            review: reviewText,
+            stars: starRating[selectedProduct.id],
+            imageUrl: ''
+        }
+
+        const response = await dispatch(addReview(newReview))
+        if (response) {
+            dispatch(removeReviewableProducts(selectedProduct.id))
+
+            // resets states
+            setShowReviewModal(false)
+            setSelectedProduct(null);
+            setReviewText('')
+            setStarRating(prev => ({...prev, [selectedProduct.id]: 0}))
+
+            closeModal()
+            triggerRefresh()
         }
     }
 
@@ -82,11 +111,16 @@ function ReviewableProductModal() {
 
             {showReviewModal && selectedProduct && (
                 <div>
-                    <h2 className="review-your-purchases">Write a Review</h2>
-                    <div className="reviewable-products-product-name-2">{selectedProduct.productName}</div>
-                    <div className="review-date-2">Purchased on {new Date(selectedProduct.createdAt).toLocaleDateString("en-US", { month: 'short', day: 'numeric', year: 'numeric',})}</div>
-                    <img src={product[selectedProduct.id]?.previewImage} alt={product[selectedProduct.id]?.productName} className='reviewable-products-image-2' />
-                    <div>
+                    <h2 className="review-your-purchases-2">Write a Review</h2>
+                    <div className="review-header">
+                        <img src={product[selectedProduct.id]?.previewImage} alt={product[selectedProduct.id]?.productName} className='reviewable-products-image-2' />
+                        <div>
+                            <div className="reviewable-products-product-name-2">{selectedProduct.productName}</div>
+                            <div className="review-date-2">Purchased on {new Date(selectedProduct.createdAt).toLocaleDateString("en-US", { month: 'short', day: 'numeric', year: 'numeric',})}</div>
+
+                        </div>
+                    </div>
+                    <div className="reviewable-product-last-modal">
                             {[1, 2, 3, 4, 5].map((star) => (
                                         <span
                                             key={star}
@@ -105,8 +139,11 @@ function ReviewableProductModal() {
                         value={reviewText}
                         onChange={(e) => setReviewText(e.target.value)}
                     />
-                    <button className='reviews-confirm-button' onClick={() => setShowReviewModal(false)}>Submit</button>
-                    <button className='reviews-cancel-button' onClick={() => setShowReviewModal(false)}>Cancel</button>
+                    <div className="delete-favorite-buttons">
+                        <button className='reviews-confirm-button' disabled={disableButton()} onClick={handleSubmitReview}>Submit</button>
+                        <button className='reviews-cancel-button' onClick={() => setShowReviewModal(false)}>Cancel</button>
+
+                    </div>
                 </div>
             )}
         </div>

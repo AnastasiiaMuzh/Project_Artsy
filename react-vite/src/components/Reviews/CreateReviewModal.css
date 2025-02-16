@@ -10,7 +10,90 @@
     transition: color 0.2s ease, transform 0.2s ease;
 }
 
-.image-preview {
-    width: auto;
+.review-image-preview {
+    width: 400px;
     height: 100px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-bottom: 30px;
+}
+
+
+.create-review-modal label {
+    width: 100%;
+}
+
+.create-review-modal {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    /* max-width: 90%; */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.create-review-modal h2 {
+    color: #2f2f2f;
+    margin-bottom: 16px;
+    font-size: 20px;
+}
+
+
+.create-review-modal label {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    text-align: left;
+    gap: 0;
+    color: #666;
+}
+
+.create-review-modal textarea,
+.create-review-modal input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    max-width: 100%;
+    box-sizing: border-box;
+    /* margin-bottom: 35px; */
+}
+
+.create-review-modal textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.create-review-modal div:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.create-review-modal button {
+    padding: 8px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.create-review-modal button:disabled {
+    /* background: #ccc; */
+    cursor: not-allowed;
+}
+
+.create-review-modal span {
+    display: flex;
+    justify-content: center;
+    color: #666;
+    /* margin-bottom: 24px; */
+    /* font-size: 14px; */
 }

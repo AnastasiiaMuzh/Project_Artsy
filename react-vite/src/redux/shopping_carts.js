@@ -115,7 +115,7 @@ const cartReducer = (state = initialState, action) => {
     case ADD_ITEM:
       return {
         ...state,
-        cart: [...state.cart, action.item],
+        cart: [action.item, ...state.cart],
         itemCount: state.itemCount + 1,
       };
 

@@ -7,24 +7,24 @@ import './CartEditModal.css';
 const CartEditModal = ({ item }) => {
   const dispatch = useDispatch();
   const { closeModal } = useModal();
-  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(item.quantity);
+  const [currentImgIndex, setCurrentImgIndex] = useState(0);
 
   // Check for available images
   const images = item.product.images || [];  // Using images from API
-  const currentImage = images[selectedImageIndex];  // Since images are already an array of URLs
+  const currentImage = images[currentImgIndex];  // Since images are already an array of URLs
 
   // Switch to the next image
   const handleNextImage = () => {
     if (images.length > 0) {
-      setSelectedImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setCurrentImgIndex((prevIndex) => (prevIndex + 1) % images.length);
     }
   };
 
   // Switch to the previous image
   const handlePrevImage = () => {
     if (images.length > 0) {
-      setSelectedImageIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
+      setCurrentImgIndex((prevIndex) => (prevIndex - 1 + images.length) % images.length);
     }
   };
 

@@ -205,9 +205,28 @@
 }
 
 .payment-icon {
-  width: 200px;
-  height: 40px;
+  width: 180px;
+  height: 37px;
   object-fit: contain;
+  /* display: block; */
+}
+
+/* input[value="googlepay"] + label .payment-icon {
+  width: 85px; /* Специфичный размер для Google Pay 
+  height: 50px; /* Увеличенная высота для Google Pay 
+} */
+
+#googlepay + label .payment-icon {
+  width: 65px;
+  height: 30px;
+  margin-left: 45px;
+}
+
+#paypal + label .payment-icon {
+  width: 300px;
+  height: 40px;
+  margin-left: -60px;
+  
 }
 
 /* ----------------- */

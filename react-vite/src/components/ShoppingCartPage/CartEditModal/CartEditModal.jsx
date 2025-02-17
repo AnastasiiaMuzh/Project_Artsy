@@ -68,25 +68,19 @@ const CartEditModal = ({ item }) => {
         <div className="product-details-modal">
           <h3>
             <span className="product-name-modal">{item.product.name}</span>
-            {/* <span className="product-price-modal">${item.product.price.toFixed(2)} each</span> */}
           </h3>
           <p>{item.product.description || 'No description available.'}</p>
         </div>
 
-        {/* <div className='price-modal'><p>${item.product.price.toFixed(2)} each</p></div> */}
-
         <div className="button-price-group">
         {/* <p>${item.product.price.toFixed(2)} each</p> */}
-          <select
-            value={quantity}
-            onChange={handleQuantityChange}
-          >
-            {[...Array(200).keys()].map((num) => (
-              <option key={num + 1} value={num + 1}>
-                {num + 1}
-              </option>
-            ))}
-          </select>
+        <select value={quantity} onChange={handleQuantityChange}>
+         {Array.from({ length: 200 }, (_, num) => (
+          <option key={num} value={num + 1}>
+            {num + 1}
+         </option>
+        ))}
+        </select>
           <button onClick={handleSave} className="save-button-modal">
             Save
           </button>

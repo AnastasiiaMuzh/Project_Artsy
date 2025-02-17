@@ -212,20 +212,22 @@
 }
 
 /* input[value="googlepay"] + label .payment-icon {
-  width: 85px; /* Специфичный размер для Google Pay 
-  height: 50px; /* Увеличенная высота для Google Pay 
+  width: 65px; y 
+  height: 45px;  
 } */
 
 #googlepay + label .payment-icon {
   width: 65px;
   height: 30px;
-  margin-left: 45px;
+  margin-left: 47px;
+  margin-top: 5px;
 }
 
 #paypal + label .payment-icon {
   width: 300px;
   height: 40px;
   margin-left: -60px;
+  margin-top: 5px;
   
 }
 

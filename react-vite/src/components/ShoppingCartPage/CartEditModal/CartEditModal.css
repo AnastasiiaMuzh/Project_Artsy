@@ -21,11 +21,10 @@
   margin-top: 10px;
 }
 
-.product-price-modal {
+/* .product-price-modal {
   font-size: 2px;
-
   
-}
+} */
 
 .close-modal-x {
   position: absolute;
@@ -48,20 +47,22 @@
   justify-content: center;
   align-items: center;
   gap: 20px;
-  width: 100%;
+  /* width: 100%; */
+  width: 950px;
   max-width: 100%;
-  /* margin-top: -20px; */
-  height: 40vh;     /* (viewport height(vh)Уменьшаем высоту контейнера */
-  overflow: hidden; /* Скрываем части изображения, которые выходят за пределы */
+  /* height: 40vh;  */
+  height: 450px;
+  object-fit: cover;
+  overflow: hidden; 
 }
 
 .product-image-modal {
   max-width: 100%; 
   max-height: 100%;
-  width: 660px;  /* Фиксированная ширина */
-  height: 550px; /* Фиксированная высота */
-  object-fit: cover;  /* Сохраняем пропорции, обрезая лишнее */
-  border-radius: 10px; /* Скругление углов */
+  width: 660px;  
+  height: 550px; 
+  object-fit: cover; 
+  border-radius: 10px; 
   margin-top: 15px;
 }
 
@@ -104,12 +105,6 @@
   
 }
 
-/* .product-price-modal {
-  font-size: 28px;
-  
-  color: rgb(0, 128, 0);
-  
-} */
 
 .button-price-group {
   display: flex;
@@ -118,12 +113,6 @@
   margin-top: 40px;
 }
 
-/* .price-modal p {
-  display: flex;
-  justify-content: center;
-  font-size: 25px;
-  color: #48292c;
-} */
 
 .button-price-group select {
   appearance: none;
@@ -176,3 +165,4 @@
 .delete-button-modal:active {
   transform: scale(0.98);
 }
+

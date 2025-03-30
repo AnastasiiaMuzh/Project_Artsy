@@ -211,10 +211,6 @@
   /* display: block; */
 }
 
-/* input[value="googlepay"] + label .payment-icon {
-  width: 65px; y 
-  height: 45px;  
-} */
 
 #googlepay + label .payment-icon {
   width: 65px;

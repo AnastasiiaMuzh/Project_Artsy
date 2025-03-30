@@ -2,3 +2,148 @@
     width: auto;
     height: 100px;
 }
+
+.reviewable-products {
+    overflow-y: auto;
+    height: 500px;
+    /* padding-right: 10px; */
+    width: 400px;
+    background-color: white;
+}
+
+.reviewable-products::-webkit-scrollbar {
+    display: none;
+}
+
+.wrapper {
+    width: 400px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: white;
+    padding: 20px;
+    /* max-width: 90%; */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.review-your-purchases {
+    color: #2f2f2f;
+    margin-bottom: 5px;
+    text-align: center;
+    margin-top: 16px
+}
+
+.review-your-purchases-2 {
+    color: #2f2f2f;
+    margin-bottom: 20px;
+    text-align: center;
+    margin-top: 16px
+}
+
+.reviewable-products-description {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #666;
+}
+
+.reviewable-products-header {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 10px;
+    margin-bottom: 20px;
+    /* vertical-align: text-top; */
+    /* position: absolute;
+    top: 0px; */
+}
+
+.reviewable-products-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    /* margin-top: 10px; */
+    object-fit: cover;
+}
+
+.reviewable-products-product-name {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    /* cursor: pointer; */
+}
+
+.reviewable-products-product-name-2 {
+    font-weight: bold;
+    font-size: 1rem;
+    margin-bottom: 5px;
+    margin-top: 20px;
+    /* cursor: pointer; */
+}
+
+.review-date-2 {
+    font-size: 0.9em;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.reviewable-products-image-2 {
+    width: 200px;
+    height: 200px;
+    border-radius: 8px;
+    /* margin-top: 10px; */
+    object-fit: cover;
+}
+
+.reviewable-products textarea,
+.reviewable-products input {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.reviewable-products button {
+    padding: 8px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+}
+
+.reviews-cancel-button {
+    background-color: #e0e0e0;
+    color: #8b575c;
+  }
+
+  .reviews-cancel-button:hover {
+    background-color: #e0e0e0;
+    transform: scale(1.05);
+  }
+
+.reviews-confirm-button {
+    background-color: #c98986;
+    color: whitesmoke;
+  }
+
+.reviews-confirm-button:disabled {
+    cursor: not-allowed;
+}
+
+  .reviews-confirm-button:hover {
+    background-color: #c98986;
+    color: whitesmoke;
+    transform: scale(1.05);
+  }
+
+  .reviewable-product-last-modal {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 15px;
+  }

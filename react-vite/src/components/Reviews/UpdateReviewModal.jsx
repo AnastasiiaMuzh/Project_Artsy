@@ -2,9 +2,10 @@ import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal"
 import { getAllReviews, updateReview } from "../../redux/reviews";
 import { getDetails } from "../../redux/products";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import './UpdateReviewModal.css'
 
-const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, currentImageUrl}) => {
+const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, currentImageUrl, triggerRefresh}) => {
     const {closeModal} = useModal();
     const dispatch = useDispatch();
 
@@ -16,12 +17,18 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
 
     const handleValidation = () => {
         const validationErrors = {};
+        const urlRegex = /(png|jpg|jpeg)/i;
+
         if (review.length < 10) validationErrors.review = 'Review must be at least 10 characters long.'
-        if (imageUrl && !(imageUrl.endsWith('.jpg') || imageUrl.endsWith('.jpeg') || imageUrl.endsWith('.png'))) {
+        if (imageUrl.trim() && !urlRegex.test(imageUrl)) {
             validationErrors.imageUrl = 'Image URL must end in .png, .jpg, .jpeg'
         }
         return validationErrors;
     }
+
+    useEffect(() => {
+        setErrors(handleValidation());
+    }, [review, imageUrl])
 
     const handleUpdateButton = async () => {
         const validationErrors = handleValidation();
@@ -34,6 +41,7 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
         await dispatch(getAllReviews(productId))
         await dispatch(getDetails(productId))
         closeModal();
+        triggerRefresh()
     }
 
     const disableButton = () => review.length < 10 || !starRating;
@@ -42,50 +50,51 @@ const UpdateReviewModal = ({reviewId, productId, currentReview, currentStars, cu
     const handleStarMouseOut = () => setHoverRating(0)
 
     return (
-        <div>
-            <div>Update Review</div>
+        <div className="update-review-modal">
+            <h2>Update Review</h2>
+                <label>
+                    <span className="your-review-rating">Your review rating</span>
+                    <div>
+                        {[1, 2, 3, 4, 5].map((star) => (
+                            <span
+                                key={star}
+                                className={`review-star ${
+                                    (hoverRating || starRating) >= star ? 'highlighted' : ''
+                                }`}
+                                onClick={() =>  handleStarClick(star)}
+                                onMouseOver={() => handleStarHover(star)}
+                                onMouseOut={handleStarMouseOut}
+                            >
+                                ★
+                            </span>
+                        ))}
+                    </div>
+                </label>
             <label>
+                {errors.review && <p className="error-message">{errors.review}</p>}
                 Review:
                 <textarea
                     value={review}
                     onChange={(e) => setReview(e.target.value)}
                 />
             </label>
-            {/* Image Input Field */}
+
             {errors.imageUrl && <p className="error-message">{errors.imageUrl}</p>}
             <label>
-                Review Image (Optional):
-                <input type="text" placeholder="Image URL" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
+                Review Image:
+                <input type="text" placeholder="Image URL (Optional)" value={imageUrl} onChange={(e) => setImageUrl(e.target.value)} />
             </label>
 
             {/* Show Image Preview */}
             {imageUrl && !errors.imageUrl && (
                 // <div className="image-preview">
-                    <img src={imageUrl} alt="Review Preview" className="image-preview"/>
+                    <img src={imageUrl} alt="Review Preview" className="review-image-preview"/>
                 // </div>
             )}
 
-            <label>
-                Star Rating:
-                <div>
-                    {[1, 2, 3, 4, 5].map((star) => (
-                        <span
-                            key={star}
-                            className={`review-star ${
-                                (hoverRating || starRating) >= star ? 'highlighted' : ''
-                            }`}
-                            onClick={() =>  handleStarClick(star)}
-                            onMouseOver={() => handleStarHover(star)}
-                            onMouseOut={handleStarMouseOut}
-                        >
-                            ★
-                        </span>
-                    ))}
-                </div>
-            </label>
             <div>
-                <button disabled={disableButton()} onClick={handleUpdateButton}>Submit Changes</button>
-                <button onClick={closeModal}>Cancel</button>
+                <button className='confirm-button' disabled={disableButton()} onClick={handleUpdateButton}>Submit Changes</button>
+                <button className='cancel-button' onClick={closeModal}>Cancel</button>
             </div>
         </div>
     )

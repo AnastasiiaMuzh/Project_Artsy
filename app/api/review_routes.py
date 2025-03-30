@@ -123,7 +123,6 @@ def create_review(id):
     product = Product.query.get(id)
 
     if not product:
-        print(f"❌ Product {id} not found")
         return jsonify({ "message": "Product couldn't be found"}), 404
 
     order_item = OrderItem.query.join(Order).filter(
@@ -132,12 +131,10 @@ def create_review(id):
         OrderItem.productId == id,
     ).first()
     if not order_item:
-        print(f"❌ Unauthorized: User {buyerId} has not purchased product {id}")
         return unauthorized()
 
     review_existing = Review.query.filter_by(productId=product.id, buyerId=buyerId).first()
     if review_existing:
-        print(f"❌ Duplicate review detected for product {id} by user {buyerId}")
         return { "message": "User already has a review for this product" }, 400
 
     data = request.get_json()
@@ -155,7 +152,6 @@ def create_review(id):
         errors['imageUrl'] = 'Image URL must be a valid string'
 
     if errors:
-        print(f"❌ Validation errors: {errors}")
         return jsonify({"message": "Bad Request", "errors": errors}), 400
 
 
@@ -168,11 +164,10 @@ def create_review(id):
 
     db.session.add(new_review)
     db.session.commit()
-    print(f"✅ Review {new_review.id} created successfully!")
 
     if image_url:
         new_review_image = ReviewImage(
-            reviewId=new_review_image.id,
+            reviewId=new_review.id,
             url=image_url
         )
         db.session.add(new_review_image)
@@ -334,10 +329,12 @@ def get_reviewable_products():
     ).filter(
         Order.buyerId == buyerId, #ensures the buyer for the order is the same as the logged in user
         Order.status == 'delivered', #ensures that the order is delievered
-        Review.id == None  # because of the outerjoin, all OrderItems (from user) are included BUT if it's not reviewed it will have a value of None
+        Review.id.is_(None)  # because of the outerjoin, all OrderItems (from user) are included BUT if it's not reviewed it will have a value of None
     ).all()
 
-    # print('TESSSSSSSSSSSSSSSSSSSTING!!!!!!!!!!!!', reviewable_products)
+
+    print('TESSSSSSSSSSSSSSSSSSSTING!!!!!!!!!!!!', reviewable_products)
+
     if not reviewable_products:
         return {'message': 'You have left reviews on all your orders'}
 

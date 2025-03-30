@@ -69,9 +69,9 @@ export const updateCartItem = (itemId, quantity) => async (dispatch) => {
       const data = await res.json();
       dispatch(updateItemAction({
         itemId: data.itemId,
-        quantity: data.quantity  // Обновляем количество товара
+        quantity: data.quantity  
       }));
-      dispatch(fetchCart());  // Обновляем корзину для отображения актуальных данных
+      dispatch(fetchCart()); 
     }
   };
 
@@ -83,7 +83,7 @@ export const removeFromCart = (itemId) => async (dispatch) => {
     });
     if (res.ok) {
         dispatch(removeItemAction(itemId));
-        dispatch(fetchCart());  // Обновляем корзину после удаления
+        dispatch(fetchCart());  
     }
 };
 
@@ -115,7 +115,7 @@ const cartReducer = (state = initialState, action) => {
     case ADD_ITEM:
       return {
         ...state,
-        cart: [...state.cart, action.item],
+        cart: [action.item, ...state.cart],
         itemCount: state.itemCount + 1,
       };
 

@@ -1,0 +1,94 @@
+.update-review-modal label {
+    width: 100%;
+}
+
+.update-review-modal {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 400px;
+    /* max-width: 90%; */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.update-review-modal h2 {
+    color: #2f2f2f;
+    margin-bottom: 16px;
+    font-size: 20px;
+}
+
+.your-review-rating {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    text-align: center;
+    gap: 0;
+    color: #666;
+}
+
+.update-review-modal label {
+    display: flex;
+    flex-direction: column;
+    font-weight: bold;
+    text-align: left;
+    gap: 0;
+    color: #666;
+}
+
+.update-review-modal textarea,
+.update-review-modal input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.update-review-modal textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.update-review-modal div:last-child {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.update-review-modal button {
+    padding: 8px 24px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.update-review-modal button:disabled {
+    /* background: #ccc; */
+    cursor: not-allowed;
+}
+
+.update-review-modal span {
+    display: flex;
+    justify-content: center;
+    color: #666;
+    /* margin-bottom: 24px; */
+    /* font-size: 14px; */
+}
+
+.image-preview {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    /* margin-top: 10px; */
+    object-fit: cover;
+    /* margin-left: 40px; */
+}

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { IoMdStar } from "react-icons/io";
 import { FaHeart, FaRegHeart } from 'react-icons/fa';  // Import both filled and outline hearts
 // import { Tooltip } from 'react-tooltip'
@@ -15,6 +15,14 @@ const HomePage = () => {
     const sessionUser = useSelector((state) => state.session.session);
     const [loading, setLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState("all"); // Track the selected category
+    
+    const location = useLocation(); // Access the current URL
+    const [searchedProducts, setSearchedProducts] = useState([]);
+    // Function to extract the search query from the URL
+    const getSearchQuery = () => {
+      const queryParams = new URLSearchParams(location.search);
+      return queryParams.get('search') || ''; // Return the search query or an empty string if no query
+    };
 
     useEffect(() => {
         const loadInitialData = async () => {
@@ -34,15 +42,39 @@ const HomePage = () => {
   };
 
     // Filter products based on selected category
-    const filteredProducts = selectedCategory === "all" 
-    ? Object.values(products)  // Convert products object to an array
-    : Object.values(products).filter(product => product.category === selectedCategory);
+    // const filteredProducts = selectedCategory === "all" 
+    // ? Object.values(products)  // Convert products object to an array
+    // : Object.values(products).filter(product => product.category.toLowerCase() === selectedCategory.toLowerCase());
+
+
+    useEffect(() => {
+      const searchQuery = getSearchQuery().toLowerCase();
+      if (searchQuery) {
+        // Filter products based on the search query (name, description, category)
+        const filtered = Object.values(products).filter((product) =>
+          product.name.toLowerCase().includes(searchQuery) ||
+          product.description.toLowerCase().includes(searchQuery) ||
+          product.category.toLowerCase().includes(searchQuery)
+        );
+        setSearchedProducts(filtered);
+      } else {
+        // If there's no search query, show all products
+        setSearchedProducts(Object.values(products));
+      }
+    }, [products, location.search]); // Re-run this effect when products or search query changes
 
     // Get a list of unique categories
     const uniqueCategories = [
       'all', // Include the "all" category
-      ...new Set(Object.values(products).map(product => product.category)) // Get unique categories
+      ...new Set(Object.values(products).map(product => product.category.toLowerCase())) // Get unique categories
     ];
+
+    // Combine search and category filters
+    const filteredProducts = searchedProducts.filter((product) =>
+      selectedCategory === "all" 
+        ? true // If category is "all", no category filter applied
+        : product.category.toLowerCase() === selectedCategory.toLowerCase()
+    );
 
     const handleFavoriteClick = async (e, productId) => {
         e.preventDefault(); // Prevent navigation to product details
@@ -64,6 +96,7 @@ const HomePage = () => {
   if (!filteredProducts || filteredProducts.length === 0) {
     return <div>No products available in this category</div>;
   }
+
 
 
   if (!products || products.length === 0) {
@@ -102,31 +135,40 @@ const HomePage = () => {
         </div>
 
       <div className="products-container">
-        {Object.values(filteredProducts).map((product) => (
+        {filteredProducts.map((product) => (
           <Link to={`/products/${product.id}`} key={product.id} className="product-tile-link">
             <div className="product-tile">
               <div className="product-img-container">
                 <img src={product.previewImage} alt={product.name} className="product-img" />
                 {sessionUser && (
-                                    <button
-                                        className="favorite-button"
-                                        onClick={(e) => handleFavoriteClick(e, product.id)}
-                                    >
-                                        {favorites.some(fav => fav.productId === product.id) 
-                                            ? <FaHeart className="heart-icon filled" />
-                                            : <FaRegHeart className="heart-icon" />
-                                        }
-                                    </button>
-                                )}
+                  <button
+                    className="favorite-button"
+                    onClick={(e) => handleFavoriteClick(e, product.id)}
+                  >
+                    {favorites.some(fav => fav.productId === product.id) 
+                      ? <FaHeart className="heart-icon filled" />
+                      : <FaRegHeart className="heart-icon" />
+                    }
+                  </button>
+                )}
               </div>
               <div className="product-info">
                     <div className='product-tile-name'>{product.name}</div>
                     <div className='price-and-rating'>
-                        <div className='product-tile-price'>${product.price}</div>
+                        <div className='product-tile-price'>${product.price.toFixed(2)}</div>
                         <div className='product-tile-rating'>
-                            <div className='product-star'><IoMdStar /> </div>
-                            <div className='product-rating'>{product.avgRating}</div>
-                            </div>
+                          <div className="product-star">
+                            {product.avgRating && product.avgRating > 0 
+                              ? <IoMdStar /> 
+                              : ""
+                            }
+                          </div>
+                          <div className="product-rating">
+                            {product.avgRating && product.avgRating > 0 
+                              ? product.avgRating 
+                              : "New!"}
+                          </div>
+                        </div>
                     </div>
               </div>
             </div>

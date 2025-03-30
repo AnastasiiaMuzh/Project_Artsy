@@ -1,0 +1,179 @@
+.cart-edit-modal {
+  width: 80vw;
+  max-width: 900px;
+  height: 85vh;
+  max-height: 750px;
+  background-color: white;
+  padding: 10px;
+  border-radius: 15px;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.3);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.cart-edit-modal h2 {
+  display: flex;
+  color: #5d3236;
+  margin-right: 770px;
+  font-size: 30px;
+  margin-top: 10px;
+}
+
+.product-price-modal {
+  font-size: 2px;
+
+  
+}
+
+.close-modal-x {
+  position: absolute;
+  top: 10px;
+  right: 25px;
+  background: none;
+  border: none;
+  font-size: 60px;
+  cursor: pointer;
+  color: #5d3236;
+  transition: color 0.3s ease;
+}
+
+.close-modal-x:hover {
+  color: #8b575c;
+}
+
+.image-carousel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 1000px;
+  margin-top: -20px;
+  height: 40vh; /* Уменьшаем высоту контейнера */
+  overflow: hidden; /* Скрываем части изображения, которые выходят за пределы */
+}
+
+.product-image-modal {
+  max-width: 100%;
+  max-height: 100%;
+  width: 660px; /* Фиксированная ширина */
+  height: 550px; /* Фиксированная высота */
+  object-fit: cover; /* Сохраняем пропорции, обрезая лишнее */
+  border-radius: 10px; /* Скругление углов */
+  margin-top: 15px;
+}
+
+.image-carousel button {
+  font-size: 24px;
+  padding: 10px 15px;
+  background-color: #8b575c;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-carousel button:hover {
+  background-color: #5d3236;
+  transform: scale(1.1);
+}
+
+.image-carousel button:active {
+  transform: scale(0.9);
+}
+
+.product-details-modal {
+  text-align: center;
+  font-size: 23px;
+  color: #5d3236;
+  margin-left: 70px;
+  margin-right: 70px;
+}
+
+.product-name-modal {
+  font-size: 25px;
+  
+}
+
+/* .product-price-modal {
+  font-size: 28px;
+  
+  color: rgb(0, 128, 0);
+  
+} */
+
+.button-price-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 40px;
+}
+
+/* .price-modal p {
+  display: flex;
+  justify-content: center;
+  font-size: 25px;
+  color: #48292c;
+} */
+
+.button-price-group select {
+  appearance: none;
+  padding: 8px 20px;
+  font-size: 16px;
+  text-align: center;
+  border: none;
+  background-color: #8b575c;
+  color: white;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  outline: none;
+  width: auto;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 10 10'%3E%3Cpath fill='%23ffffff' d='M0 3l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 15px center;
+  background-size: 12px;
+  padding-right: 35px;
+}
+
+.button-price-group select:hover {
+  background-color: #5d3236;
+}
+
+.button-price-group select:focus {
+  background-color: #5d3236;
+}
+
+.button-price-group select:active {
+  transform: scale(0.98);
+}
+
+.save-button-modal,
+.delete-button-modal {
+  padding: 8px 20px;
+  background-color: #8b575c;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.save-button-modal:hover,
+.delete-button-modal:hover {
+  background-color: #5d3236;
+}
+
+.save-button-modal:active,
+.delete-button-modal:active {
+  transform: scale(0.98);
+}

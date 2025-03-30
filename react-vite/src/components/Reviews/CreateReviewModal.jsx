@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux"
 import { useModal } from "../../context/Modal";
 import { getDetails } from "../../redux/products";
 import './CreateReviewModal.css'
-import { addReview } from "../../redux/reviews";
+import { addReview, getAllReviews } from "../../redux/reviews";
 
 const CreateReviewModal = ({productId, triggerRefresh}) => {
     const dispatch = useDispatch();
@@ -16,12 +16,19 @@ const CreateReviewModal = ({productId, triggerRefresh}) => {
 
     const handleValidation = () => {
         const validationErrors = {};
+        const urlRegex = /(png|jpg|jpeg)/i;
+
+        if (starRating === 0) validationErrors.starRating = 'Please select a star rating';
         if (textArea.length < 10) validationErrors.textArea = 'Review must be at least 10 characters long.'
-        if (imageUrl && !(imageUrl.endsWith('.jpg') || imageUrl.endsWith('.jpeg') || imageUrl.endsWith('.png'))) {
+        if (imageUrl.trim() && !urlRegex.test(imageUrl)) {
             validationErrors.imageUrl = 'Image URL must end in .png, .jpg, .jpeg'
         }
         return validationErrors;
     }
+
+    useEffect(() => {
+        setErrors(handleValidation());
+    }, [starRating, textArea, imageUrl])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -41,8 +48,10 @@ const CreateReviewModal = ({productId, triggerRefresh}) => {
 
         try {
             await dispatch(addReview(reviewData))
-            triggerRefresh()
+            await dispatch(getAllReviews(productId))
+            await dispatch(getDetails(productId))
             closeModal();
+            triggerRefresh()
         } catch (error) {
             console.error('Error submitting review:', error);
             if (error.json) {
@@ -58,28 +67,13 @@ const CreateReviewModal = ({productId, triggerRefresh}) => {
     const handleStarMouseOut = () => setHoverRating(0)
 
     return (
-        <div>
-            <div>Leave a Review!</div>
+        <div className="create-review-modal">
             <form onSubmit={handleSubmit}>
-                {errors.textArea && <p>{errors.textArea}</p>}
-                <textarea
-                    value={textArea}
-                    placeholder="Leave a review to help these sellers grow their business."
-                    onChange={(e) => setTextArea(e.target.value)}
-                />
-                {errors.imageUrl && <p className="error-message">{errors.imageUrl}</p>}
-                <input
-                    type="text"
-                    placeholder="Image URL (optional)"
-                    value={imageUrl}
-                    onChange={(e) => setImageUrl(e.target.value)}
-                />
+            <h2>Leave a Review!</h2>
 
-                {imageUrl && !errors.imageUrl && (
-                    <div className="image-preview">
-                        <img src={imageUrl} alt="Review Preview" />
-                    </div>
-                )}
+            {errors.starRating && <p className="error-message">{errors.starRating}</p>}
+            <label>
+                <span className="your-review-rating">Your review rating</span>
                 <div>
                     {[1, 2, 3, 4, 5].map((star) => (
                                 <span
@@ -89,15 +83,40 @@ const CreateReviewModal = ({productId, triggerRefresh}) => {
                                     }`}
                                     onClick={() =>  handleStarClick(star)}
                                     onMouseOver={() => handleStarHover(star)}
-                                    onMouseOut={() => handleStarMouseOut}
+                                    onMouseOut={handleStarMouseOut}
                                 >
                                     ★
                                 </span>
                             ))}
-                            {/* <span>Stars</span> */}
                 </div>
+            </label>
+                {errors.textArea && <p className="error-message">{errors.textArea}</p>}
+            <label>
+                Review:
+                <textarea
+                    value={textArea}
+                    placeholder="Leave a review to help these sellers grow their business."
+                    onChange={(e) => setTextArea(e.target.value)}
+                    />
+            </label>
 
-                <button type='submit' disabled={disableButton()}>Submit Your Review</button>
+                {errors.imageUrl && <p className="error-message">{errors.imageUrl}</p>}
+            <label>
+                Review Image:
+                <input
+                    type="text"
+                    placeholder="Image URL (Optional)"
+                    value={imageUrl}
+                    onChange={(e) => setImageUrl(e.target.value)}
+                    />
+            </label>
+                {imageUrl && !errors.imageUrl && (
+                    <img src={imageUrl} alt="Review Preview" className="review-image-preview"/>
+                )}
+
+            <div>
+                <button className='confirm-button' type='submit' disabled={disableButton()}>Submit Your Review</button>
+            </div>
             </form>
         </div>
     )

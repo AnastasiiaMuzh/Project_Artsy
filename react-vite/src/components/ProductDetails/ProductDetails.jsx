@@ -139,11 +139,11 @@ const handleAddToCart = async () => {
     const isFavorited = favorites.some(fav => fav.productId === Number(productId));
 
     if (isFavorited) {
-      await dispatch(removeFromFavorites(productId));
-      await dispatch(fetchUserFavorites());
+        await dispatch(removeFromFavorites(productId));
+        await dispatch(fetchUserFavorites());
     } else {
-      await dispatch(addToFavorites(productId));
-      await dispatch(fetchUserFavorites());
+        await dispatch(addToFavorites(productId));
+        await dispatch(fetchUserFavorites());
     }
   };
 
@@ -211,7 +211,7 @@ const handleAddToCart = async () => {
 
 
         <div className='price-and-add-button'>
-          <div className='product-price'>${product.price}</div>
+          <div className='product-price'>${product.price.toFixed(2)} per item</div>
           <div className='add-to-cart'>
             <button className='add-to-cart-button' onClick={handleAddToCart}>Add to cart</button>
           </div>
@@ -227,37 +227,75 @@ const handleAddToCart = async () => {
     </div>
 
 
-
-      <div className='reviews-container'>
+      <div className='main-review-header'>
         <h1>{reviewCount(getStarRating(product.avgStarRating), product.numReviews)}</h1>
 
         {isReviewable && (
-          <button onClick={handlePostReviewButton}>Post Your Review!</button>
+          <button className='post-review-button' onClick={handlePostReviewButton}>Post Your Review!</button>
         )}
-        {reviews?.map((review, index) => {
-          const createdAt = new Date(review.createdAt).toLocaleDateString("en-US", {
-            month: 'short',
-            day: 'numeric',
-            year: 'numeric',
-          })
-
-          return (
-            <div key={index} >
-              <div>{getStarRating(review.stars)}</div>
-              {review?.ReviewImages[0]?.url ?
-                <img src={review?.ReviewImages[0]?.url} alt={review.review} className='product-img'/>
-                : null
-              }
-              {/* <div>{review?.ReviewImages[0]?.url}</div> */}
-              <div>{review.review}</div>
-              <div>{review.User.firstName} {review.User.lastName}</div>
-              <div>{createdAt}</div>
-              {review.User?.id === currentUser?.id ? <button onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={productId} currentReview={review.review} currentStars={review.stars}/>)}>Update</button> : null}
-              {review.User?.id === currentUser?.id ? <button onClick={() => setModalContent(<DeleteReviewModal reviewId={review.id} productId={productId}/>)}>Delete</button> : null}
-            </div>
-          )
-        })}
       </div>
+      {reviews?.length > 0 && (
+
+        <div className='reviews-section'>
+
+
+          <div className='reviews-container'>
+            {reviews?.map((review, index) => {
+              const createdAt = new Date(review.createdAt).toLocaleDateString("en-US", {
+                month: 'short',
+                day: 'numeric',
+                year: 'numeric',
+              })
+
+              return (
+                <div key={index} className='review'>
+                  <div className='review-formatting'>
+                    <div className='review-subheader'>
+                      <div className='review-header'>
+                        <img
+                          src='/images/character_avatar.png'
+                          alt={review.User.firstName}
+                          className='profile-pic'
+                        />
+                        <div>
+                          <span className='user-name'>{review.User.firstName} {review.User.lastName}</span>
+                          <span className='review-date'>{createdAt}</span>
+                        </div>
+                      </div>
+
+                      <div className='reviewed-stars'>{getStarRating(review.stars)}</div>
+                      </div>
+                      {review?.ReviewImages[0]?.url ?
+                        <img src={review?.ReviewImages[0]?.url} alt={review.review} className='review-image'/>
+                        : null
+                      }
+                  </div>
+                  <p className='review-text'>{review.review}</p>
+                  <div className='review-buttons'>
+                    {review.User?.id === currentUser?.id ? <button className='update-button' onClick={() => setModalContent(<UpdateReviewModal reviewId={review.id} productId={productId} currentReview={review.review} currentStars={review.stars} triggerRefresh={triggerRefresh}/>)}>Update</button> : null}
+                    {review.User?.id === currentUser?.id ? <button className='delete-button' onClick={() => setModalContent(<DeleteReviewModal reviewId={review.id} productId={productId}/>)}>Delete</button> : null}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          <div className='reviews-images-container'>
+            <span className='reviews-heading'>Photos from reviews</span>
+            <div className='review-images-grid'>
+              {reviews?.map((review, index) => (
+                  review?.ReviewImages[0]?.url ?
+                  <div className='displaying-all-review-images' key={index}>
+                    <img src={review?.ReviewImages[0]?.url} alt={review.review} className='all-review-images'/>
+                  </div>
+                    : null
+              ))}
+
+            </div>
+          </div>
+
+        </div>
+      )}
 
     </div>
   )

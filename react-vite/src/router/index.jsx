@@ -3,12 +3,13 @@ import LoginFormPage from '../components/LoginFormPage';
 import SignupFormPage from '../components/SignupFormPage';
 import FavoritesPage from '../components/FavoritesPage';
 import Layout from './Layout';
-import ShoppingCartPage from '../components/ShoppingCartPage/ShoppingCart';
+import ShoppingCartPage from '../components/ShoppingCartPage/ShoppingCart/ShoppingCart';
 import HomePage from '../components/HomePage';
 import ProductDetails from '../components/ProductDetails/ProductDetails';
 import ManageProducts from '../components/ManageProducts';
 import CreateProductForm from '../components/CreateProductForm/CreateProductForm';
 import { ManageReviews } from '../components/Reviews';
+import OrdersPage from '../components/OrdersPage';
 
 
 
@@ -60,6 +61,10 @@ export const router = createBrowserRouter([
       {
         path: "cart",
         element: <ShoppingCartPage />,
+      },
+      {
+        path: "orders",
+        element: <OrdersPage />,
       },
     ],
   },
